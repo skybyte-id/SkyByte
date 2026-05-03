@@ -1,3 +1,3 @@
 # SkyByte
-website SkyByte
-https://skybyte-id.github.io/SkyByte/
+website SkyByte :
+skybyte-id.github.io
