@@ -1,3 +1,3 @@
 # SkyByte
 website SkyByte :
-skybyte-id.github.io
+https://skybyte-id.github.io
