@@ -801,7 +801,7 @@ function up(){
   var conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
   if(conn){var type=conn.type||conn.effectiveType||'online';sg.textContent=type.toUpperCase();}
   var s=performance.now(),img=new Image();
-  img.src='https://connectivitycheck.gstatic.com/generate_204?t='+s;
+  img.src='https://1.1.1.1/cdn-cgi/trace'+s;
   img.onload=img.onerror=function(){
     var m=Math.round(performance.now()-s);if(m<2)return;
     if(cnt===0)mn=m;else if(m<mn)mn=m;
