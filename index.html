@@ -191,7 +191,7 @@ function up() {
   // Jika Seluler, tembak ke Google (Global)
   var target;
   if (type === 'WIFI') {
-    target = 'http://10.10.10.1/cgi-bin/luci/'; 
+    target = '10.10.10.1'; 
   } else {
     target = 'https://connectivitycheck.gstatic.com/generate_204';
   }
