@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>MySkyByte</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--c1:#0077b6;--c2:#00b4d8;--g:#06d6a0;--mu:#7a95b0;--bd:#dde8f5;--bg:#f0f7ff;--wh:#fff}
+body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-bottom:80px}
+.bar{background:linear-gradient(135deg,var(--c1),var(--c2));padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.bt{color:#fff;font-size:17px;font-weight:800}
+.bs{color:rgba(255,255,255,.6);font-size:9px;display:block}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--g);box-shadow:0 0 8px var(--g);animation:blink 1.8s infinite}
+.hero{margin:14px;background:linear-gradient(135deg,#023e8a,var(--c1));border-radius:18px;padding:18px;color:#fff}
+.plb{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.2em;margin-bottom:6px}
+.pbg{font-size:60px;font-weight:800;line-height:1}
+.pms{font-size:14px;color:rgba(255,255,255,.5)}
+.ptg{display:inline-block;background:rgba(6,214,160,.2);border:1px solid rgba(6,214,160,.5);color:var(--g);font-size:10px;font-weight:800;padding:3px 12px;border-radius:20px;margin-top:6px}
+.pst{display:flex;gap:14px;margin-top:12px;font-size:11px;color:rgba(255,255,255,.5)}
+.pst b{color:#fff;font-size:13px}
+.ch{display:flex;align-items:flex-end;gap:3px;height:32px;margin-top:12px;border-top:1px solid rgba(255,255,255,.1);padding-top:8px}
+.cb{flex:1;border-radius:2px 2px 0 0;min-height:3px;background:rgba(255,255,255,.12)}
+.ir{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:0 14px 12px}
+.ib{background:var(--wh);border-radius:12px;padding:10px;text-align:center;border:1px solid var(--bd);box-shadow:0 2px 10px rgba(0,100,200,.08)}
+.il{font-size:9px;color:var(--mu);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+.iv{font-size:11px;font-weight:800;color:var(--c1)}
+.sh{display:flex;align-items:center;gap:8px;padding:4px 14px 8px}
+.sh h2{font-size:11px;font-weight:800;color:var(--c1);letter-spacing:.14em;text-transform:uppercase}
+.sl{flex:1;height:1px;background:linear-gradient(to right,var(--c2),transparent)}
+.card{margin:0 14px 12px;background:var(--wh);border-radius:16px;padding:16px;border:1px solid var(--bd);box-shadow:0 2px 12px rgba(0,100,200,.08)}
+.stag{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;font-weight:800;font-size:13px;text-align:center;padding:10px;border-radius:10px;margin-bottom:8px}
+.ssub{text-align:center;color:var(--mu);font-size:13px;margin-bottom:12px}
+.ssub b{color:var(--c1)}
+.fi{display:flex;align-items:flex-start;gap:10px;background:rgba(0,180,216,.05);border:1px solid rgba(0,180,216,.12);border-radius:10px;padding:9px;margin-bottom:7px;font-size:13px}
+.fi-d{color:var(--c1);font-weight:800;font-size:16px;flex-shrink:0;margin-top:1px}
+.pcard{border-radius:14px;padding:14px;border:2px solid var(--bd);margin-bottom:10px;position:relative}
+.pcard.best{border-color:var(--c2);box-shadow:0 4px 18px rgba(0,180,216,.18)}
+.pbdg{position:absolute;top:12px;right:12px;background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;font-size:9px;font-weight:800;padding:2px 9px;border-radius:20px}
+.ptit{font-size:17px;font-weight:800;color:var(--c1);margin-bottom:2px}
+.ppr{font-size:12px;color:var(--mu);margin-bottom:10px}
+.ppr b{color:#1a2a3a;font-size:14px}
+.pf{display:flex;align-items:center;gap:7px;font-size:13px;margin-bottom:5px}
+.pfc{color:var(--g);font-weight:900;font-size:15px}
+.pi{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--bd)}
+.pi:last-child{border:none;padding-bottom:0}
+.pico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+.pico.q{background:linear-gradient(135deg,#e63946,#c1121f)}
+.pnm{font-weight:700;font-size:13px}
+.pdt{font-size:11px;color:var(--mu);margin-top:1px}
+.pbtn{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;border:none;border-radius:9px;padding:7px 13px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.stbtn{display:flex;align-items:center;gap:12px;margin:0 14px 12px;background:linear-gradient(135deg,#023e8a,var(--c1));border-radius:16px;padding:16px;border:none;width:calc(100% - 28px);cursor:pointer;text-align:left;text-decoration:none}
+.stbtn .tt{font-size:13px;font-weight:800;color:#fff;margin-bottom:3px}
+.stbtn .ts{font-size:11px;color:rgba(255,255,255,.6)}
+.stbtn .ar{margin-left:auto;font-size:24px;color:rgba(255,255,255,.5);font-weight:700}
+.fab{position:fixed;bottom:20px;right:16px;z-index:99;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border-radius:28px;padding:12px 18px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px;text-decoration:none;box-shadow:0 6px 20px rgba(37,211,102,.4);animation:fl 3s ease-in-out infinite}
+.fab svg{width:20px;height:20px;fill:#fff}
+.app-icon{width:50px;height:50px;border-radius:12px;background:linear-gradient(135deg,var(--c1),var(--c2));display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.app-icon svg{width:28px;height:28px;fill:#fff}
+
+/* LOADING OVERLAY */
+.loading-ov{display:none;position:fixed;inset:0;background:rgba(0,10,30,.82);z-index:999;align-items:center;justify-content:center;flex-direction:column;backdrop-filter:blur(3px)}
+.loading-ov.open{display:flex}
+.spin{width:48px;height:48px;border:5px solid rgba(255,255,255,.2);border-top-color:#00b4d8;border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:14px}
+.loading-txt{color:#fff;font-size:13px;font-weight:700;opacity:.8}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* LOGIN OVERLAY */
+.login-overlay{display:none;position:fixed;inset:0;background:rgba(0,10,30,.92);z-index:300;align-items:center;justify-content:center;flex-direction:column;backdrop-filter:blur(4px)}
+.login-overlay.open{display:flex}
+.login-box{background:#fff;border-radius:24px;padding:28px 22px;width:92%;max-width:360px}
+.login-logo{text-align:center;margin-bottom:20px}
+.login-logo-icon{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,var(--c1),var(--c2));margin:0 auto 10px;display:flex;align-items:center;justify-content:center}
+.login-logo-icon svg{width:36px;height:36px;fill:#fff}
+.login-title{font-size:20px;font-weight:800;color:var(--c1);text-align:center}
+.login-sub{font-size:12px;color:var(--mu);text-align:center;margin-top:4px;margin-bottom:20px}
+.inp-group{margin-bottom:14px}
+.inp-label{font-size:11px;font-weight:800;color:var(--c1);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;display:block}
+.inp-wrap{display:flex;align-items:center;border:2px solid var(--bd);border-radius:12px;background:#f8fbff;overflow:hidden;transition:border .2s}
+.inp-wrap:focus-within{border-color:var(--c2)}
+.inp-prefix{padding:0 10px;color:var(--mu);font-size:13px;font-weight:700;background:#edf5ff;border-right:2px solid var(--bd);height:44px;display:flex;align-items:center}
+.inp-wrap input{flex:1;border:none;background:transparent;padding:12px;font-size:14px;font-family:'Nunito',sans-serif;font-weight:700;color:#1a2a3a;outline:none}
+.inp-wrap input::placeholder{color:#b0bec5;font-weight:600}
+.inp-wrap select{flex:1;border:none;background:transparent;padding:12px;font-size:14px;font-family:'Nunito',sans-serif;font-weight:700;color:#1a2a3a;outline:none}
+.login-btn{width:100%;background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;margin-top:6px;font-family:'Nunito',sans-serif;letter-spacing:.05em;transition:opacity .2s}
+.login-btn:active{opacity:.85}
+.login-btn:disabled{opacity:.5;cursor:not-allowed}
+.login-err{color:#e63946;font-size:12px;text-align:center;margin-top:8px;display:none}
+.login-reg{text-align:center;margin-top:14px;font-size:12px;color:var(--mu)}
+.login-reg a{color:var(--c1);font-weight:800;cursor:pointer;text-decoration:none}
+
+/* REGISTER OVERLAY */
+.reg-overlay{display:none;position:fixed;inset:0;background:rgba(0,10,30,.92);z-index:310;align-items:center;justify-content:center;flex-direction:column;backdrop-filter:blur(4px)}
+.reg-overlay.open{display:flex}
+.reg-box{background:#fff;border-radius:24px;padding:28px 22px;width:92%;max-width:360px}
+.reg-title{font-size:18px;font-weight:800;color:var(--c1);text-align:center;margin-bottom:4px}
+.reg-sub{font-size:12px;color:var(--mu);text-align:center;margin-bottom:18px}
+
+/* USER BAR */
+.user-bar{display:none;background:linear-gradient(135deg,#023e8a,var(--c1));margin:10px 14px;border-radius:14px;padding:12px 14px;align-items:center;gap:10px}
+.user-bar.show{display:flex}
+.user-avatar{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
+.user-info{flex:1}
+.user-name{font-size:13px;font-weight:800;color:#fff}
+.user-phone{font-size:11px;color:rgba(255,255,255,.6)}
+.logout-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
+
+/* CLOUD BADGE */
+.cloud-badge{display:flex;align-items:center;gap:5px;background:rgba(6,214,160,.15);border:1px solid rgba(6,214,160,.4);border-radius:8px;padding:3px 8px;margin:0 14px 10px;width:fit-content}
+.cloud-badge span{font-size:10px;font-weight:800;color:#06d6a0}
+
+/* QR OVERLAY */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:center;justify-content:center;flex-direction:column}
+.ov.open{display:flex}
+.mb{background:#fff;border-radius:20px;padding:16px;width:92%;max-width:360px;text-align:center}
+.mt{font-size:15px;font-weight:800;color:var(--c1);margin-bottom:4px}
+.ms{font-size:12px;color:var(--mu);margin-bottom:12px}
+.mc{margin-top:12px;background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;border:none;border-radius:10px;padding:10px 28px;font-size:13px;font-weight:800;cursor:pointer;width:100%;font-family:'Nunito',sans-serif}
+
+/* TAGIHAN CARD */
+.tagihan-card{margin:0 14px 12px;border-radius:16px;overflow:hidden;border:1px solid var(--bd);box-shadow:0 4px 18px rgba(0,100,200,.10)}
+.tagihan-header{padding:14px 16px;display:flex;align-items:center;gap:10px}
+.tagihan-header.lunas{background:linear-gradient(135deg,#06d6a0,#0a9e72)}
+.tagihan-header.jatuh{background:linear-gradient(135deg,#f5a623,#e07b00)}
+.tagihan-header.telat{background:linear-gradient(135deg,#e63946,#c1121f)}
+.tagihan-header.belum{background:linear-gradient(135deg,var(--c1),var(--c2))}
+.tagihan-icon{width:42px;height:42px;border-radius:10px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tagihan-icon svg{width:22px;height:22px;fill:#fff}
+.tagihan-info{flex:1}
+.tagihan-label{font-size:10px;color:rgba(255,255,255,.7);letter-spacing:.1em;text-transform:uppercase}
+.tagihan-status{font-size:14px;font-weight:800;color:#fff}
+.tagihan-badge{background:rgba(255,255,255,.25);color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.4)}
+.tagihan-body{background:#fff;padding:14px 16px}
+.tagihan-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd);font-size:13px}
+.tagihan-row:last-child{border:none;padding-bottom:0}
+.tagihan-row .lbl{color:var(--mu);font-weight:600}
+.tagihan-row .val{font-weight:800;color:#1a2a3a}
+.tagihan-row .val.red{color:#e63946}
+.tagihan-row .val.green{color:#06d6a0}
+.tagihan-row .val.orange{color:#f5a623}
+.tagihan-pay-btn{display:block;width:100%;margin-top:12px;background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;border:none;border-radius:10px;padding:12px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;text-align:center;text-decoration:none}
+.tagihan-pay-btn.orange{background:linear-gradient(135deg,#f5a623,#e07b00)}
+.tagihan-pay-btn.red{background:linear-gradient(135deg,#e63946,#c1121f)}
+.tagihan-hist{margin:0 14px 12px;background:#fff;border-radius:16px;border:1px solid var(--bd);overflow:hidden;box-shadow:0 2px 12px rgba(0,100,200,.08)}
+.hist-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--bd)}
+.hist-item:last-child{border:none}
+.hist-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.hist-dot.lunas{background:#06d6a0}
+.hist-dot.telat{background:#e63946}
+.hist-info{flex:1}
+.hist-bln{font-size:13px;font-weight:800;color:#1a2a3a}
+.hist-tgl{font-size:11px;color:var(--mu);margin-top:1px}
+.hist-nominal{font-size:13px;font-weight:800;color:var(--c1)}
+.no-tagihan{text-align:center;padding:28px 16px;color:var(--mu);font-size:13px}
+.no-tagihan svg{width:48px;height:48px;fill:var(--bd);margin-bottom:10px;display:block;margin-left:auto;margin-right:auto}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+</style>
+</head>
+<body>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-ov" id="loadingOv">
+  <div class="spin"></div>
+  <div class="loading-txt" id="loadingTxt">Menghubungkan ke server...</div>
+</div>
+
+<!-- LOGIN OVERLAY -->
+<div class="login-overlay open" id="loginOv">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+      </div>
+      <div class="login-title">Selamat Datang!</div>
+      <div class="login-sub">Masuk ke akun SkyByte kamu</div>
+    </div>
+    <div class="inp-group">
+      <label class="inp-label">Nomor HP</label>
+      <div class="inp-wrap">
+        <div class="inp-prefix">+62</div>
+        <input type="tel" id="loginPhone" placeholder="8xx xxxx xxxx" maxlength="13">
+      </div>
+    </div>
+    <div class="inp-group">
+      <label class="inp-label">Username</label>
+      <div class="inp-wrap">
+        <input type="text" id="loginUser" placeholder="Username kamu" style="padding-left:14px">
+      </div>
+    </div>
+    <div class="login-err" id="loginErr">Nomor HP atau username tidak ditemukan.</div>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">MASUK</button>
+    <div class="login-reg">Belum punya akun? <a onclick="openReg()">Daftar di sini</a></div>
+  </div>
+</div>
+
+<!-- REGISTER OVERLAY -->
+<div class="reg-overlay" id="regOv">
+  <div class="reg-box">
+    <div class="reg-title">Daftar Akun Baru</div>
+    <div class="reg-sub">Data tersimpan di cloud — bisa login di HP manapun ☁️</div>
+    <div class="inp-group">
+      <label class="inp-label">Nama Lengkap</label>
+      <div class="inp-wrap">
+        <input type="text" id="regName" placeholder="Nama lengkap" style="padding-left:14px">
+      </div>
+    </div>
+    <div class="inp-group">
+      <label class="inp-label">Nomor HP</label>
+      <div class="inp-wrap">
+        <div class="inp-prefix">+62</div>
+        <input type="tel" id="regPhone" placeholder="8xx xxxx xxxx" maxlength="13">
+      </div>
+    </div>
+    <div class="inp-group">
+      <label class="inp-label">Buat Username</label>
+      <div class="inp-wrap">
+        <input type="text" id="regUser" placeholder="Pilih username unik" style="padding-left:14px">
+      </div>
+    </div>
+    <div class="login-err" id="regErr">Username sudah digunakan. Coba yang lain.</div>
+    <button class="login-btn" id="regBtn" onclick="doRegister()">DAFTAR SEKARANG</button>
+    <div class="login-reg">Sudah punya akun? <a onclick="openLogin()">Masuk di sini</a></div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="bar" id="topBar">
+  <div class="bt" id="barGreet">HALO PELANGGAN...<span class="bs">ISP NETWORK DASHBOARD SKYBYTE</span></div>
+  <div class="dot"></div>
+</div>
+
+<!-- USER INFO BAR -->
+<div class="user-bar" id="userBar">
+  <div class="user-avatar" id="userAvatar">?</div>
+  <div class="user-info">
+    <div class="user-name" id="userName">-</div>
+    <div class="user-phone" id="userPhone">-</div>
+  </div>
+  <button class="logout-btn" onclick="doLogout()">Keluar</button>
+</div>
+
+<!-- CLOUD BADGE -->
+<div class="cloud-badge" id="cloudBadge" style="display:none">
+  <span>☁️ Data tersimpan di Cloud — aman di HP manapun</span>
+</div>
+
+<!-- TAGIHAN SECTION -->
+<div id="tagihanSection" style="display:none">
+  <div class="sh"><h2>Tagihan Saya</h2><div class="sl"></div></div>
+  <div id="tagihanAktif"></div>
+  <div class="sh"><h2>Riwayat Pembayaran</h2><div class="sl"></div></div>
+  <div class="tagihan-hist" id="tagihanHist"></div>
+</div>
+
+<div class="hero">
+  <div class="plb">PING REALTIME</div>
+  <div style="display:flex;align-items:flex-end;gap:5px">
+    <div class="pbg" id="pn">--</div>
+    <div class="pms">ms</div>
+  </div>
+  <div class="ptg" id="pst">SCANNING...</div>
+  <div class="pst">
+    <div>MIN <b id="pmn">--</b></div>
+    <div>MAX <b id="pmx">--</b></div>
+    <div>AVG <b id="pav">--</b> ms</div>
+  </div>
+  <div class="ch" id="ch"></div>
+</div>
+
+<div class="ir">
+  <div class="ib"><div class="il">Signal</div><div class="iv" id="sg">--</div></div>
+  <div class="ib"><div class="il">Jitter</div><div class="iv" id="jt">-- ms</div></div>
+  <div class="ib"><div class="il">IP</div><div class="iv" id="ip" style="font-size:10px">...</div></div>
+</div>
+
+<div class="sh"><h2>Layanan</h2><div class="sl"></div></div>
+<div class="card">
+  <div class="stag">INTERNETAN PUAS, DOMPET GA LEPAS!</div>
+  <div class="ssub">Cuma <b>50Rb/Bulan</b>! Benar-benar UNLIMITED!</div>
+  <div class="fi"><div class="fi-d">-</div><div><b>Tanpa Batas Kuota</b> - Gak perlu pusing sisa kuota.</div></div>
+  <div class="fi"><div class="fi-d">-</div><div><b>Tanpa FUP</b> - Kecepatan stabil seharian, gak bakal lemot.</div></div>
+  <div class="fi"><div class="fi-d">-</div><div><b>Bandwidth Tidak Dibatasi</b> - Maksimalkan kecepatan perangkat.</div></div>
+  <div class="fi"><div class="fi-d">-</div><div><b>Tanpa Batasan Perangkat</b> - HP, Laptop, TV, Smart Home. UNLIMITED!</div></div>
+</div>
+
+<div class="sh"><h2>Pilihan Paket</h2><div class="sl"></div></div>
+<div class="card">
+  <div class="pcard">
+    <div class="ptit">Paket 50Rb / Bulan</div>
+    <div class="ppr">Hanya <b>Rp 50.000</b> per Bulan</div>
+    <div class="pf"><span class="pfc">v</span>Internet Unlimited</div>
+    <div class="pf"><span class="pfc">v</span>Speed max 30 Mbps (Up &amp; Down)</div>
+    <div class="pf"><span class="pfc">v</span>Kabel 50m + Router 2.4GHz</div>
+    <div class="pf"><span class="pfc">v</span>Unlimited Perangkat</div>
+    <div class="pf"><span class="pfc">v</span>Gratis biaya pemasangan</div>
+  </div>
+  <div class="pcard best">
+    <div class="pbdg">TERBAIK</div>
+    <div class="ptit">Paket 100Rb / Bulan</div>
+    <div class="ppr">Hanya <b>Rp 100.000</b> per Bulan</div>
+    <div class="pf"><span class="pfc">v</span>Internet Unlimited</div>
+    <div class="pf"><span class="pfc">v</span>Speed max 70 Mbps (Up &amp; Down)</div>
+    <div class="pf"><span class="pfc">v</span>Kabel 50m + Router 2.4GHz &amp; 5GHz</div>
+    <div class="pf"><span class="pfc">v</span>Unlimited Perangkat</div>
+    <div class="pf"><span class="pfc">v</span>Gratis biaya pemasangan</div>
+  </div>
+</div>
+
+<div class="sh"><h2>Pembayaran</h2><div class="sl"></div></div>
+<div class="card">
+  <div class="pi">
+    <div class="pico q">QR</div>
+    <div style="flex:1"><div class="pnm">QRIS</div><div class="pdt">Scan QR - Semua Dompet Digital</div></div>
+    <button class="pbtn" onclick="openQR()">Lihat QR</button>
+  </div>
+</div>
+
+<div class="sh"><h2>Speed Test</h2><div class="sl"></div></div>
+<a class="stbtn" href="https://www.speedtest.net/id">
+  <div><div class="tt">SPEEDTEST BY OOKLA</div><div class="ts">Uji kecepatan internet sekarang</div></div>
+  <div class="ar">&gt;</div>
+</a>
+
+<a class="fab" href="https://wa.me/6282295750165">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.549 4.105 1.51 5.83L0 24l6.335-1.652A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 01-5.304-1.548l-.38-.225-3.922 1.023 1.043-3.81-.248-.392A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+  Chat CS
+</a>
+
+<!-- ADMIN PANEL (tap logo bar 5x untuk buka) -->
+<div class="ov" id="adminOv" style="z-index:500">
+  <div class="mb" style="text-align:left">
+    <div class="mt" style="text-align:center">🔧 Panel Admin SkyByte</div>
+    <div class="ms" style="text-align:center">Aktifkan layanan pelanggan setelah pemasangan</div>
+    <div class="inp-group" style="margin-bottom:10px">
+      <label class="inp-label">Kode Admin</label>
+      <div class="inp-wrap"><input type="password" id="adminKode" placeholder="Masukkan kode admin" style="padding-left:14px"></div>
+    </div>
+    <div class="inp-group" style="margin-bottom:10px">
+      <label class="inp-label">Username Pelanggan</label>
+      <div class="inp-wrap"><input type="text" id="adminUser" placeholder="Username yang mau diaktifkan" style="padding-left:14px"></div>
+    </div>
+    <div class="inp-group" style="margin-bottom:10px">
+      <label class="inp-label">Pilih Paket</label>
+      <div class="inp-wrap" style="border-radius:12px;overflow:hidden">
+        <select id="adminPaket" style="flex:1;border:none;background:transparent;padding:12px;font-size:14px;font-family:Nunito,sans-serif;font-weight:700;color:#1a2a3a;outline:none">
+          <option value="50rb">Paket 50Rb/Bulan (30 Mbps)</option>
+          <option value="100rb">Paket 100Rb/Bulan (70 Mbps)</option>
+        </select>
+      </div>
+    </div>
+    <div class="login-err" id="adminErr" style="display:none"></div>
+    <div id="adminOk" style="display:none;background:#f0fff8;border:1px solid #06d6a0;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#0a9e72;font-weight:800;margin-bottom:8px"></div>
+    <button class="mc" style="background:linear-gradient(135deg,#06d6a0,#0a9e72);margin-bottom:8px" onclick="doAktivasi()">AKTIFKAN LAYANAN</button>
+    <button class="mc" style="background:#7a95b0" onclick="document.getElementById('adminOv').classList.remove('open')">Tutup</button>
+  </div>
+</div>
+
+<div class="ov" id="qmod">
+  <div class="mb">
+    <div class="mt">Pembayaran QRIS</div>
+    <div class="ms">Screenshot lalu scan QR di bawah ini</div>
+    <img src="https://drive.google.com/thumbnail?id=1ahx0Ee-OXrALBUXX6tXpSBFwsm7yf_-X&sz=w400"
+         style="width:100%;border-radius:12px;border:2px solid #dde8f5" alt="QRIS SkyByte">
+    <button class="mc" onclick="document.getElementById('qmod').classList.remove('open')">Tutup</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  ⚙️  KONFIGURASI — Ganti URL di bawah ini
+//  Setelah deploy Google Apps Script, paste URL-nya di sini
+// ============================================================
+var API_URL = 'https://script.google.com/macros/s/AKfycbyeHFtYkgzDMr4I-rrQa0ks7IkU7OoDWI0aZoh03gMhcO5dwdSh8OrXLjcH4nKIY64N/exec';
+// Contoh: 'https://script.google.com/macros/s/AKfycbxXXXXX/exec'
+
+// ============================================================
+//  API HELPERS
+// ============================================================
+async function apiGet(params) {
+  var url = new URL(API_URL);
+  Object.keys(params).forEach(function(k){ url.searchParams.set(k, params[k]); });
+  var res = await fetch(url.toString());
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+
+async function apiPost(data) {
+  var res = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' }, // text/plain menghindari preflight CORS
+    body: JSON.stringify(data)
+  });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+
+// ============================================================
+//  SESSION — hanya menyimpan siapa yang login di HP ini
+//  Data asli tetap di Google Sheets (cloud)
+// ============================================================
+function getCurrentUser() {
+  try { return JSON.parse(localStorage.getItem('sb_current') || 'null'); } catch(e) { return null; }
+}
+function saveCurrentUser(u) {
+  if (u) localStorage.setItem('sb_current', JSON.stringify(u));
+  else localStorage.removeItem('sb_current');
+}
+
+// ============================================================
+//  LOADING STATE
+// ============================================================
+function showLoading(txt) {
+  document.getElementById('loadingTxt').textContent = txt || 'Memuat data...';
+  document.getElementById('loadingOv').classList.add('open');
+}
+function hideLoading() {
+  document.getElementById('loadingOv').classList.remove('open');
+}
+
+// ============================================================
+//  LOGIN
+// ============================================================
+async function doLogin() {
+  var phone = document.getElementById('loginPhone').value.trim();
+  var uname = document.getElementById('loginUser').value.trim().toLowerCase();
+  var err   = document.getElementById('loginErr');
+  var btn   = document.getElementById('loginBtn');
+
+  if (!phone || !uname) {
+    err.style.display = 'block';
+    err.textContent   = 'Isi nomor HP dan username.';
+    return;
+  }
+
+  btn.disabled = true;
+  showLoading('Memverifikasi akun...');
+  try {
+    var res = await apiGet({ action: 'getUser', phone: phone, username: uname });
+    if (res.found) {
+      saveCurrentUser(res.user);
+      document.getElementById('loginOv').classList.remove('open');
+      showUserBar(res.user);
+      await renderTagihan(res.user);
+    } else {
+      err.style.display = 'block';
+      err.textContent   = 'Nomor HP atau username tidak ditemukan.';
+    }
+  } catch(e) {
+    err.style.display = 'block';
+    err.textContent   = 'Gagal terhubung ke server. Periksa koneksi.';
+  } finally {
+    btn.disabled = false;
+    hideLoading();
+  }
+}
+
+// ============================================================
+//  REGISTER
+// ============================================================
+async function doRegister() {
+  var name  = document.getElementById('regName').value.trim();
+  var phone = document.getElementById('regPhone').value.trim();
+  var uname = document.getElementById('regUser').value.trim().toLowerCase().replace(/\s+/g, '');
+  var err   = document.getElementById('regErr');
+  var btn   = document.getElementById('regBtn');
+
+  if (!name || !phone || !uname) {
+    err.style.display = 'block'; err.textContent = 'Semua kolom wajib diisi.'; return;
+  }
+  if (uname.length < 3) {
+    err.style.display = 'block'; err.textContent = 'Username minimal 3 karakter.'; return;
+  }
+
+  btn.disabled = true;
+  showLoading('Mendaftarkan akun...');
+  try {
+    var res = await apiPost({ action: 'register', name: name, phone: phone, username: uname });
+    if (res.success) {
+      saveCurrentUser(res.user);
+      err.style.display = 'none';
+      document.getElementById('regOv').classList.remove('open');
+      showUserBar(res.user);
+      await renderTagihan(res.user);
+    } else {
+      err.style.display = 'block';
+      err.textContent   = res.error || 'Registrasi gagal. Coba lagi.';
+    }
+  } catch(e) {
+    err.style.display = 'block';
+    err.textContent   = 'Gagal terhubung ke server. Periksa koneksi.';
+  } finally {
+    btn.disabled = false;
+    hideLoading();
+  }
+}
+
+// ============================================================
+//  SHOW USER BAR
+// ============================================================
+function showUserBar(user) {
+  document.getElementById('userBar').classList.add('show');
+  document.getElementById('cloudBadge').style.display = 'flex';
+  document.getElementById('userName').textContent    = user.name + ' (@' + user.username + ')';
+  document.getElementById('userPhone').textContent   = '+62' + user.phone;
+  document.getElementById('userAvatar').textContent  = user.name.charAt(0).toUpperCase();
+  var greet = document.getElementById('barGreet');
+  greet.childNodes[0].textContent = 'HALO, ' + user.name.split(' ')[0].toUpperCase() + '!';
+}
+
+// ============================================================
+//  LOGOUT
+// ============================================================
+function doLogout() {
+  saveCurrentUser(null);
+  document.getElementById('userBar').classList.remove('show');
+  document.getElementById('cloudBadge').style.display = 'none';
+  document.getElementById('barGreet').childNodes[0].textContent = 'HALO PELANGGAN...';
+  renderTagihan(null);
+  document.getElementById('loginOv').classList.add('open');
+  document.getElementById('loginPhone').value = '';
+  document.getElementById('loginUser').value  = '';
+  document.getElementById('loginErr').style.display = 'none';
+}
+
+// ============================================================
+//  OVERLAY HELPERS
+// ============================================================
+function openReg() {
+  document.getElementById('loginOv').classList.remove('open');
+  document.getElementById('regOv').classList.add('open');
+  document.getElementById('regErr').style.display = 'none';
+}
+function openLogin() {
+  document.getElementById('regOv').classList.remove('open');
+  document.getElementById('loginOv').classList.add('open');
+}
+function openQR() { document.getElementById('qmod').classList.add('open'); }
+
+// ============================================================
+//  TAGIHAN / BILLING (semua async → dari Google Sheets)
+// ============================================================
+var BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+function getBulanNama(idx) { return BULAN[idx]; }
+
+async function renderTagihan(user) {
+  var sec = document.getElementById('tagihanSection');
+  if (!user) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+
+  // Skeleton loading
+  document.getElementById('tagihanAktif').innerHTML =
+    '<div class="no-tagihan" style="padding:20px"><div class="spin" style="margin:0 auto 8px;width:32px;height:32px;border-width:3px"></div>Memuat tagihan dari cloud...</div>';
+  document.getElementById('tagihanHist').innerHTML =
+    '<div class="no-tagihan">Memuat riwayat...</div>';
+
+  try {
+    var layananRes = await apiGet({ action: 'getLayanan', username: user.username });
+    var layanan    = layananRes.found ? layananRes.layanan : null;
+
+    if (!layanan || layanan.status !== 'aktif') {
+      // Belum dipasang
+      document.getElementById('tagihanAktif').innerHTML =
+        '<div class="tagihan-card">' +
+          '<div class="tagihan-header" style="background:linear-gradient(135deg,#7a95b0,#4a6080)">' +
+            '<div class="tagihan-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>' +
+            '<div class="tagihan-info"><div class="tagihan-label">Status Layanan</div><div class="tagihan-status">MENUNGGU PEMASANGAN</div></div>' +
+            '<div class="tagihan-badge">PROSES</div>' +
+          '</div>' +
+          '<div class="tagihan-body">' +
+            '<div class="tagihan-row"><span class="lbl">Pelanggan</span><span class="val">' + user.name + '</span></div>' +
+            '<div class="tagihan-row"><span class="lbl">Username</span><span class="val">@' + user.username + '</span></div>' +
+            '<div class="tagihan-row"><span class="lbl">Status</span><span class="val" style="color:#7a95b0">Menunggu Teknisi</span></div>' +
+            '<div class="tagihan-row"><span class="lbl">Tagihan</span><span class="val" style="color:#7a95b0">Belum Ada</span></div>' +
+          '</div>' +
+          '<div style="background:#f0f7ff;border-radius:10px;padding:12px;margin:10px 16px 14px;font-size:12px;color:#4a6080;text-align:center;line-height:1.6">' +
+            'WiFi SkyByte belum terpasang di rumah kamu.<br>Hubungi CS untuk jadwalkan pemasangan.' +
+          '</div>' +
+          '<a href="https://wa.me/6282295750165" class="tagihan-pay-btn" style="background:linear-gradient(135deg,#25d366,#128c7e);margin:0 16px 14px;width:calc(100% - 32px);text-decoration:none;display:block;text-align:center">' +
+            'Hubungi CS untuk Pasang WiFi' +
+          '</a>' +
+        '</div>';
+      document.getElementById('tagihanHist').innerHTML =
+        '<div class="no-tagihan">Belum ada riwayat — tagihan muncul setelah WiFi terpasang</div>';
+      return;
+    }
+
+        // Layanan aktif → hitung tagihan
+    var today      = new Date();
+    var bm         = today.getMonth(), by = today.getFullYear();
+    var paket      = layanan.paket || '50rb';
+    var nominal    = paket === '100rb' ? 100000 : 50000;
+    
+    // PERBAIKAN: Hitung jatuh tempo 1 bulan setelah tanggal pasang
+    var tglPasangDate = new Date(layanan.tglPasang || (by + '-' + ('0' + (bm + 1)).slice(-2) + '-01'));
+    var jatuhTempo    = new Date(tglPasangDate.getFullYear(), tglPasangDate.getMonth() + 1, tglPasangDate.getDate());
+    var tglJatuhTempoNum = jatuhTempo.getDate();
+    
+    var sisa       = Math.ceil((jatuhTempo - today) / (1000 * 60 * 60 * 24));
+
+    // Ambil status bayar bulan ini dari cloud
+    var payRes    = await apiGet({ action: 'getPayment', username: user.username, year: by, month: bm });
+    var sudahBayar = payRes.paid;
+
+    var status    = sudahBayar ? 'lunas' : (today > jatuhTempo ? 'telat' : (sisa <= 3 ? 'jatuh' : 'belum'));
+    var statusTxt = 'BELUM DIBAYAR', badgeTxt = 'BULAN INI', btnClass = '', btnTxt = 'Bayar via QRIS';
+    if (status === 'lunas') { statusTxt = 'SUDAH LUNAS'; badgeTxt = 'TERIMA KASIH ✓'; }
+    else if (status === 'telat') { statusTxt = 'JATUH TEMPO TERLEWAT'; badgeTxt = 'SEGERA BAYAR!'; btnClass = 'red'; btnTxt = 'Bayar Sekarang!'; }
+    else if (status === 'jatuh') { statusTxt = 'MENDEKATI JATUH TEMPO'; badgeTxt = sisa + ' HARI LAGI'; btnClass = 'orange'; btnTxt = 'Segera Bayar'; }
+
+    // PERBAIKAN: Hapus hardcode (tgl 10)
+    var sisaTxt = status === 'lunas'
+      ? '<span class="val green">Lunas ✓</span>'
+      : status === 'telat'
+        ? '<span class="val red">Sudah terlewat!</span>'
+        : '<span class="val ' + (status === 'jatuh' ? 'orange' : '') + '">' + Math.max(sisa, 0) + ' hari lagi (tgl ' + tglJatuhTempoNum + ')</span>';
+
+    document.getElementById('tagihanAktif').innerHTML =
+      '<div class="tagihan-card">' +
+        '<div class="tagihan-header ' + status + '">' +
+          '<div class="tagihan-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>' +
+          '<div class="tagihan-info"><div class="tagihan-label">Tagihan Internet — Paket ' + paket.toUpperCase() + '</div><div class="tagihan-status">' + statusTxt + '</div></div>' +
+          '<div class="tagihan-badge">' + badgeTxt + '</div>' +
+        '</div>' +
+        '<div class="tagihan-body">' +
+          '<div class="tagihan-row"><span class="lbl">Pelanggan</span><span class="val">' + user.name + '</span></div>' +
+          '<div class="tagihan-row"><span class="lbl">Username</span><span class="val">@' + user.username + '</span></div>' +
+          '<div class="tagihan-row"><span class="lbl">Paket</span><span class="val">' + paket.toUpperCase() + '/Bulan — Rp ' + nominal.toLocaleString('id-ID') + '</span></div>' +
+          // PERBAIKAN: Format tanggal pasang agar rapi
+          '<div class="tagihan-row"><span class="lbl">Tgl Pasang</span><span class="val green">' + tglPasangDate.getDate() + ' ' + getBulanNama(tglPasangDate.getMonth()) + ' ' + tglPasangDate.getFullYear() + ' ✓</span></div>' +
+          '<div class="tagihan-row"><span class="lbl">Periode</span><span class="val">' + getBulanNama(bm) + ' ' + by + '</span></div>' +
+          // PERBAIKAN: Hapus hardcode angka 10 di baris ini
+          '<div class="tagihan-row"><span class="lbl">Jatuh Tempo</span><span class="val ' + (status === 'telat' ? 'red' : status === 'jatuh' ? 'orange' : '') + '">' + tglJatuhTempoNum + ' ' + getBulanNama(jatuhTempo.getMonth()) + ' ' + jatuhTempo.getFullYear() + '</span></div>' +
+          '<div class="tagihan-row"><span class="lbl">Sisa Waktu</span>' + sisaTxt + '</div>' +
+          '<div class="tagihan-row"><span class="lbl">Total Tagihan</span><span class="val" style="font-size:17px;color:var(--c1)">Rp ' + nominal.toLocaleString('id-ID') + '</span></div>' +
+          (status !== 'lunas'
+            ? '<button class="tagihan-pay-btn ' + btnClass + '" onclick="bayarTagihan(\'' + user.username + '\',' + by + ',' + bm + ')">' + btnTxt + '</button>'
+            : '<div style="background:#f0fff8;border:1px solid #06d6a0;border-radius:10px;padding:10px;text-align:center;margin-top:10px;font-size:13px;color:#0a9e72;font-weight:800">✓ Pembayaran bulan ini sudah diterima</div>'
+          ) +
+        '</div>' +
+      '</div>';
+
+    // Riwayat pembayaran dari cloud
+    var histRes  = await apiGet({ action: 'getPaymentHistory', username: user.username });
+    var histMap  = {};
+    (histRes.history || []).forEach(function(h) {
+      histMap[h.year + '_' + h.month] = h.paid;
+    });
+
+    var tglPasangDate = new Date(layanan.tglPasang || (by + '-' + ('0' + (bm + 1)).slice(-2) + '-01'));
+    var histData = [];
+    for (var i = 1; i <= 5; i++) {
+      var hm = bm - i, hy = by;
+      if (hm < 0) { hm += 12; hy--; }
+      var tglBulanIni = new Date(hy, hm, 1);
+      if (tglBulanIni < new Date(tglPasangDate.getFullYear(), tglPasangDate.getMonth(), 1)) continue;
+      var dibayar = histMap[hy + '_' + hm] === true;
+      histData.push({ bulan: getBulanNama(hm) + ' ' + hy, status: dibayar ? 'lunas' : 'telat', nominal: nominal });
+    }
+
+    document.getElementById('tagihanHist').innerHTML = histData.length
+      ? histData.map(function(h) {
+          return '<div class="hist-item">' +
+            '<div class="hist-dot ' + h.status + '"></div>' +
+            '<div class="hist-info"><div class="hist-bln">' + h.bulan + '</div><div class="hist-tgl">' + (h.status === 'lunas' ? 'Sudah dibayar ✓' : 'Belum dibayar') + '</div></div>' +
+            '<div class="hist-nominal" style="color:' + (h.status === 'lunas' ? 'var(--g)' : '#e63946') + '">Rp ' + h.nominal.toLocaleString('id-ID') + '</div>' +
+          '</div>';
+        }).join('')
+      : '<div class="no-tagihan">Belum ada riwayat — baru terpasang bulan ini</div>';
+
+  } catch(e) {
+    document.getElementById('tagihanAktif').innerHTML =
+      '<div class="tagihan-card"><div class="tagihan-body"><div class="no-tagihan">⚠️ Gagal memuat data. Periksa koneksi internet.</div></div></div>';
+    document.getElementById('tagihanHist').innerHTML =
+      '<div class="no-tagihan">Gagal memuat riwayat.</div>';
+  }
+}
+
+// ============================================================
+//  BAYAR TAGIHAN → simpan ke cloud
+// ============================================================
+async function bayarTagihan(username, year, month) {
+  showLoading('Memproses pembayaran...');
+  try {
+    await apiPost({ action: 'savePayment', username: username, year: year, month: month, paid: true });
+    openQR();
+    var cur = getCurrentUser();
+    if (cur) await renderTagihan(cur);
+  } catch(e) {
+    alert('Gagal menyimpan pembayaran. Coba lagi.');
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================================================
+//  ADMIN PANEL — aktivasi layanan → simpan ke cloud
+// ============================================================
+async function doAktivasi() {
+  var kode  = document.getElementById('adminKode').value.trim();
+  var uname = document.getElementById('adminUser').value.trim().toLowerCase();
+  var paket = document.getElementById('adminPaket').value;
+  var err   = document.getElementById('adminErr');
+  var ok    = document.getElementById('adminOk');
+  err.style.display = 'none'; ok.style.display = 'none';
+
+  if (kode !== 'inikatasandi') {
+    err.textContent = 'Kode admin salah!'; err.style.display = 'block'; return;
+  }
+  if (!uname) {
+    err.textContent = 'Isi username pelanggan.'; err.style.display = 'block'; return;
+  }
+
+  showLoading('Mengaktifkan layanan...');
+  try {
+    // Cek apakah username terdaftar di Sheets
+    var check = await apiGet({ action: 'checkUsername', username: uname });
+    if (!check.found) {
+      err.textContent = 'Username @' + uname + ' belum terdaftar di database.';
+      err.style.display = 'block'; hideLoading(); return;
+    }
+
+    var today    = new Date();
+    var tglPasang = today.getDate() + ' ' + getBulanNama(today.getMonth()) + ' ' + today.getFullYear();
+    var res = await apiPost({ action: 'saveLayanan', username: uname, status: 'aktif', paket: paket, tglPasang: tglPasang });
+
+    if (res.success) {
+      ok.textContent    = '✓ Berhasil! @' + uname + ' diaktifkan paket ' + paket + ' per ' + tglPasang;
+      ok.style.display  = 'block';
+      document.getElementById('adminUser').value = '';
+      var cur = getCurrentUser();
+      if (cur && cur.username === uname) await renderTagihan(cur);
+    } else {
+      err.textContent = res.error || 'Gagal mengaktifkan.'; err.style.display = 'block';
+    }
+  } catch(e) {
+    err.textContent = 'Gagal terhubung ke server.'; err.style.display = 'block';
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================================================
+//  AUTO-LOGIN — jika sesi masih ada, login langsung
+// ============================================================
+(async function() {
+  var cur = getCurrentUser();
+  if (cur) {
+    document.getElementById('loginOv').classList.remove('open');
+    showUserBar(cur);
+    // Re-verify dari server (data mungkin berubah)
+    showLoading('Memuat data akun...');
+    try {
+      var res = await apiGet({ action: 'getUser', phone: cur.phone, username: cur.username });
+      if (res.found) {
+        saveCurrentUser(res.user); // update data terbaru
+        await renderTagihan(res.user);
+      } else {
+        // Akun tidak ditemukan, logout
+        doLogout();
+      }
+    } catch(e) {
+      // Koneksi gagal, tetap tampilkan dengan data sesi
+      await renderTagihan(cur);
+    } finally {
+      hideLoading();
+    }
+  }
+})();
+
+// ============================================================
+//  ADMIN PANEL — tap bar 5x untuk buka
+// ============================================================
+var adminTapCount = 0, adminTapTimer = null;
+document.getElementById('topBar').addEventListener('click', function() {
+  adminTapCount++;
+  clearTimeout(adminTapTimer);
+  adminTapTimer = setTimeout(function() { adminTapCount = 0; }, 2000);
+  if (adminTapCount >= 5) {
+    adminTapCount = 0;
+    document.getElementById('adminOv').classList.add('open');
+    document.getElementById('adminKode').value = '';
+    document.getElementById('adminUser').value = '';
+    document.getElementById('adminErr').style.display = 'none';
+    document.getElementById('adminOk').style.display  = 'none';
+  }
+});
+
+// ============================================================
+//  PING / NETWORK MONITOR
+// ============================================================
+var N=20,IV=2000,hi=[],mn=9999,mx=0,tot=0,cnt=0,lp=null;
+var pn=document.getElementById('pn'),pst=document.getElementById('pst'),pmn=document.getElementById('pmn'),pmx=document.getElementById('pmx'),pav=document.getElementById('pav'),jt=document.getElementById('jt'),sg=document.getElementById('sg'),ip=document.getElementById('ip'),ch=document.getElementById('ch');
+for(var i=0;i<N;i++){var b=document.createElement('div');b.className='cb';ch.appendChild(b);}
+function setIP(data){document.getElementById('ip').textContent=data.ip;}
+function getIP(){var s=document.createElement('script');s.src='https://api.ipify.org?format=jsonp&callback=setIP';document.body.appendChild(s);}
+getIP();
+function gs(m){if(m<40)return{t:'KENCENG!',c:'#00b4d8'};if(m<100)return{t:'STABIL',c:'#06d6a0'};if(m<200)return{t:'LAG',c:'#f5a623'};return{t:'LAG PARAH',c:'#e63946'};}
+function up(){
+  var conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+  if(conn){var type=conn.type||conn.effectiveType||'online';sg.textContent=type.toUpperCase();}
+  var s=performance.now(),img=new Image();
+  img.src='https://connectivitycheck.gstatic.com/generate_204?t='+s;
+  img.onload=img.onerror=function(){
+    var m=Math.round(performance.now()-s);if(m<2)return;
+    if(cnt===0)mn=m;else if(m<mn)mn=m;
+    if(m>mx)mx=m;tot+=m;cnt++;
+    if(lp!==null)jt.textContent=Math.abs(m-lp)+' ms';lp=m;
+    pn.textContent=m;pmn.textContent=mn;pmx.textContent=mx;pav.textContent=Math.round(tot/cnt);
+    var st=gs(m);pst.textContent=st.t;
+    hi.push(m);if(hi.length>N)hi.shift();
+    var bs=ch.children;
+    for(var i=0;i<N;i++){var v=hi[i];if(v){bs[i].style.height=Math.min(100,(v/300)*100)+'%';bs[i].style.background=gs(v).c;}}
+  };
+}
+setInterval(up,IV);up();
+</script>
+</body>
+</html>
