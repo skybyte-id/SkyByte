@@ -802,7 +802,7 @@ function up(){
   if(conn){var type=conn.type||conn.effectiveType||'online';sg.textContent=type.toUpperCase();}
   var s=performance.now(),img=new Image();
     // Tentukan target berdasarkan kondisi tertentu
-let pingTarget = 'https://1.1.1.1/'; // Paling kenceng buat umum
+let pingTarget = 'https://1.1.1.1/'+s; // Paling kenceng buat umum
 
 if (sg.textContent === 'WIFI') {
     pingTarget = 'http://10.10.10.1'; // Target lokal JCG
