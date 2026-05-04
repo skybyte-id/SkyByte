@@ -801,7 +801,14 @@ function up(){
   var conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
   if(conn){var type=conn.type||conn.effectiveType||'online';sg.textContent=type.toUpperCase();}
   var s=performance.now(),img=new Image();
-  img.src='https://1.1.1.1/cdn-cgi/trace'+s;
+    // Tentukan target berdasarkan kondisi tertentu
+let pingTarget = 'https://1.1.1.1/'; // Paling kenceng buat umum
+
+if (sg.textContent === 'WIFI') {
+    pingTarget = 'http://10.10.10.1'; // Target lokal JCG
+}
+
+img.src = pingTarget + '?cache=' + s;
   img.onload=img.onerror=function(){
     var m=Math.round(performance.now()-s);if(m<2)return;
     if(cnt===0)mn=m;else if(m<mn)mn=m;
