@@ -178,18 +178,26 @@ var pn=document.getElementById('pn'),pst=document.getElementById('pst'),pmn=docu
 for(var i=0;i<N;i++){var b=document.createElement('div');b.className='cb';ch.appendChild(b);}
 fetch('https://api.ipify.org?format=json').then(function(r){return r.json()}).then(function(d){ip.textContent=d.ip}).catch(function(){ip.textContent='N/A'});
 function gs(m){if(m<40)return{t:'KENCENG!',c:'#00b4d8'};if(m<100)return{t:'STABIL',c:'#06d6a0'};if(m<200)return{t:'LAG',c:'#f5a623'};return{t:'LAG PARAH',c:'#e63946'}}
-function up(){
-  var conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
-  if(conn){sg.textContent=conn.type==='wifi'?'WIFI':(conn.effectiveType||'--').toUpperCase();}
-  var s=performance.now(),img=new Image();
-  // Tentukan target berdasarkan kondisi tertentu
-let pingTarget = 'https://one.one.one.one'+s; // Paling kenceng buat umum
+function up() {
+  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  var type = '--';
+  if(conn) {
+    type = conn.type === 'wifi' ? 'WIFI' : (conn.effectiveType || '--').toUpperCase();
+    sg.textContent = type;
+  }
 
-if (sg.textContent === 'WIFI') {
-    pingTarget = 'http://10.10.10.1'; // Target lokal JCG
-}
+  // Pilih target: 
+  // Jika WIFI, tembak ke Router JCG (Local)
+  // Jika Seluler, tembak ke Google (Global)
+  var target;
+  if (type === 'WIFI') {
+    target = 'http://10.10.10.1/cgi-bin/luci/'; 
+  } else {
+    target = 'https://connectivitycheck.gstatic.com/generate_204';
+  }
 
-img.src = pingTarget + '?cache=' + s;
+  var s = performance.now(), img = new Image();
+  img.src = target + '?t=' + s;
 
   img.onload=img.onerror=function(){
     var m=Math.round(performance.now()-s);if(m<2)return;
