@@ -180,27 +180,18 @@ fetch('https://api.ipify.org?format=json').then(function(r){return r.json()}).th
 function gs(m){if(m<40)return{t:'KENCENG!',c:'#00b4d8'};if(m<100)return{t:'STABIL',c:'#06d6a0'};if(m<200)return{t:'LAG',c:'#f5a623'};return{t:'LAG PARAH',c:'#e63946'}}
 function up() {
   var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  var type = '--';
   if(conn) {
-    type = conn.type === 'wifi' ? 'WIFI' : (conn.effectiveType || '--').toUpperCase();
+    var type = conn.type === 'wifi' ? 'WIFI' : (conn.effectiveType || '--').toUpperCase();
     sg.textContent = type;
   }
-
-  // Pilih target: 
-  // Jika WIFI, tembak ke Router JCG (Local)
-  // Jika Seluler, tembak ke Google (Global)
-  var target;
-  if (type === 'WIFI') {
-    target = 'https://connectivitycheck.gstatic.com/generate_204'; 
-  } else {
-    target = 'https://connectivitycheck.gstatic.com/generate_204';
-  }
-
+  
+  var targets = ['http://10.10.10.1.', 'https://1.1.1.1', 'https://8.8.8.8'];
+  var target = targets[0];
+  
   var s = performance.now(), img = new Image();
   img.src = target + '?t=' + s;
-
-  img.onload=img.onerror=function(){
-    var m=Math.round(performance.now()-s);if(m<2)return;
+  img.onload = img.onerror = function(){
+    var m = Math.round(performance.now()-s); if(m<2)return;
     if(cnt===0)mn=m;else if(m<mn)mn=m;
     if(m>mx)mx=m;tot+=m;cnt++;
     if(lp!==null)jt.textContent=Math.abs(m-lp)+' ms';lp=m;
