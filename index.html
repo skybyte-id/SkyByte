@@ -358,53 +358,73 @@ fetch('https://api.ipify.org?format=json').then(function(r){return r.json()}).th
 
 function gs(m){if(m<40)return{t:'KENCENG!',c:'#00b4d8'};if(m<100)return{t:'STABIL',c:'#06d6a0'};if(m<200)return{t:'LAG',c:'#f5a623'};return{t:'LAG PARAH',c:'#e63946'}}
 
-var activeTargets = ['https://1.1.1.1','https://8.8.8.8'];
+// Target ping pakai URL yang pasti bisa di-fetch dari HTTPS
 
-var targetIdx = 0;
+var PING_TARGETS = {
+
+  wifi: [
+
+    'https://1.1.1.1/cdn-cgi/trace',   // Cloudflare (paling cepat)
+
+    'https://dns.google/resolve?name=a' // Google DNS
+
+  ],
+
+  cell: [
+
+    'https://1.1.1.1/cdn-cgi/trace',
+
+    'https://dns.google/resolve?name=a'
+
+  ]
+
+};
+
+var currentTargets = PING_TARGETS.cell;
+
+var tidx = 0;
 
 
 
 function doPing() {
 
-  if (targetIdx >= activeTargets.length) { targetIdx = 0; return; }
+  var url = currentTargets[tidx % currentTargets.length];
 
-  var target = activeTargets[targetIdx];
+  var s = performance.now();
 
-  var s = performance.now(), img = new Image();
+  fetch(url + '&_=' + s, { method:'GET', cache:'no-store', mode:'no-cors' })
 
-  img.src = target + '?_=' + s;
+    .then(function() {
 
-  img.onload = function() {
+      var m = Math.round(performance.now() - s);
 
-    var m = Math.round(performance.now() - s);
+      if (m < 1) return;
 
-    if (m < 1) { targetIdx++; doPing(); return; }
+      if(cnt===0)mn=m; else if(m<mn)mn=m;
 
-    if(cnt===0)mn=m; else if(m<mn)mn=m;
+      if(m>mx)mx=m; tot+=m; cnt++;
 
-    if(m>mx)mx=m; tot+=m; cnt++;
+      if(lp!==null)jt.textContent=Math.abs(m-lp)+' ms'; lp=m;
 
-    if(lp!==null)jt.textContent=Math.abs(m-lp)+' ms'; lp=m;
+      pn.textContent=m; pmn.textContent=mn; pmx.textContent=mx; pav.textContent=Math.round(tot/cnt);
 
-    pn.textContent=m; pmn.textContent=mn; pmx.textContent=mx; pav.textContent=Math.round(tot/cnt);
+      var st=gs(m); pst.textContent=st.t;
 
-    var st=gs(m); pst.textContent=st.t;
+      hi.push(m); if(hi.length>N)hi.shift();
 
-    hi.push(m); if(hi.length>N)hi.shift();
+      var bs=ch.children;
 
-    var bs=ch.children;
+      for(var i=0;i<N;i++){var v=hi[i];if(v){bs[i].style.height=Math.min(100,(v/300)*100)+'%';bs[i].style.background=gs(v).c;}}
 
-    for(var i=0;i<N;i++){var v=hi[i];if(v){bs[i].style.height=Math.min(100,(v/300)*100)+'%';bs[i].style.background=gs(v).c;}}
+    })
 
-  };
+    .catch(function() {
 
-  img.onerror = function() {
+      // target gagal, coba berikutnya
 
-    targetIdx++;
+      tidx++;
 
-    doPing();
-
-  };
+    });
 
 }
 
@@ -424,21 +444,7 @@ function up() {
 
   }
 
-  // WiFi: coba gateway lokal dulu, fallback Cloudflare & Google
-
-  // Seluler: langsung Cloudflare & Google
-
-  if (type === 'WIFI') {
-
-    activeTargets = ['http://10.10.10.1','https://1.1.1.1','https://8.8.8.8'];
-
-  } else {
-
-    activeTargets = ['https://1.1.1.1','https://8.8.8.8'];
-
-  }
-
-  targetIdx = 0;
+  currentTargets = (type === 'WIFI') ? PING_TARGETS.wifi : PING_TARGETS.cell;
 
   doPing();
 
