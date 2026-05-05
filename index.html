@@ -189,16 +189,20 @@ function up() {
   // Pilih target: 
   // Jika WIFI, tembak ke Router JCG (Local)
   // Jika Seluler, tembak ke Google (Global)
-  var target;
-if (type === 'WIFI') {
-  target = 'https://8.8.8.8';
-} else {
-  target = 'https://8.8.8.8';
-}
+  var targets = (type === 'WIFI')
+  ? ['http://10.10.10.1', 'https://1.1.1.1', 'https://8.8.8.8']
+  : ['https://1.1.1.1', 'https://8.8.8.8'];
+
+var targetIdx = 0;
+
+function tryPing() {
+  if (targetIdx >= targets.length) return;
+  var target = targets[targetIdx];
   var s = performance.now(), img = new Image();
   img.src = target + '?t=' + s;
-  img.onload=img.onerror=function(){
-    var m=Math.round(performance.now()-s);if(m<2)return;
+  img.onload = function() {
+    var m = Math.round(performance.now() - s); if(m < 2) return;
+    // berhasil, update UI normal
     if(cnt===0)mn=m;else if(m<mn)mn=m;
     if(m>mx)mx=m;tot+=m;cnt++;
     if(lp!==null)jt.textContent=Math.abs(m-lp)+' ms';lp=m;
@@ -208,7 +212,13 @@ if (type === 'WIFI') {
     var bs=ch.children;
     for(var i=0;i<N;i++){var v=hi[i];if(v){bs[i].style.height=Math.min(100,(v/300)*100)+'%';bs[i].style.background=gs(v).c;}}
   };
+  img.onerror = function() {
+    // gagal (diblokir/timeout), coba target berikutnya
+    targetIdx++;
+    tryPing();
+  };
 }
+tryPing();
 setInterval(up,IV);up();
 function openQR(){document.getElementById('qmod').classList.add('open');}
 </script>
