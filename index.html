@@ -358,47 +358,39 @@ fetch('https://api.ipify.org?format=json').then(function(r){return r.json()}).th
 
 function gs(m){if(m<40)return{t:'KENCENG!',c:'#00b4d8'};if(m<100)return{t:'STABIL',c:'#06d6a0'};if(m<200)return{t:'LAG',c:'#f5a623'};return{t:'LAG PARAH',c:'#e63946'}}
 
-// targetIdx di luar up() agar tidak reset setiap interval
+var activeTargets = ['https://1.1.1.1','https://8.8.8.8'];
 
 var targetIdx = 0;
 
-var activeTargets = ['https://1.1.1.1', 'https://8.8.8.8']; // default seluler
 
 
+function doPing() {
 
-function tryPing() {
-
-  if (targetIdx >= activeTargets.length) {
-
-    // semua target gagal, fallback ke Cloudflare
-
-    targetIdx = 1;
-
-    activeTargets = ['https://1.1.1.1', 'https://8.8.8.8'];
-
-  }
+  if (targetIdx >= activeTargets.length) { targetIdx = 0; return; }
 
   var target = activeTargets[targetIdx];
 
   var s = performance.now(), img = new Image();
 
-  img.src = target + '?t=' + s;
+  img.src = target + '?_=' + s;
 
   img.onload = function() {
 
-    var m = Math.round(performance.now() - s); if(m < 2) return;
+    var m = Math.round(performance.now() - s);
 
-    if(cnt===0)mn=m;else if(m<mn)mn=m;
+    if (m < 1) { targetIdx++; doPing(); return; }
 
-    if(m>mx)mx=m;tot+=m;cnt++;
+    if(cnt===0)mn=m; else if(m<mn)mn=m;
 
-    if(lp!==null)jt.textContent=Math.abs(m-lp)+' ms';lp=m;
+    if(m>mx)mx=m; tot+=m; cnt++;
 
-    pn.textContent=m;pmn.textContent=mn;pmx.textContent=mx;pav.textContent=Math.round(tot/cnt);
+    if(lp!==null)jt.textContent=Math.abs(m-lp)+' ms'; lp=m;
 
-    var st=gs(m);pst.textContent=st.t;
+    pn.textContent=m; pmn.textContent=mn; pmx.textContent=mx; pav.textContent=Math.round(tot/cnt);
 
-    hi.push(m);if(hi.length>N)hi.shift();
+    var st=gs(m); pst.textContent=st.t;
+
+    hi.push(m); if(hi.length>N)hi.shift();
 
     var bs=ch.children;
 
@@ -408,11 +400,9 @@ function tryPing() {
 
   img.onerror = function() {
 
-    // target gagal/diblokir, coba berikutnya
-
     targetIdx++;
 
-    tryPing();
+    doPing();
 
   };
 
@@ -434,29 +424,27 @@ function up() {
 
   }
 
-  // Update target list sesuai tipe koneksi
-
-  // WiFi: coba gateway lokal dulu, fallback ke Cloudflare & Google
+  // WiFi: coba gateway lokal dulu, fallback Cloudflare & Google
 
   // Seluler: langsung Cloudflare & Google
 
   if (type === 'WIFI') {
 
-    activeTargets = ['http://10.10.10.1', 'https://1.1.1.1', 'https://8.8.8.8'];
+    activeTargets = ['http://10.10.10.1','https://1.1.1.1','https://8.8.8.8'];
 
   } else {
 
-    activeTargets = ['https://1.1.1.1', 'https://8.8.8.8'];
+    activeTargets = ['https://1.1.1.1','https://8.8.8.8'];
 
   }
 
   targetIdx = 0;
 
-  tryPing();
+  doPing();
 
 }
 
-setInterval(up,IV);up();
+setInterval(up, IV); up();
 
 function openQR(){document.getElementById('qmod').classList.add('open');}
 
@@ -465,5 +453,4 @@ function openQR(){document.getElementById('qmod').classList.add('open');}
 </body>
 
 </html>
-
 
