@@ -317,6 +317,226 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
   </div>
 </div>
 
+/* USER BAR */
+.user-bar{display:none;background:linear-gradient(135deg,#023e8a,var(--c1));margin:10px 14px;border-radius:14px;padding:12px 14px;align-items:center;gap:10px}
+.user-bar.show{display:flex}
+.user-avatar{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
+.user-info{flex:1}
+.user-name{font-size:13px;font-weight:800;color:#fff}
+.user-phone{font-size:11px;color:rgba(255,255,255,.6)}
+.logout-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
+
+/* CLOUD BADGE */
+.cloud-badge{display:flex;align-items:center;gap:5px;background:rgba(6,214,160,.15);border:1px solid rgba(6,214,160,.4);border-radius:8px;padding:3px 8px;margin:0 14px 10px;width:fit-content}
+.cloud-badge span{font-size:10px;font-weight:800;color:#06d6a0}
+
+/* QR OVERLAY */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:center;justify-content:center;flex-direction:column}
+.ov.open{display:flex}
+.mb{background:#fff;border-radius:20px;padding:16px;width:92%;max-width:360px;text-align:center}
+.mt{font-size:15px;font-weight:800;color:var(--c1);margin-bottom:4px}
+.ms{font-size:12px;color:var(--mu);margin-bottom:12px}
+.mc{margin-top:12px;background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;border:none;border-radius:10px;padding:10px 28px;font-size:13px;font-weight:800;cursor:pointer;width:100%;font-family:'Nunito',sans-serif}
+
+/* TAGIHAN CARD */
+.tagihan-card{margin:0 14px 12px;border-radius:16px;overflow:hidden;border:1px solid var(--bd);box-shadow:0 4px 18px rgba(0,100,200,.10)}
+.tagihan-header{padding:14px 16px;display:flex;align-items:center;gap:10px}
+.tagihan-header.lunas{background:linear-gradient(135deg,#06d6a0,#0a9e72)}
+.tagihan-header.jatuh{background:linear-gradient(135deg,#f5a623,#e07b00)}
+.tagihan-header.telat{background:linear-gradient(135deg,#e63946,#c1121f)}
+.tagihan-header.belum{background:linear-gradient(135deg,var(--c1),var(--c2))}
+.tagihan-icon{width:42px;height:42px;border-radius:10px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tagihan-icon svg{width:22px;height:22px;fill:#fff}
+.tagihan-info{flex:1}
+.tagihan-label{font-size:10px;color:rgba(255,255,255,.7);letter-spacing:.1em;text-transform:uppercase}
+.tagihan-status{font-size:14px;font-weight:800;color:#fff}
+.tagihan-badge{background:rgba(255,255,255,.25);color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.4)}
+.tagihan-body{background:#fff;padding:14px 16px}
+.tagihan-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd);font-size:13px}
+.tagihan-row:last-child{border:none;padding-bottom:0}
+.tagihan-row .lbl{color:var(--mu);font-weight:600}
+.tagihan-row .val{font-weight:800;color:#1a2a3a}
+.tagihan-row .val.red{color:#e63946}
+.tagihan-row .val.green{color:#06d6a0}
+.tagihan-row .val.orange{color:#f5a623}
+.tagihan-pay-btn{display:block;width:100%;margin-top:12px;background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;border:none;border-radius:10px;padding:12px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;text-align:center;text-decoration:none}
+.tagihan-pay-btn.orange{background:linear-gradient(135deg,#f5a623,#e07b00)}
+.tagihan-pay-btn.red{background:linear-gradient(135deg,#e63946,#c1121f)}
+.tagihan-hist{margin:0 14px 12px;background:#fff;border-radius:16px;border:1px solid var(--bd);overflow:hidden;box-shadow:0 2px 12px rgba(0,100,200,.08)}
+.hist-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--bd)}
+.hist-item:last-child{border:none}
+.hist-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.hist-dot.lunas{background:#06d6a0}
+.hist-dot.telat{background:#e63946}
+.hist-info{flex:1}
+.hist-bln{font-size:13px;font-weight:800;color:#1a2a3a}
+.hist-tgl{font-size:11px;color:var(--mu);margin-top:1px}
+.hist-nominal{font-size:13px;font-weight:800;color:var(--c1)}
+.no-tagihan{text-align:center;padding:28px 16px;color:var(--mu);font-size:13px}
+.no-tagihan svg{width:48px;height:48px;fill:var(--bd);margin-bottom:10px;display:block;margin-left:auto;margin-right:auto}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+</style>
+</head>
+<body>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-ov" id="loadingOv">
+  <div class="spin"></div>
+  <div class="loading-txt" id="loadingTxt">Menghubungkan ke server...</div>
+</div>
+
+<!-- LOGIN OVERLAY -->
+<div class="login-overlay open" id="loginOv">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+      </div>
+      <div class="login-title">Selamat Datang!</div>
+      <div class="login-sub">Masuk ke akun SkyByte kamu</div>
+    </div>
+    <div class="inp-group">
+      <label class="inp-label">Nomor HP</label>
+      <div class="inp-wrap">
+        <div class="inp-prefix">+62</div>
+        <input type="tel" id="loginPhone" placeholder="8xx xxxx xxxx" maxlength="13">
+      </div>
+    </div>
+    <div class="inp-group">
+      <label class="inp-label">Username</label>
+      <div class="inp-wrap">
+        <input type="text" id="loginUser" placeholder="Username kamu" style="padding-left:14px">
+      </div>
+    </div>
+    <div class="login-err" id="loginErr">Nomor HP atau username tidak ditemukan.</div>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">MASUK</button>
+    <div class="login-reg">Belum punya akun? <a onclick="openReg()">Daftar di sini</a></div>
+  </div>
+</div>
+
+<!-- REGISTER OVERLAY -->
+<div class="reg-overlay" id="regOv">
+  <div class="reg-box">
+    <div class="reg-title">Daftar Akun Baru</div>
+    <div class="reg-sub">Data tersimpan di cloud — bisa login di HP manapun ☁️</div>
+    <div class="inp-group">
+      <label class="inp-label">Nama Lengkap</label>
+      <div class="inp-wrap">
+        <input type="text" id="regName" placeholder="Nama lengkap" style="padding-left:14px">
+      </div>
+    </div>
+    <div class="inp-group">
+      <label class="inp-label">Nomor HP</label>
+      <div class="inp-wrap">
+        <div class="inp-prefix">+62</div>
+        <input type="tel" id="regPhone" placeholder="8xx xxxx xxxx" maxlength="13">
+      </div>
+    </div>
+    <div class="inp-group">
+      <label class="inp-label">Buat Username</label>
+      <div class="inp-wrap">
+        <input type="text" id="regUser" placeholder="Pilih username unik" style="padding-left:14px">
+      </div>
+    </div>
+    <div class="login-err" id="regErr">Username sudah digunakan. Coba yang lain.</div>
+    <button class="login-btn" id="regBtn" onclick="doRegister()">DAFTAR SEKARANG</button>
+    <div class="login-reg">Sudah punya akun? <a onclick="openLogin()">Masuk di sini</a></div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="bar" id="topBar">
+  <div class="bt" id="barGreet">HALO PELANGGAN...<span class="bs">ISP NETWORK DASHBOARD SKYBYTE</span></div>
+  <div class="dot"></div>
+</div>
+
+<!-- USER INFO BAR -->
+<div class="user-bar" id="userBar">
+  <div class="user-avatar" id="userAvatar">?</div>
+  <div class="user-info">
+    <div class="user-name" id="userName">-</div>
+    <div class="user-phone" id="userPhone">-</div>
+  </div>
+  <button class="logout-btn" onclick="doLogout()">Keluar</button>
+</div>
+
+<!-- CLOUD BADGE -->
+<div class="cloud-badge" id="cloudBadge" style="display:none">
+  <span>☁️ Data tersimpan di Cloud — aman di HP manapun</span>
+</div>
+
+<!-- TAGIHAN SECTION -->
+<div id="tagihanSection" style="display:none">
+  <div class="sh"><h2>Tagihan Saya</h2><div class="sl"></div></div>
+  <div id="tagihanAktif"></div>
+  <div class="sh"><h2>Riwayat Pembayaran</h2><div class="sl"></div></div>
+  <div class="tagihan-hist" id="tagihanHist"></div>
+</div>
+
+<div class="hero">
+  <div class="plb">PING REALTIME</div>
+  <div style="display:flex;align-items:flex-end;gap:5px">
+    <div class="pbg" id="pn">--</div>
+    <div class="pms">ms</div>
+  </div>
+  <div class="ptg" id="pst">SCANNING...</div>
+  <div class="pst">
+    <div>MIN <b id="pmn">--</b></div>
+    <div>MAX <b id="pmx">--</b></div>
+    <div>AVG <b id="pav">--</b> ms</div>
+  </div>
+  <div class="ch" id="ch"></div>
+</div>
+
+<div class="ir">
+  <div class="ib"><div class="il">Signal</div><div class="iv" id="sg">--</div></div>
+  <div class="ib"><div class="il">Jitter</div><div class="iv" id="jt">-- ms</div></div>
+  <div class="ib"><div class="il">IP</div><div class="iv" id="ip" style="font-size:10px">...</div></div>
+</div>
+
+<div class="sh"><h2>Layanan</h2><div class="sl"></div></div>
+<div class="card">
+  <div class="stag">INTERNETAN PUAS, DOMPET GA LEPAS!</div>
+  <div class="ssub">Cuma <b>50Rb/Bulan</b>! Benar-benar UNLIMITED!</div>
+  <div class="fi"><div class="fi-d">-</div><div><b>Tanpa Batas Kuota</b> - Gak perlu pusing sisa kuota.</div></div>
+  <div class="fi"><div class="fi-d">-</div><div><b>Tanpa FUP</b> - Kecepatan stabil seharian, gak bakal lemot.</div></div>
+  <div class="fi"><div class="fi-d">-</div><div><b>Bandwidth Tidak Dibatasi</b> - Maksimalkan kecepatan perangkat.</div></div>
+  <div class="fi"><div class="fi-d">-</div><div><b>Tanpa Batasan Perangkat</b> - HP, Laptop, TV, Smart Home. UNLIMITED!</div></div>
+</div>
+
+<div class="sh"><h2>Pilihan Paket</h2><div class="sl"></div></div>
+<div class="card">
+  <div class="pcard">
+    <div class="ptit">Paket 50Rb / Bulan</div>
+    <div class="ppr">Hanya <b>Rp 50.000</b> per Bulan</div>
+    <div class="pf"><span class="pfc">v</span>Internet Unlimited</div>
+    <div class="pf"><span class="pfc">v</span>Speed max 30 Mbps (Up &amp; Down)</div>
+    <div class="pf"><span class="pfc">v</span>Kabel 50m + Router 2.4GHz</div>
+    <div class="pf"><span class="pfc">v</span>Unlimited Perangkat</div>
+    <div class="pf"><span class="pfc">v</span>Gratis biaya pemasangan</div>
+  </div>
+  <div class="pcard best">
+    <div class="pbdg">TERBAIK</div>
+    <div class="ptit">Paket 100Rb / Bulan</div>
+    <div class="ppr">Hanya <b>Rp 100.000</b> per Bulan</div>
+    <div class="pf"><span class="pfc">v</span>Internet Unlimited</div>
+    <div class="pf"><span class="pfc">v</span>Speed max 70 Mbps (Up &amp; Down)</div>
+    <div class="pf"><span class="pfc">v</span>Kabel 50m + Router 2.4GHz &amp; 5GHz</div>
+    <div class="pf"><span class="pfc">v</span>Unlimited Perangkat</div>
+    <div class="pf"><span class="pfc">v</span>Gratis biaya pemasangan</div>
+  </div>
+</div>
+
+<div class="sh"><h2>Pembayaran</h2><div class="sl"></div></div>
+<div class="card">
+  <div class="pi">
+    <div class="pico q">QR</div>
+    <div style="flex:1"><div class="pnm">QRIS</div><div class="pdt">Scan QR - Semua Dompet Digital</div></div>
+    <button class="pbtn" onclick="openQR()">Lihat QR</button>
+  </div>
+</div>
+
 <div class="sh"><h2>Speed Test</h2><div class="sl"></div></div>
 <a class="stbtn" href="https://www.speedtest.net/id">
   <div><div class="tt">SPEEDTEST BY OOKLA</div><div class="ts">Uji kecepatan internet sekarang</div></div>
