@@ -58,15 +58,11 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 .fab svg{width:20px;height:20px;fill:#fff}
 .app-icon{width:50px;height:50px;border-radius:12px;background:linear-gradient(135deg,var(--c1),var(--c2));display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .app-icon svg{width:28px;height:28px;fill:#fff}
-
-/* LOADING OVERLAY */
 .loading-ov{display:none;position:fixed;inset:0;background:rgba(0,10,30,.82);z-index:999;align-items:center;justify-content:center;flex-direction:column;backdrop-filter:blur(3px)}
 .loading-ov.open{display:flex}
 .spin{width:48px;height:48px;border:5px solid rgba(255,255,255,.2);border-top-color:#00b4d8;border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:14px}
 .loading-txt{color:#fff;font-size:13px;font-weight:700;opacity:.8}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* LOGIN OVERLAY */
 .login-overlay{display:none;position:fixed;inset:0;background:rgba(0,10,30,.92);z-index:300;align-items:center;justify-content:center;flex-direction:column;backdrop-filter:blur(4px)}
 .login-overlay.open{display:flex}
 .login-box{background:#fff;border-radius:24px;padding:28px 22px;width:92%;max-width:360px}
@@ -89,15 +85,11 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 .login-err{color:#e63946;font-size:12px;text-align:center;margin-top:8px;display:none}
 .login-reg{text-align:center;margin-top:14px;font-size:12px;color:var(--mu)}
 .login-reg a{color:var(--c1);font-weight:800;cursor:pointer;text-decoration:none}
-
-/* REGISTER OVERLAY */
 .reg-overlay{display:none;position:fixed;inset:0;background:rgba(0,10,30,.92);z-index:310;align-items:center;justify-content:center;flex-direction:column;backdrop-filter:blur(4px)}
 .reg-overlay.open{display:flex}
 .reg-box{background:#fff;border-radius:24px;padding:28px 22px;width:92%;max-width:360px}
 .reg-title{font-size:18px;font-weight:800;color:var(--c1);text-align:center;margin-bottom:4px}
 .reg-sub{font-size:12px;color:var(--mu);text-align:center;margin-bottom:18px}
-
-/* USER BAR */
 .user-bar{display:none;background:linear-gradient(135deg,#023e8a,var(--c1));margin:10px 14px;border-radius:14px;padding:12px 14px;align-items:center;gap:10px}
 .user-bar.show{display:flex}
 .user-avatar{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
@@ -105,20 +97,14 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 .user-name{font-size:13px;font-weight:800;color:#fff}
 .user-phone{font-size:11px;color:rgba(255,255,255,.6)}
 .logout-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
-
-/* CLOUD BADGE */
 .cloud-badge{display:flex;align-items:center;gap:5px;background:rgba(6,214,160,.15);border:1px solid rgba(6,214,160,.4);border-radius:8px;padding:3px 8px;margin:0 14px 10px;width:fit-content}
 .cloud-badge span{font-size:10px;font-weight:800;color:#06d6a0}
-
-/* QR OVERLAY */
 .ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:center;justify-content:center;flex-direction:column}
 .ov.open{display:flex}
 .mb{background:#fff;border-radius:20px;padding:16px;width:92%;max-width:360px;text-align:center}
 .mt{font-size:15px;font-weight:800;color:var(--c1);margin-bottom:4px}
 .ms{font-size:12px;color:var(--mu);margin-bottom:12px}
 .mc{margin-top:12px;background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;border:none;border-radius:10px;padding:10px 28px;font-size:13px;font-weight:800;cursor:pointer;width:100%;font-family:'Nunito',sans-serif}
-
-/* TAGIHAN CARD */
 .tagihan-card{margin:0 14px 12px;border-radius:16px;overflow:hidden;border:1px solid var(--bd);box-shadow:0 4px 18px rgba(0,100,200,.10)}
 .tagihan-header{padding:14px 16px;display:flex;align-items:center;gap:10px}
 .tagihan-header.lunas{background:linear-gradient(135deg,#06d6a0,#0a9e72)}
@@ -317,7 +303,7 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
   </div>
 </div>
 
-  <div class="sh"><h2>Speed Test</h2><div class="sl"></div></div>
+<div class="sh"><h2>Speed Test</h2><div class="sl"></div></div>
 <a class="stbtn" href="https://www.speedtest.net/id">
   <div><div class="tt">SPEEDTEST BY OOKLA</div><div class="ts">Uji kecepatan internet sekarang</div></div>
   <div class="ar">&gt;</div>
@@ -376,7 +362,6 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 
     <!-- TAB 2: ANTRIAN KONFIRMASI PEMBAYARAN -->
     <div id="tabAntrian" style="display:none">
-      <!-- Kode admin sekali input, disimpan sementara -->
       <div style="background:#fff8e1;border:1px solid #f5a623;border-radius:12px;padding:12px;margin-bottom:12px">
         <div style="font-size:11px;font-weight:800;color:#e07b00;letter-spacing:.1em;margin-bottom:7px">🔐 KODE ADMIN</div>
         <div class="inp-wrap">
@@ -385,7 +370,6 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
         <div style="font-size:10px;color:#7a95b0;margin-top:5px">Isi sekali, lalu konfirmasi/tolak dari daftar di bawah</div>
       </div>
 
-      <!-- Daftar pelanggan yang klik tombol bayar -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div style="font-size:11px;font-weight:800;color:#e63946;letter-spacing:.1em">📲 BARU KLIK BAYAR</div>
         <button onclick="loadAntrianList()" style="background:#f0f7ff;border:1px solid #dde8f5;border-radius:6px;padding:4px 10px;font-size:10px;font-weight:800;color:#0077b6;cursor:pointer;font-family:Nunito,sans-serif">🔄 Refresh</button>
@@ -409,11 +393,11 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
         Konfirmasi manual untuk pelanggan yang belum bayar
       </div>
 
-      <!-- Input kode admin + username manual -->
       <div style="background:#f0f7ff;border-radius:12px;padding:12px;margin-bottom:10px">
         <div style="font-size:11px;font-weight:800;color:#0077b6;letter-spacing:.1em;margin-bottom:8px">KONFIRMASI MANUAL</div>
+        <!-- FIX BUG #1: style="padding-left:14px" overrides flex; dibuat terpisah -->
         <div class="inp-wrap" style="margin-bottom:8px">
-          <input type="password" id="konfKode" placeholder="Kode admin" style="padding-left:14px;flex:1;border:none;background:transparent;padding:12px;font-size:14px;font-family:Nunito,sans-serif;font-weight:700;color:#1a2a3a;outline:none">
+          <input type="password" id="konfKode" placeholder="Kode admin" style="flex:1;border:none;background:transparent;padding:12px;font-size:14px;font-family:Nunito,sans-serif;font-weight:700;color:#1a2a3a;outline:none">
         </div>
         <div class="inp-wrap" style="margin-bottom:8px">
           <input type="text" id="konfUser" placeholder="Username pelanggan" style="flex:1;border:none;background:transparent;padding:12px;font-size:14px;font-family:Nunito,sans-serif;font-weight:700;color:#1a2a3a;outline:none">
@@ -426,7 +410,6 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
         </button>
       </div>
 
-      <!-- Daftar semua pelanggan bulan ini -->
       <div style="font-size:11px;font-weight:800;color:#0077b6;letter-spacing:.1em;margin-bottom:8px">
         STATUS PELANGGAN BULAN INI
       </div>
@@ -452,13 +435,11 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
     <img src="https://drive.google.com/thumbnail?id=1ahx0Ee-OXrALBUXX6tXpSBFwsm7yf_-X&sz=w400"
          style="width:100%;border-radius:12px;border:2px solid #dde8f5" alt="QRIS SkyByte">
 
-    <!-- BOX KONFIRMASI — hanya muncul saat proses bayar tagihan -->
     <div id="qr-verify-box" style="display:none;margin-top:12px;border-radius:12px;overflow:hidden;border:2px solid #dde8f5">
 
-      <!-- State: belum klik bayar -->
       <div id="qr-state-waiting" style="background:#fffbf0;padding:14px;text-align:center">
         <div style="font-size:26px;margin-bottom:6px">📱</div>
-        <div style="font-size:13px;font-weight:800;color:#e07b00">Sudah scan & transfer?</div>
+        <div style="font-size:13px;font-weight:800;color:#e07b00">Sudah scan &amp; transfer?</div>
         <div style="font-size:11px;color:#7a95b0;margin-top:4px;line-height:1.5">
           Klik tombol di bawah setelah kamu selesai bayar.<br>Admin akan verifikasi dan konfirmasi statusmu.
         </div>
@@ -467,7 +448,6 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
         </button>
       </div>
 
-      <!-- State: menunggu konfirmasi admin -->
       <div id="qr-state-pending" style="display:none;background:#f0f7ff;padding:14px;text-align:center">
         <div style="font-size:26px;margin-bottom:6px">⏳</div>
         <div style="font-size:13px;font-weight:800;color:#0077b6">Menunggu Konfirmasi Admin</div>
@@ -479,7 +459,6 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
         </div>
       </div>
 
-      <!-- State: sukses dikonfirmasi admin -->
       <div id="qr-state-success" style="display:none;background:#f0fff8;padding:14px;text-align:center">
         <div style="font-size:32px;margin-bottom:4px">✅</div>
         <div style="font-size:14px;font-weight:800;color:#0a9e72">Pembayaran Dikonfirmasi!</div>
@@ -494,11 +473,9 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 
 <script>
 // ============================================================
-//  ⚙️  KONFIGURASI — Ganti URL di bawah ini
-//  Setelah deploy Google Apps Script, paste URL-nya di sini
+//  KONFIGURASI
 // ============================================================
 var API_URL = 'https://script.google.com/macros/s/AKfycbwk-JVE10OBzvwlcZASkhRhgTlZB80aJ-LeiNeLT_8kEJkmnjjPhl_TUhza_BnOSc1-og/exec';
-// Contoh: 'https://script.google.com/macros/s/AKfycbxXXXXX/exec'
 
 // ============================================================
 //  API HELPERS
@@ -514,7 +491,7 @@ async function apiGet(params) {
 async function apiPost(data) {
   var res = await fetch(API_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'text/plain' }, // text/plain menghindari preflight CORS
+    headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify(data)
   });
   if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -522,8 +499,7 @@ async function apiPost(data) {
 }
 
 // ============================================================
-//  SESSION — hanya menyimpan siapa yang login di HP ini
-//  Data asli tetap di Google Sheets (cloud)
+//  SESSION
 // ============================================================
 function getCurrentUser() {
   try { return JSON.parse(localStorage.getItem('sb_current') || 'null'); } catch(e) { return null; }
@@ -662,19 +638,15 @@ function openLogin() {
   document.getElementById('loginOv').classList.add('open');
 }
 function openQR() {
-  // Buka QR tanpa verifikasi (dari tombol "Lihat QR" di card Pembayaran)
   document.getElementById('qr-verify-box').style.display = 'none';
   document.getElementById('qmod').classList.add('open');
 }
 
 // ============================================================
-//  TAGIHAN / BILLING (semua async → dari Google Sheets)
+//  TAGIHAN / BILLING
 // ============================================================
 var _pendingPayment = null;
 
-// ============================================================
-//  BAYAR TAGIHAN — buka QR modal, tampilkan tombol "Sudah Bayar"
-// ============================================================
 function bayarTagihan(username, year, month) {
   _pendingPayment = { username: username, year: year, month: month };
   document.getElementById('qr-verify-box').style.display = 'block';
@@ -682,11 +654,6 @@ function bayarTagihan(username, year, month) {
   document.getElementById('qmod').classList.add('open');
 }
 
-// ============================================================
-//  PELANGGAN KLIK "SAYA SUDAH BAYAR"
-//  → Daftarkan ke antrian admin (DanaPending status: pending)
-//  → Tampilkan pesan tunggu konfirmasi
-// ============================================================
 async function pelangganSudahBayar() {
   if (!_pendingPayment) return;
   var p = _pendingPayment;
@@ -701,9 +668,6 @@ async function pelangganSudahBayar() {
   }
 }
 
-// ============================================================
-//  HELPER — ubah tampilan state QR modal
-// ============================================================
 function setQRState(state) {
   var states = ['waiting','pending','success'];
   states.forEach(function(s) {
@@ -712,17 +676,10 @@ function setQRState(state) {
   });
 }
 
-// ============================================================
-//  TUTUP QR MODAL
-// ============================================================
 function tutupQRModal() {
   document.getElementById('qmod').classList.remove('open');
 }
 
-// ============================================================
-//  TRIGGER SUKSES — dipanggil admin saat konfirmasi dari panel
-//  (jika pelanggan lagi buka modal yang sama)
-// ============================================================
 function triggerPelangganLunas(username) {
   if (_pendingPayment && _pendingPayment.username === username) {
     setQRState('success');
@@ -731,15 +688,17 @@ function triggerPelangganLunas(username) {
     if (cur) renderTagihan(cur);
   }
 }
+
 var BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 function getBulanNama(idx) { return BULAN[idx]; }
 
+// FIX BUG #2: var tglPasangDate dideklarasikan dua kali (re-declaration) di renderTagihan.
+// Solusi: hapus deklarasi kedua, cukup satu di atas.
 async function renderTagihan(user) {
   var sec = document.getElementById('tagihanSection');
   if (!user) { sec.style.display = 'none'; return; }
   sec.style.display = 'block';
 
-  // Skeleton loading
   document.getElementById('tagihanAktif').innerHTML =
     '<div class="no-tagihan" style="padding:20px"><div class="spin" style="margin:0 auto 8px;width:32px;height:32px;border-width:3px"></div>Memuat tagihan dari cloud...</div>';
   document.getElementById('tagihanHist').innerHTML =
@@ -750,7 +709,6 @@ async function renderTagihan(user) {
     var layanan    = layananRes.found ? layananRes.layanan : null;
 
     if (!layanan || layanan.status !== 'aktif') {
-      // Belum dipasang
       document.getElementById('tagihanAktif').innerHTML =
         '<div class="tagihan-card">' +
           '<div class="tagihan-header" style="background:linear-gradient(135deg,#7a95b0,#4a6080)">' +
@@ -776,20 +734,36 @@ async function renderTagihan(user) {
       return;
     }
 
-        // Layanan aktif → hitung tagihan
-    var today      = new Date();
-    var bm         = today.getMonth(), by = today.getFullYear();
-    var paket      = layanan.paket || '50rb';
-    var nominal    = paket === '100rb' ? 100000 : 50000;
-    
-    // PERBAIKAN: Hitung jatuh tempo 1 bulan setelah tanggal pasang
-    var tglPasangDate = new Date(layanan.tglPasang || (by + '-' + ('0' + (bm + 1)).slice(-2) + '-01'));
-    var jatuhTempo    = new Date(tglPasangDate.getFullYear(), tglPasangDate.getMonth() + 1, tglPasangDate.getDate());
-    var tglJatuhTempoNum = jatuhTempo.getDate();
-    
-    var sisa       = Math.ceil((jatuhTempo - today) / (1000 * 60 * 60 * 24));
+    var today   = new Date();
+    var bm      = today.getMonth(), by = today.getFullYear();
+    var paket   = layanan.paket || '50rb';
+    var nominal = paket === '100rb' ? 100000 : 50000;
 
-    // Ambil status bayar bulan ini dari cloud
+    // FIX BUG #3: Parse tglPasang dengan benar agar tidak NaN di Safari/iOS
+    // Format dari GAS adalah "d Bulan YYYY" (contoh: "1 Januari 2025")
+    // → perlu di-parse manual atau convert ke format YYYY-MM-DD
+    var tglPasangDate;
+    var rawTglPasang = layanan.tglPasang || '';
+    if (rawTglPasang && rawTglPasang.match(/^\d{4}-\d{2}-\d{2}/)) {
+      // Format ISO YYYY-MM-DD
+      tglPasangDate = new Date(rawTglPasang + 'T00:00:00');
+    } else if (rawTglPasang && rawTglPasang.match(/^\d+ \w+ \d{4}$/)) {
+      // Format "d Bulan YYYY" → parse manual
+      var parts = rawTglPasang.split(' ');
+      var bulanIdx = BULAN.indexOf(parts[1]);
+      if (bulanIdx >= 0) {
+        tglPasangDate = new Date(parseInt(parts[2]), bulanIdx, parseInt(parts[0]));
+      } else {
+        tglPasangDate = new Date();
+      }
+    } else {
+      tglPasangDate = new Date();
+    }
+
+    var jatuhTempo       = new Date(tglPasangDate.getFullYear(), tglPasangDate.getMonth() + 1, tglPasangDate.getDate());
+    var tglJatuhTempoNum = jatuhTempo.getDate();
+    var sisa             = Math.ceil((jatuhTempo - today) / (1000 * 60 * 60 * 24));
+
     var payRes    = await apiGet({ action: 'getPayment', username: user.username, year: by, month: bm });
     var sudahBayar = payRes.paid;
 
@@ -799,7 +773,6 @@ async function renderTagihan(user) {
     else if (status === 'telat') { statusTxt = 'JATUH TEMPO TERLEWAT'; badgeTxt = 'SEGERA BAYAR!'; btnClass = 'red'; btnTxt = 'Bayar Sekarang!'; }
     else if (status === 'jatuh') { statusTxt = 'MENDEKATI JATUH TEMPO'; badgeTxt = sisa + ' HARI LAGI'; btnClass = 'orange'; btnTxt = 'Segera Bayar'; }
 
-    // PERBAIKAN: Hapus hardcode (tgl 10)
     var sisaTxt = status === 'lunas'
       ? '<span class="val green">Lunas ✓</span>'
       : status === 'telat'
@@ -817,10 +790,8 @@ async function renderTagihan(user) {
           '<div class="tagihan-row"><span class="lbl">Pelanggan</span><span class="val">' + user.name + '</span></div>' +
           '<div class="tagihan-row"><span class="lbl">Username</span><span class="val">@' + user.username + '</span></div>' +
           '<div class="tagihan-row"><span class="lbl">Paket</span><span class="val">' + paket.toUpperCase() + '/Bulan — Rp ' + nominal.toLocaleString('id-ID') + '</span></div>' +
-          // PERBAIKAN: Format tanggal pasang agar rapi
           '<div class="tagihan-row"><span class="lbl">Tgl Pasang</span><span class="val green">' + tglPasangDate.getDate() + ' ' + getBulanNama(tglPasangDate.getMonth()) + ' ' + tglPasangDate.getFullYear() + ' ✓</span></div>' +
           '<div class="tagihan-row"><span class="lbl">Periode</span><span class="val">' + getBulanNama(bm) + ' ' + by + '</span></div>' +
-          // PERBAIKAN: Hapus hardcode angka 10 di baris ini
           '<div class="tagihan-row"><span class="lbl">Jatuh Tempo</span><span class="val ' + (status === 'telat' ? 'red' : status === 'jatuh' ? 'orange' : '') + '">' + tglJatuhTempoNum + ' ' + getBulanNama(jatuhTempo.getMonth()) + ' ' + jatuhTempo.getFullYear() + '</span></div>' +
           '<div class="tagihan-row"><span class="lbl">Sisa Waktu</span>' + sisaTxt + '</div>' +
           '<div class="tagihan-row"><span class="lbl">Total Tagihan</span><span class="val" style="font-size:17px;color:var(--c1)">Rp ' + nominal.toLocaleString('id-ID') + '</span></div>' +
@@ -831,14 +802,13 @@ async function renderTagihan(user) {
         '</div>' +
       '</div>';
 
-    // Riwayat pembayaran dari cloud
-    var histRes  = await apiGet({ action: 'getPaymentHistory', username: user.username });
-    var histMap  = {};
+    var histRes = await apiGet({ action: 'getPaymentHistory', username: user.username });
+    var histMap = {};
     (histRes.history || []).forEach(function(h) {
       histMap[h.year + '_' + h.month] = h.paid;
     });
 
-    var tglPasangDate = new Date(layanan.tglPasang || (by + '-' + ('0' + (bm + 1)).slice(-2) + '-01'));
+    // FIX BUG #2: Hapus re-declaration tglPasangDate di sini (sudah ada di atas)
     var histData = [];
     for (var i = 1; i <= 5; i++) {
       var hm = bm - i, hy = by;
@@ -868,7 +838,7 @@ async function renderTagihan(user) {
 }
 
 // ============================================================
-//  ADMIN PANEL — TAB SWITCHER (3 tab: Aktifkan, Antrian, Semua)
+//  ADMIN PANEL — TAB SWITCHER
 // ============================================================
 function switchAdminTab(tab) {
   var tabs = ['aktif', 'antrian', 'bayar'];
@@ -888,19 +858,16 @@ function switchAdminTab(tab) {
       btn.style.color      = active ? '#fff' : '#7a95b0';
     }
   });
-  if (tab === 'antrian') {
-    loadAntrianList();
-  }
+  if (tab === 'antrian') loadAntrianList();
   if (tab === 'bayar') {
     var t = new Date();
-    document.getElementById('konfPeriode').textContent =
-      getBulanNama(t.getMonth()) + ' ' + t.getFullYear();
+    document.getElementById('konfPeriode').textContent = getBulanNama(t.getMonth()) + ' ' + t.getFullYear();
     loadAdminPayList();
   }
 }
 
 // ============================================================
-//  ADMIN — Load Antrian Konfirmasi (pelanggan yang klik bayar)
+//  ADMIN — Load Antrian
 // ============================================================
 async function loadAntrianList() {
   var listEl = document.getElementById('antrianList');
@@ -913,7 +880,6 @@ async function loadAntrianList() {
     var res     = await apiGet({ action: 'getPendingPayments' });
     var pending = res.pending || [];
 
-    // Update badge
     var badge = document.getElementById('antrianBadge');
     if (pending.length > 0) {
       badge.textContent = pending.length;
@@ -927,14 +893,14 @@ async function loadAntrianList() {
       return;
     }
 
-    var today = new Date();
+    var today    = new Date();
     var bulanNama = getBulanNama(today.getMonth()) + ' ' + today.getFullYear();
 
     var html = '';
     pending.forEach(function(p) {
       var nominal = 'Rp ' + Number(p.amount).toLocaleString('id-ID');
       var waktu   = p.created_at ? String(p.created_at).substring(11,16) : '--:--';
-      var tgl     = p.created_at ? String(p.created_at).substring(0,10) : '';
+      // FIX BUG #4: Kutip string di onclick menggunakan escape karakter yang benar
       html +=
         '<div id="antrianItem_' + p.username + '" style="background:#fff;border:1px solid #dde8f5;border-radius:12px;padding:12px;margin-bottom:8px">' +
           '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
@@ -952,11 +918,11 @@ async function loadAntrianList() {
             '📅 Periode: ' + bulanNama + ' · 💰 ' + nominal +
           '</div>' +
           '<div style="display:flex;gap:7px">' +
-            '<button onclick="doAntrianKonfirmasi('' + p.username + '',' + p.year + ',' + p.month + ')" ' +
+            '<button onclick="doAntrianKonfirmasi(\'' + p.username + '\',' + p.year + ',' + p.month + ')" ' +
               'style="flex:1;background:linear-gradient(135deg,#06d6a0,#0a9e72);color:#fff;border:none;border-radius:8px;padding:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">' +
               '✅ Konfirmasi' +
             '</button>' +
-            '<button onclick="doAntrianGagal('' + p.username + '',' + p.year + ',' + p.month + ')" ' +
+            '<button onclick="doAntrianGagal(\'' + p.username + '\',' + p.year + ',' + p.month + ')" ' +
               'style="flex:1;background:linear-gradient(135deg,#e63946,#c1121f);color:#fff;border:none;border-radius:8px;padding:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">' +
               '❌ Gagal' +
             '</button>' +
@@ -971,10 +937,10 @@ async function loadAntrianList() {
 }
 
 // ============================================================
-//  ANTRIAN — Konfirmasi (uang sudah masuk)
+//  ANTRIAN — Konfirmasi
 // ============================================================
 async function doAntrianKonfirmasi(username, year, month) {
-  var kode = document.getElementById('antrianKode').value.trim();
+  var kode  = document.getElementById('antrianKode').value.trim();
   var msgEl = document.getElementById('antrianMsg');
   msgEl.style.display = 'none';
 
@@ -994,10 +960,8 @@ async function doAntrianKonfirmasi(username, year, month) {
       msgEl.style.cssText = 'display:block;background:#fff5f5;border:1px solid #e63946;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#e63946;font-weight:800;margin-top:8px';
       return;
     }
-    // Simpan ke Payments sheet
     await apiPost({ action: 'savePayment', username: username, year: year, month: month, paid: true, method: 'QRIS-Manual-Admin' });
 
-    // Hapus item dari daftar
     var el = document.getElementById('antrianItem_' + username);
     if (el) {
       el.style.background = '#f0fff8';
@@ -1005,13 +969,11 @@ async function doAntrianKonfirmasi(username, year, month) {
       el.innerHTML = '<div style="text-align:center;padding:8px;font-size:13px;font-weight:800;color:#0a9e72">✅ @' + username + ' — LUNAS! Data tersimpan ke Spreadsheet.</div>';
     }
 
-    // Update badge
-    var badge = document.getElementById('antrianBadge');
+    var badge   = document.getElementById('antrianBadge');
     var current = parseInt(badge.textContent || '0') - 1;
     if (current <= 0) { badge.style.display = 'none'; }
     else { badge.textContent = current; }
 
-    // Trigger sukses ke pelanggan jika lagi buka QR modal
     triggerPelangganLunas(username);
     var cur = getCurrentUser();
     if (cur && cur.username === username) await renderTagihan(cur);
@@ -1025,10 +987,10 @@ async function doAntrianKonfirmasi(username, year, month) {
 }
 
 // ============================================================
-//  ANTRIAN — Gagal (uang tidak masuk)
+//  ANTRIAN — Gagal
 // ============================================================
 async function doAntrianGagal(username, year, month) {
-  var kode = document.getElementById('antrianKode').value.trim();
+  var kode  = document.getElementById('antrianKode').value.trim();
   var msgEl = document.getElementById('antrianMsg');
   msgEl.style.display = 'none';
 
@@ -1049,7 +1011,7 @@ async function doAntrianGagal(username, year, month) {
       el.style.border = '1px solid #e63946';
       el.innerHTML = '<div style="text-align:center;padding:8px;font-size:13px;font-weight:800;color:#e63946">❌ @' + username + ' — Ditandai GAGAL. Pelanggan perlu bayar ulang.</div>';
     }
-    var badge = document.getElementById('antrianBadge');
+    var badge   = document.getElementById('antrianBadge');
     var current = parseInt(badge.textContent || '0') - 1;
     if (current <= 0) { badge.style.display = 'none'; }
     else { badge.textContent = current; }
@@ -1064,7 +1026,6 @@ async function doAntrianGagal(username, year, month) {
 
 // ============================================================
 //  ADMIN — Konfirmasi Pembayaran Manual
-//  Dipanggil setelah admin cek notif Dana & uang sudah masuk
 // ============================================================
 async function doKonfirmasiBayar() {
   var kode  = document.getElementById('konfKode').value.trim();
@@ -1085,7 +1046,6 @@ async function doKonfirmasiBayar() {
 
   showLoading('Mengkonfirmasi pembayaran...');
   try {
-    // 1. Konfirmasi di server (tandai pending sebagai confirmed)
     var res = await apiPost({
       action   : 'adminConfirmPayment',
       adminCode: kode,
@@ -1099,7 +1059,6 @@ async function doKonfirmasiBayar() {
       err.style.display = 'block'; return;
     }
 
-    // 2. Langsung simpan ke Payments sheet sekaligus
     await apiPost({
       action  : 'savePayment',
       username: uname,
@@ -1107,20 +1066,15 @@ async function doKonfirmasiBayar() {
       month   : month,
       paid    : true,
       method  : 'QRIS-Manual'
-    });
+     });
 
-    ok.textContent   = '✅ Pembayaran @' + uname + ' bulan ' +
-                       getBulanNama(month) + ' ' + year + ' berhasil dikonfirmasi!';
+    ok.textContent   = '✅ Pembayaran @' + uname + ' bulan ' + getBulanNama(month) + ' ' + year + ' berhasil dikonfirmasi!';
     ok.style.display = 'block';
     document.getElementById('konfUser').value = '';
 
-    // 3. Refresh daftar
     loadAdminPayList();
-
-    // 4. Trigger sukses ke pelanggan jika lagi buka QR modal
     triggerPelangganLunas(uname);
 
-    // 5. Refresh tagihan jika pelanggan yang login adalah yang dikonfirmasi
     var cur = getCurrentUser();
     if (cur && cur.username === uname) await renderTagihan(cur);
 
@@ -1145,7 +1099,6 @@ async function loadAdminPayList() {
     var year  = today.getFullYear();
     var month = today.getMonth();
 
-    // Ambil semua layanan aktif
     var res = await apiGet({ action: 'getAllLayanan' });
     var layananList = res.layanan || [];
 
@@ -1154,12 +1107,11 @@ async function loadAdminPayList() {
       return;
     }
 
-    // Cek status bayar masing-masing
     var html = '';
     for (var i = 0; i < layananList.length; i++) {
-      var l = layananList[i];
-      var payRes  = await apiGet({ action: 'getPayment', username: l.username, year: year, month: month });
-      var sudah   = payRes.paid;
+      var l      = layananList[i];
+      var payRes = await apiGet({ action: 'getPayment', username: l.username, year: year, month: month });
+      var sudah  = payRes.paid;
       var nominal = l.paket === '100rb' ? 'Rp100.000' : 'Rp50.000';
 
       html += '<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #dde8f5">' +
@@ -1182,17 +1134,16 @@ async function loadAdminPayList() {
 }
 
 // ============================================================
-//  QUICK KONFIRMASI — dari daftar pelanggan (isi user otomatis)
+//  QUICK KONFIRMASI
 // ============================================================
 function quickKonfirmasi(username) {
   document.getElementById('konfUser').value = username;
   document.getElementById('konfKode').focus();
-  // Scroll ke form konfirmasi
   document.getElementById('konfKode').scrollIntoView({ behavior: 'smooth' });
 }
 
 // ============================================================
-//  ADMIN PANEL — aktivasi layanan → simpan ke cloud
+//  ADMIN PANEL — aktivasi layanan
 // ============================================================
 async function doAktivasi() {
   var kode  = document.getElementById('adminKode').value.trim();
@@ -1211,7 +1162,6 @@ async function doAktivasi() {
 
   showLoading('Mengaktifkan layanan...');
   try {
-    // Cek apakah username terdaftar di Sheets
     var check = await apiGet({ action: 'checkUsername', username: uname });
     if (!check.found) {
       err.textContent = 'Username @' + uname + ' belum terdaftar di database.';
@@ -1223,8 +1173,8 @@ async function doAktivasi() {
     var res = await apiPost({ action: 'saveLayanan', username: uname, status: 'aktif', paket: paket, tglPasang: tglPasang });
 
     if (res.success) {
-      ok.textContent    = '✓ Berhasil! @' + uname + ' diaktifkan paket ' + paket + ' per ' + tglPasang;
-      ok.style.display  = 'block';
+      ok.textContent   = '✓ Berhasil! @' + uname + ' diaktifkan paket ' + paket + ' per ' + tglPasang;
+      ok.style.display = 'block';
       document.getElementById('adminUser').value = '';
       var cur = getCurrentUser();
       if (cur && cur.username === uname) await renderTagihan(cur);
@@ -1239,26 +1189,23 @@ async function doAktivasi() {
 }
 
 // ============================================================
-//  AUTO-LOGIN — jika sesi masih ada, login langsung
+//  AUTO-LOGIN
 // ============================================================
 (async function() {
   var cur = getCurrentUser();
   if (cur) {
     document.getElementById('loginOv').classList.remove('open');
     showUserBar(cur);
-    // Re-verify dari server (data mungkin berubah)
     showLoading('Memuat data akun...');
     try {
       var res = await apiGet({ action: 'getUser', phone: cur.phone, username: cur.username });
       if (res.found) {
-        saveCurrentUser(res.user); // update data terbaru
+        saveCurrentUser(res.user);
         await renderTagihan(res.user);
       } else {
-        // Akun tidak ditemukan, logout
         doLogout();
       }
     } catch(e) {
-      // Koneksi gagal, tetap tampilkan dengan data sesi
       await renderTagihan(cur);
     } finally {
       hideLoading();
@@ -1281,7 +1228,6 @@ document.getElementById('topBar').addEventListener('click', function() {
     document.getElementById('adminUser').value = '';
     document.getElementById('adminErr').style.display = 'none';
     document.getElementById('adminOk').style.display  = 'none';
-    // Langsung buka tab Antrian & load data
     switchAdminTab('antrian');
   }
 });
@@ -1303,17 +1249,7 @@ function up() {
     type = conn.type === 'wifi' ? 'WIFI' : (conn.effectiveType || '--').toUpperCase();
     sg.textContent = type;
   }
-
-  // Pilih target: 
-  // Jika WIFI, tembak ke Router JCG (Local)
-  // Jika Seluler, tembak ke Google (Global)
-  var target;
-  if (type === 'WIFI') {
-    target = 'https://connectivitycheck.gstatic.com/generate_204'; 
-  } else {
-    target = 'https://connectivitycheck.gstatic.com/generate_204';
-  }
-
+  var target = 'https://connectivitycheck.gstatic.com/generate_204';
   var s = performance.now(), img = new Image();
   img.src = target + '?t=' + s;
   img.onload=img.onerror=function(){
