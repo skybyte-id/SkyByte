@@ -317,66 +317,1018 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
   </div>
 </div>
 
-  } else if(act === 'sendPayment') {
-    payload.username = user.username;
-    payload.paket = document.getElementById('selPaket').value;
+  <div class="sh"><h2>Speed Test</h2><div class="sl"></div></div>
+<a class="stbtn" href="https://www.speedtest.net/id">
+  <div><div class="tt">SPEEDTEST BY OOKLA</div><div class="ts">Uji kecepatan internet sekarang</div></div>
+  <div class="ar">&gt;</div>
+</a>
+
+<a class="fab" href="https://wa.me/6282295750165">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.549 4.105 1.51 5.83L0 24l6.335-1.652A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 01-5.304-1.548l-.38-.225-3.922 1.023 1.043-3.81-.248-.392A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+  Chat CS
+</a>
+
+<!-- ADMIN PANEL (tap logo bar 5x untuk buka) -->
+<div class="ov" id="adminOv" style="z-index:500;overflow-y:auto;align-items:flex-start;padding:20px 0">
+  <div class="mb" style="text-align:left;max-height:90vh;overflow-y:auto">
+    <div class="mt" style="text-align:center">🔧 Panel Admin SkyByte</div>
+
+    <!-- TAB SWITCHER -->
+    <div style="display:flex;gap:5px;margin:10px 0 14px;background:#f0f7ff;border-radius:10px;padding:4px">
+      <button id="tabBtnAktif" onclick="switchAdminTab('aktif')"
+        style="flex:1;border:none;border-radius:7px;padding:7px 4px;font-size:11px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;background:linear-gradient(135deg,#0077b6,#00b4d8);color:#fff">
+        🔧 Aktifkan
+      </button>
+      <button id="tabBtnAntrian" onclick="switchAdminTab('antrian')"
+        style="flex:1;border:none;border-radius:7px;padding:7px 4px;font-size:11px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;background:transparent;color:#7a95b0;position:relative">
+        📲 Antrian<span id="antrianBadge" style="display:none;position:absolute;top:3px;right:5px;background:#e63946;color:#fff;border-radius:50%;width:15px;height:15px;font-size:9px;line-height:15px;text-align:center"></span>
+      </button>
+      <button id="tabBtnBayar" onclick="switchAdminTab('bayar')"
+        style="flex:1;border:none;border-radius:7px;padding:7px 4px;font-size:11px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;background:transparent;color:#7a95b0">
+        💰 Semua
+      </button>
+    </div>
+
+    <!-- TAB 1: AKTIFKAN LAYANAN -->
+    <div id="tabAktif">
+      <div class="ms" style="text-align:center;margin-bottom:10px">Aktifkan layanan setelah pemasangan</div>
+      <div class="inp-group" style="margin-bottom:10px">
+        <label class="inp-label">Kode Admin</label>
+        <div class="inp-wrap"><input type="password" id="adminKode" placeholder="Masukkan kode admin" style="padding-left:14px"></div>
+      </div>
+      <div class="inp-group" style="margin-bottom:10px">
+        <label class="inp-label">Username Pelanggan</label>
+        <div class="inp-wrap"><input type="text" id="adminUser" placeholder="Username yang mau diaktifkan" style="padding-left:14px"></div>
+      </div>
+      <div class="inp-group" style="margin-bottom:10px">
+        <label class="inp-label">Pilih Paket</label>
+        <div class="inp-wrap" style="border-radius:12px;overflow:hidden">
+          <select id="adminPaket" style="flex:1;border:none;background:transparent;padding:12px;font-size:14px;font-family:Nunito,sans-serif;font-weight:700;color:#1a2a3a;outline:none">
+            <option value="50rb">Paket 50Rb/Bulan (30 Mbps)</option>
+            <option value="100rb">Paket 100Rb/Bulan (70 Mbps)</option>
+          </select>
+        </div>
+      </div>
+      <div class="login-err" id="adminErr" style="display:none"></div>
+      <div id="adminOk" style="display:none;background:#f0fff8;border:1px solid #06d6a0;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#0a9e72;font-weight:800;margin-bottom:8px"></div>
+      <button class="mc" style="background:linear-gradient(135deg,#06d6a0,#0a9e72);margin-bottom:8px" onclick="doAktivasi()">AKTIFKAN LAYANAN</button>
+    </div>
+
+    <!-- TAB 2: ANTRIAN KONFIRMASI PEMBAYARAN -->
+    <div id="tabAntrian" style="display:none">
+      <!-- Kode admin sekali input, disimpan sementara -->
+      <div style="background:#fff8e1;border:1px solid #f5a623;border-radius:12px;padding:12px;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:800;color:#e07b00;letter-spacing:.1em;margin-bottom:7px">🔐 KODE ADMIN</div>
+        <div class="inp-wrap">
+          <input type="password" id="antrianKode" placeholder="Masukkan kode admin dulu" style="flex:1;border:none;background:transparent;padding:10px 12px;font-size:14px;font-family:Nunito,sans-serif;font-weight:700;color:#1a2a3a;outline:none">
+        </div>
+        <div style="font-size:10px;color:#7a95b0;margin-top:5px">Isi sekali, lalu konfirmasi/tolak dari daftar di bawah</div>
+      </div>
+
+      <!-- Daftar pelanggan yang klik tombol bayar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:11px;font-weight:800;color:#e63946;letter-spacing:.1em">📲 BARU KLIK BAYAR</div>
+        <button onclick="loadAntrianList()" style="background:#f0f7ff;border:1px solid #dde8f5;border-radius:6px;padding:4px 10px;font-size:10px;font-weight:800;color:#0077b6;cursor:pointer;font-family:Nunito,sans-serif">🔄 Refresh</button>
+      </div>
+      <div style="font-size:10px;color:#7a95b0;margin-bottom:8px;background:#fff5f5;border-radius:8px;padding:7px 10px;border-left:3px solid #e63946">
+        ✅ <b>Konfirmasi</b> = uang sudah masuk di notif Dana kamu<br>
+        ❌ <b>Gagal</b> = uang tidak masuk / transfer gagal
+      </div>
+      <div id="antrianList">
+        <div style="text-align:center;padding:16px;color:#7a95b0;font-size:12px">
+          <div class="spin" style="margin:0 auto 8px;width:24px;height:24px;border-width:3px"></div>
+          Memuat antrian...
+        </div>
+      </div>
+      <div id="antrianMsg" style="display:none;border-radius:10px;padding:10px;text-align:center;font-size:13px;font-weight:800;margin-top:8px"></div>
+    </div>
+
+    <!-- TAB 3: SEMUA PELANGGAN + KONFIRMASI MANUAL -->
+    <div id="tabBayar" style="display:none">
+      <div class="ms" style="text-align:center;margin-bottom:10px">
+        Konfirmasi manual untuk pelanggan yang belum bayar
+      </div>
+
+      <!-- Input kode admin + username manual -->
+      <div style="background:#f0f7ff;border-radius:12px;padding:12px;margin-bottom:10px">
+        <div style="font-size:11px;font-weight:800;color:#0077b6;letter-spacing:.1em;margin-bottom:8px">KONFIRMASI MANUAL</div>
+        <div class="inp-wrap" style="margin-bottom:8px">
+          <input type="password" id="konfKode" placeholder="Kode admin" style="padding-left:14px;flex:1;border:none;background:transparent;padding:12px;font-size:14px;font-family:Nunito,sans-serif;font-weight:700;color:#1a2a3a;outline:none">
+        </div>
+        <div class="inp-wrap" style="margin-bottom:8px">
+          <input type="text" id="konfUser" placeholder="Username pelanggan" style="flex:1;border:none;background:transparent;padding:12px;font-size:14px;font-family:Nunito,sans-serif;font-weight:700;color:#1a2a3a;outline:none">
+        </div>
+        <div style="font-size:11px;color:#7a95b0;margin-bottom:6px">Periode: <b id="konfPeriode" style="color:#1a2a3a">Bulan ini</b></div>
+        <div class="login-err" id="konfErr" style="display:none;margin-bottom:6px"></div>
+        <div id="konfOk" style="display:none;background:#f0fff8;border:1px solid #06d6a0;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#0a9e72;font-weight:800;margin-bottom:8px"></div>
+        <button class="mc" style="background:linear-gradient(135deg,#06d6a0,#0a9e72)" onclick="doKonfirmasiBayar()">
+          ✅ KONFIRMASI SUDAH BAYAR
+        </button>
+      </div>
+
+      <!-- Daftar semua pelanggan bulan ini -->
+      <div style="font-size:11px;font-weight:800;color:#0077b6;letter-spacing:.1em;margin-bottom:8px">
+        STATUS PELANGGAN BULAN INI
+      </div>
+      <div id="adminPayList">
+        <div style="text-align:center;padding:16px;color:#7a95b0;font-size:13px">
+          <div class="spin" style="margin:0 auto 8px;width:24px;height:24px;border-width:3px"></div>
+          Memuat data...
+        </div>
+      </div>
+      <button onclick="loadAdminPayList()" style="width:100%;background:#f0f7ff;border:1px solid #dde8f5;border-radius:8px;padding:8px;font-size:12px;font-weight:800;color:#0077b6;cursor:pointer;font-family:Nunito,sans-serif;margin-top:6px">
+        🔄 Refresh Daftar
+      </button>
+    </div>
+
+    <button class="mc" style="background:#7a95b0;margin-top:10px" onclick="document.getElementById('adminOv').classList.remove('open')">Tutup</button>
+  </div>
+</div>
+
+<div class="ov" id="qmod">
+  <div class="mb">
+    <div class="mt">Pembayaran QRIS</div>
+    <div class="ms">Scan QR di bawah, lalu klik tombol setelah bayar</div>
+    <img src="https://drive.google.com/thumbnail?id=1ahx0Ee-OXrALBUXX6tXpSBFwsm7yf_-X&sz=w400"
+         style="width:100%;border-radius:12px;border:2px solid #dde8f5" alt="QRIS SkyByte">
+
+    <!-- BOX KONFIRMASI — hanya muncul saat proses bayar tagihan -->
+    <div id="qr-verify-box" style="display:none;margin-top:12px;border-radius:12px;overflow:hidden;border:2px solid #dde8f5">
+
+      <!-- State: belum klik bayar -->
+      <div id="qr-state-waiting" style="background:#fffbf0;padding:14px;text-align:center">
+        <div style="font-size:26px;margin-bottom:6px">📱</div>
+        <div style="font-size:13px;font-weight:800;color:#e07b00">Sudah scan & transfer?</div>
+        <div style="font-size:11px;color:#7a95b0;margin-top:4px;line-height:1.5">
+          Klik tombol di bawah setelah kamu selesai bayar.<br>Admin akan verifikasi dan konfirmasi statusmu.
+        </div>
+        <button onclick="pelangganSudahBayar()" style="margin-top:12px;width:100%;background:linear-gradient(135deg,#06d6a0,#0a9e72);color:#fff;border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">
+          ✅ Saya Sudah Bayar
+        </button>
+      </div>
+
+      <!-- State: menunggu konfirmasi admin -->
+      <div id="qr-state-pending" style="display:none;background:#f0f7ff;padding:14px;text-align:center">
+        <div style="font-size:26px;margin-bottom:6px">⏳</div>
+        <div style="font-size:13px;font-weight:800;color:#0077b6">Menunggu Konfirmasi Admin</div>
+        <div style="font-size:11px;color:#7a95b0;margin-top:4px;line-height:1.5">
+          Permintaanmu sudah masuk ke antrian.<br>Admin akan konfirmasi setelah cek notif Dana.
+        </div>
+        <div style="margin-top:10px;background:#e8f4ff;border-radius:8px;padding:8px;font-size:11px;color:#0077b6;font-weight:700">
+          Biasanya dikonfirmasi dalam beberapa menit 🕐
+        </div>
+      </div>
+
+      <!-- State: sukses dikonfirmasi admin -->
+      <div id="qr-state-success" style="display:none;background:#f0fff8;padding:14px;text-align:center">
+        <div style="font-size:32px;margin-bottom:4px">✅</div>
+        <div style="font-size:14px;font-weight:800;color:#0a9e72">Pembayaran Dikonfirmasi!</div>
+        <div style="font-size:11px;color:#0a9e72;margin-top:3px">Status tagihan kamu sudah diperbarui ✓</div>
+      </div>
+
+    </div>
+
+    <button class="mc" id="qr-tutup-btn" onclick="tutupQRModal()">Tutup</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  ⚙️  KONFIGURASI — Ganti URL di bawah ini
+//  Setelah deploy Google Apps Script, paste URL-nya di sini
+// ============================================================
+var API_URL = 'https://script.google.com/macros/s/AKfycbwk-JVE10OBzvwlcZASkhRhgTlZB80aJ-LeiNeLT_8kEJkmnjjPhl_TUhza_BnOSc1-og/exec';
+// Contoh: 'https://script.google.com/macros/s/AKfycbxXXXXX/exec'
+
+// ============================================================
+//  API HELPERS
+// ============================================================
+async function apiGet(params) {
+  var url = new URL(API_URL);
+  Object.keys(params).forEach(function(k){ url.searchParams.set(k, params[k]); });
+  var res = await fetch(url.toString());
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+
+async function apiPost(data) {
+  var res = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' }, // text/plain menghindari preflight CORS
+    body: JSON.stringify(data)
+  });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+
+// ============================================================
+//  SESSION — hanya menyimpan siapa yang login di HP ini
+//  Data asli tetap di Google Sheets (cloud)
+// ============================================================
+function getCurrentUser() {
+  try { return JSON.parse(localStorage.getItem('sb_current') || 'null'); } catch(e) { return null; }
+}
+function saveCurrentUser(u) {
+  if (u) localStorage.setItem('sb_current', JSON.stringify(u));
+  else localStorage.removeItem('sb_current');
+}
+
+// ============================================================
+//  LOADING STATE
+// ============================================================
+function showLoading(txt) {
+  document.getElementById('loadingTxt').textContent = txt || 'Memuat data...';
+  document.getElementById('loadingOv').classList.add('open');
+}
+function hideLoading() {
+  document.getElementById('loadingOv').classList.remove('open');
+}
+
+// ============================================================
+//  LOGIN
+// ============================================================
+async function doLogin() {
+  var phone = document.getElementById('loginPhone').value.trim();
+  var uname = document.getElementById('loginUser').value.trim().toLowerCase();
+  var err   = document.getElementById('loginErr');
+  var btn   = document.getElementById('loginBtn');
+
+  if (!phone || !uname) {
+    err.style.display = 'block';
+    err.textContent   = 'Isi nomor HP dan username.';
+    return;
   }
+
+  btn.disabled = true;
+  showLoading('Memverifikasi akun...');
+  try {
+    var res = await apiGet({ action: 'getUser', phone: phone, username: uname });
+    if (res.found) {
+      saveCurrentUser(res.user);
+      document.getElementById('loginOv').classList.remove('open');
+      showUserBar(res.user);
+      await renderTagihan(res.user);
+    } else {
+      err.style.display = 'block';
+      err.textContent   = 'Nomor HP atau username tidak ditemukan.';
+    }
+  } catch(e) {
+    err.style.display = 'block';
+    err.textContent   = 'Gagal terhubung ke server. Periksa koneksi.';
+  } finally {
+    btn.disabled = false;
+    hideLoading();
+  }
+}
+
+// ============================================================
+//  REGISTER
+// ============================================================
+async function doRegister() {
+  var name  = document.getElementById('regName').value.trim();
+  var phone = document.getElementById('regPhone').value.trim();
+  var uname = document.getElementById('regUser').value.trim().toLowerCase().replace(/\s+/g, '');
+  var err   = document.getElementById('regErr');
+  var btn   = document.getElementById('regBtn');
+
+  if (!name || !phone || !uname) {
+    err.style.display = 'block'; err.textContent = 'Semua kolom wajib diisi.'; return;
+  }
+  if (uname.length < 3) {
+    err.style.display = 'block'; err.textContent = 'Username minimal 3 karakter.'; return;
+  }
+
+  btn.disabled = true;
+  showLoading('Mendaftarkan akun...');
+  try {
+    var res = await apiPost({ action: 'register', name: name, phone: phone, username: uname });
+    if (res.success) {
+      saveCurrentUser(res.user);
+      err.style.display = 'none';
+      document.getElementById('regOv').classList.remove('open');
+      showUserBar(res.user);
+      await renderTagihan(res.user);
+    } else {
+      err.style.display = 'block';
+      err.textContent   = res.error || 'Registrasi gagal. Coba lagi.';
+    }
+  } catch(e) {
+    err.style.display = 'block';
+    err.textContent   = 'Gagal terhubung ke server. Periksa koneksi.';
+  } finally {
+    btn.disabled = false;
+    hideLoading();
+  }
+}
+
+// ============================================================
+//  SHOW USER BAR
+// ============================================================
+function showUserBar(user) {
+  document.getElementById('userBar').classList.add('show');
+  document.getElementById('cloudBadge').style.display = 'flex';
+  document.getElementById('userName').textContent    = user.name + ' (@' + user.username + ')';
+  document.getElementById('userPhone').textContent   = '+62' + user.phone;
+  document.getElementById('userAvatar').textContent  = user.name.charAt(0).toUpperCase();
+  var greet = document.getElementById('barGreet');
+  greet.childNodes[0].textContent = 'HALO, ' + user.name.split(' ')[0].toUpperCase() + '!';
+}
+
+// ============================================================
+//  LOGOUT
+// ============================================================
+function doLogout() {
+  saveCurrentUser(null);
+  document.getElementById('userBar').classList.remove('show');
+  document.getElementById('cloudBadge').style.display = 'none';
+  document.getElementById('barGreet').childNodes[0].textContent = 'HALO PELANGGAN...';
+  renderTagihan(null);
+  document.getElementById('loginOv').classList.add('open');
+  document.getElementById('loginPhone').value = '';
+  document.getElementById('loginUser').value  = '';
+  document.getElementById('loginErr').style.display = 'none';
+}
+
+// ============================================================
+//  OVERLAY HELPERS
+// ============================================================
+function openReg() {
+  document.getElementById('loginOv').classList.remove('open');
+  document.getElementById('regOv').classList.add('open');
+  document.getElementById('regErr').style.display = 'none';
+}
+function openLogin() {
+  document.getElementById('regOv').classList.remove('open');
+  document.getElementById('loginOv').classList.add('open');
+}
+function openQR() {
+  // Buka QR tanpa verifikasi (dari tombol "Lihat QR" di card Pembayaran)
+  document.getElementById('qr-verify-box').style.display = 'none';
+  document.getElementById('qmod').classList.add('open');
+}
+
+// ============================================================
+//  TAGIHAN / BILLING (semua async → dari Google Sheets)
+// ============================================================
+var _pendingPayment = null;
+
+// ============================================================
+//  BAYAR TAGIHAN — buka QR modal, tampilkan tombol "Sudah Bayar"
+// ============================================================
+function bayarTagihan(username, year, month) {
+  _pendingPayment = { username: username, year: year, month: month };
+  document.getElementById('qr-verify-box').style.display = 'block';
+  setQRState('waiting');
+  document.getElementById('qmod').classList.add('open');
+}
+
+// ============================================================
+//  PELANGGAN KLIK "SAYA SUDAH BAYAR"
+//  → Daftarkan ke antrian admin (DanaPending status: pending)
+//  → Tampilkan pesan tunggu konfirmasi
+// ============================================================
+async function pelangganSudahBayar() {
+  if (!_pendingPayment) return;
+  var p = _pendingPayment;
+  showLoading('Mengirim notifikasi ke admin...');
+  try {
+    await apiPost({ action: 'createPendingPayment', username: p.username, year: p.year, month: p.month });
+    setQRState('pending');
+  } catch(e) {
+    alert('Gagal terhubung. Coba lagi atau hubungi CS.');
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================================================
+//  HELPER — ubah tampilan state QR modal
+// ============================================================
+function setQRState(state) {
+  var states = ['waiting','pending','success'];
+  states.forEach(function(s) {
+    var el = document.getElementById('qr-state-' + s);
+    if (el) el.style.display = (s === state ? 'block' : 'none');
+  });
+}
+
+// ============================================================
+//  TUTUP QR MODAL
+// ============================================================
+function tutupQRModal() {
+  document.getElementById('qmod').classList.remove('open');
+}
+
+// ============================================================
+//  TRIGGER SUKSES — dipanggil admin saat konfirmasi dari panel
+//  (jika pelanggan lagi buka modal yang sama)
+// ============================================================
+function triggerPelangganLunas(username) {
+  if (_pendingPayment && _pendingPayment.username === username) {
+    setQRState('success');
+    _pendingPayment = null;
+    var cur = getCurrentUser();
+    if (cur) renderTagihan(cur);
+  }
+}
+var BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+function getBulanNama(idx) { return BULAN[idx]; }
+
+async function renderTagihan(user) {
+  var sec = document.getElementById('tagihanSection');
+  if (!user) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+
+  // Skeleton loading
+  document.getElementById('tagihanAktif').innerHTML =
+    '<div class="no-tagihan" style="padding:20px"><div class="spin" style="margin:0 auto 8px;width:32px;height:32px;border-width:3px"></div>Memuat tagihan dari cloud...</div>';
+  document.getElementById('tagihanHist').innerHTML =
+    '<div class="no-tagihan">Memuat riwayat...</div>';
 
   try {
-    let res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-    let data = await res.json();
-    showLoad(false);
+    var layananRes = await apiGet({ action: 'getLayanan', username: user.username });
+    var layanan    = layananRes.found ? layananRes.layanan : null;
 
-    if(act === 'login') {
-      if(data.found) {
-        user = data.user;
-        document.getElementById('loginOv').classList.remove('open');
-        document.getElementById('userDisplay').innerText = "Halo, " + user.name;
-      } else { alert("Data tidak cocok!"); }
-    } else if(act === 'sendPayment') {
-      alert(data.msg);
-      document.getElementById('qmod').classList.remove('open');
-    } else if(act === 'getPending') {
-      renderAdmin(data);
-    } else if(act === 'updateStatus') {
-      alert(data.msg);
-      serverCall('getPending');
+    if (!layanan || layanan.status !== 'aktif') {
+      // Belum dipasang
+      document.getElementById('tagihanAktif').innerHTML =
+        '<div class="tagihan-card">' +
+          '<div class="tagihan-header" style="background:linear-gradient(135deg,#7a95b0,#4a6080)">' +
+            '<div class="tagihan-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>' +
+            '<div class="tagihan-info"><div class="tagihan-label">Status Layanan</div><div class="tagihan-status">MENUNGGU PEMASANGAN</div></div>' +
+            '<div class="tagihan-badge">PROSES</div>' +
+          '</div>' +
+          '<div class="tagihan-body">' +
+            '<div class="tagihan-row"><span class="lbl">Pelanggan</span><span class="val">' + user.name + '</span></div>' +
+            '<div class="tagihan-row"><span class="lbl">Username</span><span class="val">@' + user.username + '</span></div>' +
+            '<div class="tagihan-row"><span class="lbl">Status</span><span class="val" style="color:#7a95b0">Menunggu Teknisi</span></div>' +
+            '<div class="tagihan-row"><span class="lbl">Tagihan</span><span class="val" style="color:#7a95b0">Belum Ada</span></div>' +
+          '</div>' +
+          '<div style="background:#f0f7ff;border-radius:10px;padding:12px;margin:10px 16px 14px;font-size:12px;color:#4a6080;text-align:center;line-height:1.6">' +
+            'WiFi SkyByte belum terpasang di rumah kamu.<br>Hubungi CS untuk jadwalkan pemasangan.' +
+          '</div>' +
+          '<a href="https://wa.me/6282295750165" class="tagihan-pay-btn" style="background:linear-gradient(135deg,#25d366,#128c7e);margin:0 16px 14px;width:calc(100% - 32px);text-decoration:none;display:block;text-align:center">' +
+            'Hubungi CS untuk Pasang WiFi' +
+          '</a>' +
+        '</div>';
+      document.getElementById('tagihanHist').innerHTML =
+        '<div class="no-tagihan">Belum ada riwayat — tagihan muncul setelah WiFi terpasang</div>';
+      return;
     }
-  } catch(e) { showLoad(false); alert("Gagal koneksi ke server!"); }
-}
 
-function cekAdmin() {
-  clicks++;
-  if(clicks >= 5) {
-    document.getElementById('adminOv').classList.add('open');
-    serverCall('getPending');
-    clicks = 0;
+        // Layanan aktif → hitung tagihan
+    var today      = new Date();
+    var bm         = today.getMonth(), by = today.getFullYear();
+    var paket      = layanan.paket || '50rb';
+    var nominal    = paket === '100rb' ? 100000 : 50000;
+    
+    // PERBAIKAN: Hitung jatuh tempo 1 bulan setelah tanggal pasang
+    var tglPasangDate = new Date(layanan.tglPasang || (by + '-' + ('0' + (bm + 1)).slice(-2) + '-01'));
+    var jatuhTempo    = new Date(tglPasangDate.getFullYear(), tglPasangDate.getMonth() + 1, tglPasangDate.getDate());
+    var tglJatuhTempoNum = jatuhTempo.getDate();
+    
+    var sisa       = Math.ceil((jatuhTempo - today) / (1000 * 60 * 60 * 24));
+
+    // Ambil status bayar bulan ini dari cloud
+    var payRes    = await apiGet({ action: 'getPayment', username: user.username, year: by, month: bm });
+    var sudahBayar = payRes.paid;
+
+    var status    = sudahBayar ? 'lunas' : (today > jatuhTempo ? 'telat' : (sisa <= 3 ? 'jatuh' : 'belum'));
+    var statusTxt = 'BELUM DIBAYAR', badgeTxt = 'BULAN INI', btnClass = '', btnTxt = 'Bayar via QRIS';
+    if (status === 'lunas') { statusTxt = 'SUDAH LUNAS'; badgeTxt = 'TERIMA KASIH ✓'; }
+    else if (status === 'telat') { statusTxt = 'JATUH TEMPO TERLEWAT'; badgeTxt = 'SEGERA BAYAR!'; btnClass = 'red'; btnTxt = 'Bayar Sekarang!'; }
+    else if (status === 'jatuh') { statusTxt = 'MENDEKATI JATUH TEMPO'; badgeTxt = sisa + ' HARI LAGI'; btnClass = 'orange'; btnTxt = 'Segera Bayar'; }
+
+    // PERBAIKAN: Hapus hardcode (tgl 10)
+    var sisaTxt = status === 'lunas'
+      ? '<span class="val green">Lunas ✓</span>'
+      : status === 'telat'
+        ? '<span class="val red">Sudah terlewat!</span>'
+        : '<span class="val ' + (status === 'jatuh' ? 'orange' : '') + '">' + Math.max(sisa, 0) + ' hari lagi (tgl ' + tglJatuhTempoNum + ')</span>';
+
+    document.getElementById('tagihanAktif').innerHTML =
+      '<div class="tagihan-card">' +
+        '<div class="tagihan-header ' + status + '">' +
+          '<div class="tagihan-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>' +
+          '<div class="tagihan-info"><div class="tagihan-label">Tagihan Internet — Paket ' + paket.toUpperCase() + '</div><div class="tagihan-status">' + statusTxt + '</div></div>' +
+          '<div class="tagihan-badge">' + badgeTxt + '</div>' +
+        '</div>' +
+        '<div class="tagihan-body">' +
+          '<div class="tagihan-row"><span class="lbl">Pelanggan</span><span class="val">' + user.name + '</span></div>' +
+          '<div class="tagihan-row"><span class="lbl">Username</span><span class="val">@' + user.username + '</span></div>' +
+          '<div class="tagihan-row"><span class="lbl">Paket</span><span class="val">' + paket.toUpperCase() + '/Bulan — Rp ' + nominal.toLocaleString('id-ID') + '</span></div>' +
+          // PERBAIKAN: Format tanggal pasang agar rapi
+          '<div class="tagihan-row"><span class="lbl">Tgl Pasang</span><span class="val green">' + tglPasangDate.getDate() + ' ' + getBulanNama(tglPasangDate.getMonth()) + ' ' + tglPasangDate.getFullYear() + ' ✓</span></div>' +
+          '<div class="tagihan-row"><span class="lbl">Periode</span><span class="val">' + getBulanNama(bm) + ' ' + by + '</span></div>' +
+          // PERBAIKAN: Hapus hardcode angka 10 di baris ini
+          '<div class="tagihan-row"><span class="lbl">Jatuh Tempo</span><span class="val ' + (status === 'telat' ? 'red' : status === 'jatuh' ? 'orange' : '') + '">' + tglJatuhTempoNum + ' ' + getBulanNama(jatuhTempo.getMonth()) + ' ' + jatuhTempo.getFullYear() + '</span></div>' +
+          '<div class="tagihan-row"><span class="lbl">Sisa Waktu</span>' + sisaTxt + '</div>' +
+          '<div class="tagihan-row"><span class="lbl">Total Tagihan</span><span class="val" style="font-size:17px;color:var(--c1)">Rp ' + nominal.toLocaleString('id-ID') + '</span></div>' +
+          (status !== 'lunas'
+            ? '<button class="tagihan-pay-btn ' + btnClass + '" onclick="bayarTagihan(\'' + user.username + '\',' + by + ',' + bm + ')">' + btnTxt + '</button>'
+            : '<div style="background:#f0fff8;border:1px solid #06d6a0;border-radius:10px;padding:10px;text-align:center;margin-top:10px;font-size:13px;color:#0a9e72;font-weight:800">✓ Pembayaran bulan ini sudah diterima</div>'
+          ) +
+        '</div>' +
+      '</div>';
+
+    // Riwayat pembayaran dari cloud
+    var histRes  = await apiGet({ action: 'getPaymentHistory', username: user.username });
+    var histMap  = {};
+    (histRes.history || []).forEach(function(h) {
+      histMap[h.year + '_' + h.month] = h.paid;
+    });
+
+    var tglPasangDate = new Date(layanan.tglPasang || (by + '-' + ('0' + (bm + 1)).slice(-2) + '-01'));
+    var histData = [];
+    for (var i = 1; i <= 5; i++) {
+      var hm = bm - i, hy = by;
+      if (hm < 0) { hm += 12; hy--; }
+      var tglBulanIni = new Date(hy, hm, 1);
+      if (tglBulanIni < new Date(tglPasangDate.getFullYear(), tglPasangDate.getMonth(), 1)) continue;
+      var dibayar = histMap[hy + '_' + hm] === true;
+      histData.push({ bulan: getBulanNama(hm) + ' ' + hy, status: dibayar ? 'lunas' : 'telat', nominal: nominal });
+    }
+
+    document.getElementById('tagihanHist').innerHTML = histData.length
+      ? histData.map(function(h) {
+          return '<div class="hist-item">' +
+            '<div class="hist-dot ' + h.status + '"></div>' +
+            '<div class="hist-info"><div class="hist-bln">' + h.bulan + '</div><div class="hist-tgl">' + (h.status === 'lunas' ? 'Sudah dibayar ✓' : 'Belum dibayar') + '</div></div>' +
+            '<div class="hist-nominal" style="color:' + (h.status === 'lunas' ? 'var(--g)' : '#e63946') + '">Rp ' + h.nominal.toLocaleString('id-ID') + '</div>' +
+          '</div>';
+        }).join('')
+      : '<div class="no-tagihan">Belum ada riwayat — baru terpasang bulan ini</div>';
+
+  } catch(e) {
+    document.getElementById('tagihanAktif').innerHTML =
+      '<div class="tagihan-card"><div class="tagihan-body"><div class="no-tagihan">⚠️ Gagal memuat data. Periksa koneksi internet.</div></div></div>';
+    document.getElementById('tagihanHist').innerHTML =
+      '<div class="no-tagihan">Gagal memuat riwayat.</div>';
   }
 }
 
-function renderAdmin(data) {
-  let h = data.length ? "" : "<p style='text-align:center'>Semua lunas!</p>";
-  data.forEach(i => {
-    h += `<div style="border:1px solid #ddd; padding:12px; margin-bottom:10px; border-radius:12px; background:#f9f9f9">
-      <div style="font-weight:800; color:#0077b6">@${i.user}</div>
-      <div style="font-size:11px">${i.paket} (Rp${i.harga.toLocaleString()})</div>
-      <button onclick="serverCall('updateStatus', {row:${i.row}, status:'Sukses'})" style="background:#06d6a0; color:white; border:none; padding:8px; border-radius:6px; margin-top:8px; width:100%; font-weight:800; cursor:pointer">TERIMA UANG</button>
-    </div>`;
+// ============================================================
+//  ADMIN PANEL — TAB SWITCHER (3 tab: Aktifkan, Antrian, Semua)
+// ============================================================
+function switchAdminTab(tab) {
+  var tabs = ['aktif', 'antrian', 'bayar'];
+  var btnMap = { aktif: 'tabBtnAktif', antrian: 'tabBtnAntrian', bayar: 'tabBtnBayar' };
+  var colorMap = {
+    aktif   : 'linear-gradient(135deg,#0077b6,#00b4d8)',
+    antrian : 'linear-gradient(135deg,#e63946,#c1121f)',
+    bayar   : 'linear-gradient(135deg,#06d6a0,#0a9e72)'
+  };
+  tabs.forEach(function(t) {
+    var el  = document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1));
+    var btn = document.getElementById(btnMap[t]);
+    var active = (t === tab);
+    if (el)  el.style.display  = active ? 'block' : 'none';
+    if (btn) {
+      btn.style.background = active ? colorMap[t] : 'transparent';
+      btn.style.color      = active ? '#fff' : '#7a95b0';
+    }
   });
-  document.getElementById('listAntrean').innerHTML = h;
+  if (tab === 'antrian') {
+    loadAntrianList();
+  }
+  if (tab === 'bayar') {
+    var t = new Date();
+    document.getElementById('konfPeriode').textContent =
+      getBulanNama(t.getMonth()) + ' ' + t.getFullYear();
+    loadAdminPayList();
+  }
 }
 
-// Simple Ping
-setInterval(() => {
-  let s = performance.now();
-  let img = new Image();
-  img.src = "https://www.google.com/images/phd/px.gif?t=" + s;
-  img.onload = img.onerror = () => {
-    let m = Math.round(performance.now() - s);
-    document.getElementById('pn').innerText = m;
-    document.getElementById('statusTxt').innerText = m < 150 ? "KENCENG!" : "LAG";
+// ============================================================
+//  ADMIN — Load Antrian Konfirmasi (pelanggan yang klik bayar)
+// ============================================================
+async function loadAntrianList() {
+  var listEl = document.getElementById('antrianList');
+  var msgEl  = document.getElementById('antrianMsg');
+  if (!listEl) return;
+  msgEl.style.display = 'none';
+  listEl.innerHTML = '<div style="text-align:center;padding:14px;color:#7a95b0;font-size:12px"><div class="spin" style="margin:0 auto 8px;width:22px;height:22px;border-width:3px"></div>Memuat antrian...</div>';
+
+  try {
+    var res     = await apiGet({ action: 'getPendingPayments' });
+    var pending = res.pending || [];
+
+    // Update badge
+    var badge = document.getElementById('antrianBadge');
+    if (pending.length > 0) {
+      badge.textContent = pending.length;
+      badge.style.display = 'inline-block';
+    } else {
+      badge.style.display = 'none';
+    }
+
+    if (!pending.length) {
+      listEl.innerHTML = '<div style="text-align:center;padding:18px;color:#7a95b0;font-size:13px">🎉 Tidak ada antrian saat ini.<br><span style="font-size:11px">Akan muncul saat pelanggan klik tombol bayar.</span></div>';
+      return;
+    }
+
+    var today = new Date();
+    var bulanNama = getBulanNama(today.getMonth()) + ' ' + today.getFullYear();
+
+    var html = '';
+    pending.forEach(function(p) {
+      var nominal = 'Rp ' + Number(p.amount).toLocaleString('id-ID');
+      var waktu   = p.created_at ? String(p.created_at).substring(11,16) : '--:--';
+      var tgl     = p.created_at ? String(p.created_at).substring(0,10) : '';
+      html +=
+        '<div id="antrianItem_' + p.username + '" style="background:#fff;border:1px solid #dde8f5;border-radius:12px;padding:12px;margin-bottom:8px">' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
+            '<div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#0077b6,#00b4d8);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0">' + p.name.charAt(0).toUpperCase() + '</div>' +
+            '<div style="flex:1">' +
+              '<div style="font-size:13px;font-weight:800;color:#1a2a3a">' + p.name + '</div>' +
+              '<div style="font-size:11px;color:#7a95b0">@' + p.username + ' · ' + nominal + '</div>' +
+            '</div>' +
+            '<div style="text-align:right">' +
+              '<div style="font-size:10px;color:#e63946;font-weight:800;background:#fff5f5;border-radius:6px;padding:2px 7px">BARU BAYAR</div>' +
+              '<div style="font-size:10px;color:#7a95b0;margin-top:2px">' + waktu + ' WIB</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="font-size:11px;color:#7a95b0;margin-bottom:8px;background:#f0f7ff;border-radius:7px;padding:5px 9px">' +
+            '📅 Periode: ' + bulanNama + ' · 💰 ' + nominal +
+          '</div>' +
+          '<div style="display:flex;gap:7px">' +
+            '<button onclick="doAntrianKonfirmasi('' + p.username + '',' + p.year + ',' + p.month + ')" ' +
+              'style="flex:1;background:linear-gradient(135deg,#06d6a0,#0a9e72);color:#fff;border:none;border-radius:8px;padding:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">' +
+              '✅ Konfirmasi' +
+            '</button>' +
+            '<button onclick="doAntrianGagal('' + p.username + '',' + p.year + ',' + p.month + ')" ' +
+              'style="flex:1;background:linear-gradient(135deg,#e63946,#c1121f);color:#fff;border:none;border-radius:8px;padding:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">' +
+              '❌ Gagal' +
+            '</button>' +
+          '</div>' +
+        '</div>';
+    });
+    listEl.innerHTML = html;
+
+  } catch(e) {
+    listEl.innerHTML = '<div style="text-align:center;padding:12px;color:#e63946;font-size:12px">⚠️ Gagal memuat. Periksa koneksi.</div>';
+  }
+}
+
+// ============================================================
+//  ANTRIAN — Konfirmasi (uang sudah masuk)
+// ============================================================
+async function doAntrianKonfirmasi(username, year, month) {
+  var kode = document.getElementById('antrianKode').value.trim();
+  var msgEl = document.getElementById('antrianMsg');
+  msgEl.style.display = 'none';
+
+  if (!kode) {
+    msgEl.textContent = '⚠️ Isi kode admin dulu di atas!';
+    msgEl.style.cssText = 'display:block;background:#fff8e1;border:1px solid #f5a623;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#e07b00;font-weight:800;margin-top:8px';
+    msgEl.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+
+  showLoading('Mengkonfirmasi pembayaran...');
+  try {
+    var res = await apiPost({ action: 'adminConfirmPayment', adminCode: kode, username: username, year: year, month: month });
+    if (!res.success) {
+      hideLoading();
+      msgEl.textContent = '❌ ' + (res.error || 'Gagal — cek kode admin');
+      msgEl.style.cssText = 'display:block;background:#fff5f5;border:1px solid #e63946;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#e63946;font-weight:800;margin-top:8px';
+      return;
+    }
+    // Simpan ke Payments sheet
+    await apiPost({ action: 'savePayment', username: username, year: year, month: month, paid: true, method: 'QRIS-Manual-Admin' });
+
+    // Hapus item dari daftar
+    var el = document.getElementById('antrianItem_' + username);
+    if (el) {
+      el.style.background = '#f0fff8';
+      el.style.border = '1px solid #06d6a0';
+      el.innerHTML = '<div style="text-align:center;padding:8px;font-size:13px;font-weight:800;color:#0a9e72">✅ @' + username + ' — LUNAS! Data tersimpan ke Spreadsheet.</div>';
+    }
+
+    // Update badge
+    var badge = document.getElementById('antrianBadge');
+    var current = parseInt(badge.textContent || '0') - 1;
+    if (current <= 0) { badge.style.display = 'none'; }
+    else { badge.textContent = current; }
+
+    // Trigger sukses ke pelanggan jika lagi buka QR modal
+    triggerPelangganLunas(username);
+    var cur = getCurrentUser();
+    if (cur && cur.username === username) await renderTagihan(cur);
+
+  } catch(e) {
+    msgEl.textContent = '⚠️ Gagal terhubung ke server.';
+    msgEl.style.cssText = 'display:block;background:#fff5f5;border:1px solid #e63946;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#e63946;font-weight:800;margin-top:8px';
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================================================
+//  ANTRIAN — Gagal (uang tidak masuk)
+// ============================================================
+async function doAntrianGagal(username, year, month) {
+  var kode = document.getElementById('antrianKode').value.trim();
+  var msgEl = document.getElementById('antrianMsg');
+  msgEl.style.display = 'none';
+
+  if (!kode) {
+    msgEl.textContent = '⚠️ Isi kode admin dulu di atas!';
+    msgEl.style.cssText = 'display:block;background:#fff8e1;border:1px solid #f5a623;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#e07b00;font-weight:800;margin-top:8px';
+    msgEl.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+
+  showLoading('Menandai gagal...');
+  try {
+    await apiPost({ action: 'rejectPayment', adminCode: kode, username: username, year: year, month: month });
+
+    var el = document.getElementById('antrianItem_' + username);
+    if (el) {
+      el.style.background = '#fff5f5';
+      el.style.border = '1px solid #e63946';
+      el.innerHTML = '<div style="text-align:center;padding:8px;font-size:13px;font-weight:800;color:#e63946">❌ @' + username + ' — Ditandai GAGAL. Pelanggan perlu bayar ulang.</div>';
+    }
+    var badge = document.getElementById('antrianBadge');
+    var current = parseInt(badge.textContent || '0') - 1;
+    if (current <= 0) { badge.style.display = 'none'; }
+    else { badge.textContent = current; }
+
+  } catch(e) {
+    msgEl.textContent = '⚠️ Gagal terhubung ke server.';
+    msgEl.style.cssText = 'display:block;background:#fff5f5;border:1px solid #e63946;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#e63946;font-weight:800;margin-top:8px';
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================================================
+//  ADMIN — Konfirmasi Pembayaran Manual
+//  Dipanggil setelah admin cek notif Dana & uang sudah masuk
+// ============================================================
+async function doKonfirmasiBayar() {
+  var kode  = document.getElementById('konfKode').value.trim();
+  var uname = document.getElementById('konfUser').value.trim().toLowerCase();
+  var err   = document.getElementById('konfErr');
+  var ok    = document.getElementById('konfOk');
+  err.style.display = 'none';
+  ok.style.display  = 'none';
+
+  if (!kode || !uname) {
+    err.textContent = 'Isi kode admin dan username pelanggan.';
+    err.style.display = 'block'; return;
+  }
+
+  var today = new Date();
+  var year  = today.getFullYear();
+  var month = today.getMonth();
+
+  showLoading('Mengkonfirmasi pembayaran...');
+  try {
+    // 1. Konfirmasi di server (tandai pending sebagai confirmed)
+    var res = await apiPost({
+      action   : 'adminConfirmPayment',
+      adminCode: kode,
+      username : uname,
+      year     : year,
+      month    : month
+    });
+
+    if (!res.success) {
+      err.textContent = res.error || 'Gagal konfirmasi.';
+      err.style.display = 'block'; return;
+    }
+
+    // 2. Langsung simpan ke Payments sheet sekaligus
+    await apiPost({
+      action  : 'savePayment',
+      username: uname,
+      year    : year,
+      month   : month,
+      paid    : true,
+      method  : 'QRIS-Manual'
+    });
+
+    ok.textContent   = '✅ Pembayaran @' + uname + ' bulan ' +
+                       getBulanNama(month) + ' ' + year + ' berhasil dikonfirmasi!';
+    ok.style.display = 'block';
+    document.getElementById('konfUser').value = '';
+
+    // 3. Refresh daftar
+    loadAdminPayList();
+
+    // 4. Trigger sukses ke pelanggan jika lagi buka QR modal
+    triggerPelangganLunas(uname);
+
+    // 5. Refresh tagihan jika pelanggan yang login adalah yang dikonfirmasi
+    var cur = getCurrentUser();
+    if (cur && cur.username === uname) await renderTagihan(cur);
+
+  } catch(e) {
+    err.textContent = 'Gagal terhubung ke server.';
+    err.style.display = 'block';
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================================================
+//  ADMIN — Load Daftar Status Bayar Pelanggan Bulan Ini
+// ============================================================
+async function loadAdminPayList() {
+  var listEl = document.getElementById('adminPayList');
+  if (!listEl) return;
+  listEl.innerHTML = '<div style="text-align:center;padding:12px;color:#7a95b0;font-size:12px">⏳ Memuat...</div>';
+
+  try {
+    var today = new Date();
+    var year  = today.getFullYear();
+    var month = today.getMonth();
+
+    // Ambil semua layanan aktif
+    var res = await apiGet({ action: 'getAllLayanan' });
+    var layananList = res.layanan || [];
+
+    if (!layananList.length) {
+      listEl.innerHTML = '<div style="text-align:center;padding:12px;color:#7a95b0;font-size:12px">Belum ada pelanggan aktif.</div>';
+      return;
+    }
+
+    // Cek status bayar masing-masing
+    var html = '';
+    for (var i = 0; i < layananList.length; i++) {
+      var l = layananList[i];
+      var payRes  = await apiGet({ action: 'getPayment', username: l.username, year: year, month: month });
+      var sudah   = payRes.paid;
+      var nominal = l.paket === '100rb' ? 'Rp100.000' : 'Rp50.000';
+
+      html += '<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #dde8f5">' +
+        '<div style="width:8px;height:8px;border-radius:50%;background:' + (sudah ? '#06d6a0' : '#e63946') + ';flex-shrink:0"></div>' +
+        '<div style="flex:1">' +
+          '<div style="font-size:13px;font-weight:800;color:#1a2a3a">@' + l.username + '</div>' +
+          '<div style="font-size:11px;color:#7a95b0">' + nominal + ' · Paket ' + (l.paket||'50rb').toUpperCase() + '</div>' +
+        '</div>' +
+        (sudah
+          ? '<div style="font-size:11px;font-weight:800;color:#06d6a0;background:#f0fff8;padding:3px 8px;border-radius:6px">LUNAS ✓</div>'
+          : '<button onclick="quickKonfirmasi(\'' + l.username + '\')" style="background:linear-gradient(135deg,#06d6a0,#0a9e72);color:#fff;border:none;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">Konfirmasi</button>'
+        ) +
+      '</div>';
+    }
+    listEl.innerHTML = html || '<div style="text-align:center;padding:12px;color:#7a95b0;font-size:12px">Tidak ada data.</div>';
+
+  } catch(e) {
+    listEl.innerHTML = '<div style="text-align:center;padding:12px;color:#e63946;font-size:12px">⚠️ Gagal memuat. Periksa koneksi.</div>';
+  }
+}
+
+// ============================================================
+//  QUICK KONFIRMASI — dari daftar pelanggan (isi user otomatis)
+// ============================================================
+function quickKonfirmasi(username) {
+  document.getElementById('konfUser').value = username;
+  document.getElementById('konfKode').focus();
+  // Scroll ke form konfirmasi
+  document.getElementById('konfKode').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ============================================================
+//  ADMIN PANEL — aktivasi layanan → simpan ke cloud
+// ============================================================
+async function doAktivasi() {
+  var kode  = document.getElementById('adminKode').value.trim();
+  var uname = document.getElementById('adminUser').value.trim().toLowerCase();
+  var paket = document.getElementById('adminPaket').value;
+  var err   = document.getElementById('adminErr');
+  var ok    = document.getElementById('adminOk');
+  err.style.display = 'none'; ok.style.display = 'none';
+
+  if (kode !== 'inikatasandi') {
+    err.textContent = 'Kode admin salah!'; err.style.display = 'block'; return;
+  }
+  if (!uname) {
+    err.textContent = 'Isi username pelanggan.'; err.style.display = 'block'; return;
+  }
+
+  showLoading('Mengaktifkan layanan...');
+  try {
+    // Cek apakah username terdaftar di Sheets
+    var check = await apiGet({ action: 'checkUsername', username: uname });
+    if (!check.found) {
+      err.textContent = 'Username @' + uname + ' belum terdaftar di database.';
+      err.style.display = 'block'; hideLoading(); return;
+    }
+
+    var today    = new Date();
+    var tglPasang = today.getDate() + ' ' + getBulanNama(today.getMonth()) + ' ' + today.getFullYear();
+    var res = await apiPost({ action: 'saveLayanan', username: uname, status: 'aktif', paket: paket, tglPasang: tglPasang });
+
+    if (res.success) {
+      ok.textContent    = '✓ Berhasil! @' + uname + ' diaktifkan paket ' + paket + ' per ' + tglPasang;
+      ok.style.display  = 'block';
+      document.getElementById('adminUser').value = '';
+      var cur = getCurrentUser();
+      if (cur && cur.username === uname) await renderTagihan(cur);
+    } else {
+      err.textContent = res.error || 'Gagal mengaktifkan.'; err.style.display = 'block';
+    }
+  } catch(e) {
+    err.textContent = 'Gagal terhubung ke server.'; err.style.display = 'block';
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================================================
+//  AUTO-LOGIN — jika sesi masih ada, login langsung
+// ============================================================
+(async function() {
+  var cur = getCurrentUser();
+  if (cur) {
+    document.getElementById('loginOv').classList.remove('open');
+    showUserBar(cur);
+    // Re-verify dari server (data mungkin berubah)
+    showLoading('Memuat data akun...');
+    try {
+      var res = await apiGet({ action: 'getUser', phone: cur.phone, username: cur.username });
+      if (res.found) {
+        saveCurrentUser(res.user); // update data terbaru
+        await renderTagihan(res.user);
+      } else {
+        // Akun tidak ditemukan, logout
+        doLogout();
+      }
+    } catch(e) {
+      // Koneksi gagal, tetap tampilkan dengan data sesi
+      await renderTagihan(cur);
+    } finally {
+      hideLoading();
+    }
+  }
+})();
+
+// ============================================================
+//  ADMIN PANEL — tap bar 5x untuk buka
+// ============================================================
+var adminTapCount = 0, adminTapTimer = null;
+document.getElementById('topBar').addEventListener('click', function() {
+  adminTapCount++;
+  clearTimeout(adminTapTimer);
+  adminTapTimer = setTimeout(function() { adminTapCount = 0; }, 2000);
+  if (adminTapCount >= 5) {
+    adminTapCount = 0;
+    document.getElementById('adminOv').classList.add('open');
+    document.getElementById('adminKode').value = '';
+    document.getElementById('adminUser').value = '';
+    document.getElementById('adminErr').style.display = 'none';
+    document.getElementById('adminOk').style.display  = 'none';
+    // Langsung buka tab Antrian & load data
+    switchAdminTab('antrian');
+  }
+});
+
+// ============================================================
+//  PING / NETWORK MONITOR
+// ============================================================
+var N=20,IV=2000,hi=[],mn=9999,mx=0,tot=0,cnt=0,lp=null;
+var pn=document.getElementById('pn'),pst=document.getElementById('pst'),pmn=document.getElementById('pmn'),pmx=document.getElementById('pmx'),pav=document.getElementById('pav'),jt=document.getElementById('jt'),sg=document.getElementById('sg'),ip=document.getElementById('ip'),ch=document.getElementById('ch');
+for(var i=0;i<N;i++){var b=document.createElement('div');b.className='cb';ch.appendChild(b);}
+function setIP(data){document.getElementById('ip').textContent=data.ip;}
+function getIP(){var s=document.createElement('script');s.src='https://api.ipify.org?format=jsonp&callback=setIP';document.body.appendChild(s);}
+getIP();
+function gs(m){if(m<40)return{t:'KENCENG!',c:'#00b4d8'};if(m<100)return{t:'STABIL',c:'#06d6a0'};if(m<200)return{t:'LAG',c:'#f5a623'};return{t:'LAG PARAH',c:'#e63946'};}
+function up() {
+  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  var type = '--';
+  if(conn) {
+    type = conn.type === 'wifi' ? 'WIFI' : (conn.effectiveType || '--').toUpperCase();
+    sg.textContent = type;
+  }
+
+  // Pilih target: 
+  // Jika WIFI, tembak ke Router JCG (Local)
+  // Jika Seluler, tembak ke Google (Global)
+  var target;
+  if (type === 'WIFI') {
+    target = 'https://connectivitycheck.gstatic.com/generate_204'; 
+  } else {
+    target = 'https://connectivitycheck.gstatic.com/generate_204';
+  }
+
+  var s = performance.now(), img = new Image();
+  img.src = target + '?t=' + s;
+  img.onload=img.onerror=function(){
+    var m=Math.round(performance.now()-s);if(m<2)return;
+    if(cnt===0)mn=m;else if(m<mn)mn=m;
+    if(m>mx)mx=m;tot+=m;cnt++;
+    if(lp!==null)jt.textContent=Math.abs(m-lp)+' ms';lp=m;
+    pn.textContent=m;pmn.textContent=mn;pmx.textContent=mx;pav.textContent=Math.round(tot/cnt);
+    var st=gs(m);pst.textContent=st.t;
+    hi.push(m);if(hi.length>N)hi.shift();
+    var bs=ch.children;
+    for(var i=0;i<N;i++){var v=hi[i];if(v){bs[i].style.height=Math.min(100,(v/300)*100)+'%';bs[i].style.background=gs(v).c;}}
   };
-}, 3000);
+}
+setInterval(up,IV);up();
 </script>
 </body>
 </html>
