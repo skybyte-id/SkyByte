@@ -475,7 +475,7 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 // ============================================================
 //  KONFIGURASI
 // ============================================================
-var API_URL = 'https://script.google.com/macros/s/AKfycbzDs0T8wFqq2qRoy3zNab_aCYfXFtsB38ThqoRUtTxzX4oC4IdflzHf-iDWq6VHhnvxLA/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycbzBWOxDWFBByW8TlkCuQsW0XjSsDtEmkAx-OtdAPLZW6vcGFFAfaX68knc0CBIvjbNW3Q/exec';
 
 // ============================================================
 //  API HELPERS
@@ -692,8 +692,7 @@ function triggerPelangganLunas(username) {
 var BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 function getBulanNama(idx) { return BULAN[idx]; }
 
-// FIX BUG #2: var tglPasangDate dideklarasikan dua kali (re-declaration) di renderTagihan.
-// Solusi: hapus deklarasi kedua, cukup satu di atas.
+// Render tagihan aktif dan riwayat pembayaran untuk user yang login
 async function renderTagihan(user) {
   var sec = document.getElementById('tagihanSection');
   if (!user) { sec.style.display = 'none'; return; }
@@ -739,25 +738,24 @@ async function renderTagihan(user) {
     var paket   = layanan.paket || '50rb';
     var nominal = paket === '100rb' ? 100000 : 50000;
 
-    // FIX BUG #3: Parse tglPasang dengan benar agar tidak NaN di Safari/iOS
-    // Format dari GAS adalah "d Bulan YYYY" (contoh: "1 Januari 2025")
-    // → perlu di-parse manual atau convert ke format YYYY-MM-DD
+    // Parse tglPasang: support format "d Bulan YYYY" atau ISO YYYY-MM-DD
+    // Strip apostrof leading jika ada (dari GAS yang menyimpan "'5 Mei 2026")
     var tglPasangDate;
-    var rawTglPasang = layanan.tglPasang || '';
+    var rawTglPasang = String(layanan.tglPasang || '').replace(/^'/, '').trim();
     if (rawTglPasang && rawTglPasang.match(/^\d{4}-\d{2}-\d{2}/)) {
       // Format ISO YYYY-MM-DD
       tglPasangDate = new Date(rawTglPasang + 'T00:00:00');
-    } else if (rawTglPasang && rawTglPasang.match(/^\d+ \w+ \d{4}$/)) {
-      // Format "d Bulan YYYY" → parse manual
-      var parts = rawTglPasang.split(' ');
+    } else if (rawTglPasang && rawTglPasang.match(/^\d+\s+\S+\s+\d{4}$/)) {
+      // Format "d Bulan YYYY" → parse manual agar tidak NaN di Safari
+      var parts    = rawTglPasang.split(/\s+/);
       var bulanIdx = BULAN.indexOf(parts[1]);
       if (bulanIdx >= 0) {
         tglPasangDate = new Date(parseInt(parts[2]), bulanIdx, parseInt(parts[0]));
       } else {
-        tglPasangDate = new Date();
+        tglPasangDate = new Date(); // fallback hari ini
       }
     } else {
-      tglPasangDate = new Date();
+      tglPasangDate = new Date(); // fallback hari ini
     }
 
     var jatuhTempo       = new Date(tglPasangDate.getFullYear(), tglPasangDate.getMonth() + 1, tglPasangDate.getDate());
@@ -808,7 +806,6 @@ async function renderTagihan(user) {
       histMap[h.year + '_' + h.month] = h.paid;
     });
 
-    // FIX BUG #2: Hapus re-declaration tglPasangDate di sini (sudah ada di atas)
     var histData = [];
     for (var i = 1; i <= 5; i++) {
       var hm = bm - i, hy = by;
@@ -1066,7 +1063,7 @@ async function doKonfirmasiBayar() {
       month   : month,
       paid    : true,
       method  : 'QRIS-Manual'
-     });
+    });
 
     ok.textContent   = '✅ Pembayaran @' + uname + ' bulan ' + getBulanNama(month) + ' ' + year + ' berhasil dikonfirmasi!';
     ok.style.display = 'block';
@@ -1086,9 +1083,6 @@ async function doKonfirmasiBayar() {
   }
 }
 
-// ============================================================
-//  ADMIN — Load Daftar Status Bayar Pelanggan Bulan Ini
-// ============================================================
 async function loadAdminPayList() {
   var listEl = document.getElementById('adminPayList');
   if (!listEl) return;
