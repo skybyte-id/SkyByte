@@ -191,9 +191,9 @@ function up() {
   // Jika Seluler, tembak ke Google (Global)
   var target;
 if (type === 'WIFI') {
-  target = 'https://1.1.1.1';
+  target = 'https://8.8.8.8';
 } else {
-  target = 'https://1.1.1.1';
+  target = 'https://8.8.8.8';
 }
   var s = performance.now(), img = new Image();
   img.src = target + '?t=' + s;
