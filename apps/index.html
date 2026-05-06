@@ -432,7 +432,7 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
   <div class="mb">
     <div class="mt">Pembayaran QRIS</div>
     <div class="ms">Scan QR di bawah, lalu klik tombol setelah bayar</div>
-    <img src="https://drive.google.com/thumbnail?id=1ahx0Ee-OXrALBUXX6tXpSBFwsm7yf_-X&sz=w400"
+    <img src="https://drive.google.com/thumbnail?id=1ahx0Ee-OXrALBUXX6tXpSBFwsm7yf_-X&amp;sz=w400"
          style="width:100%;border-radius:12px;border:2px solid #dde8f5" alt="QRIS SkyByte">
 
     <div id="qr-verify-box" style="display:none;margin-top:12px;border-radius:12px;overflow:hidden;border:2px solid #dde8f5">
@@ -476,6 +476,12 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 //  KONFIGURASI
 // ============================================================
 var API_URL = 'https://script.google.com/macros/s/AKfycbzBWOxDWFBByW8TlkCuQsW0XjSsDtEmkAx-OtdAPLZW6vcGFFAfaX68knc0CBIvjbNW3Q/exec';
+
+// ============================================================
+//  NAMA BULAN (dideklarasikan di atas agar tersedia global)
+// ============================================================
+var BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+function getBulanNama(idx) { return BULAN[idx]; }
 
 // ============================================================
 //  API HELPERS
@@ -689,8 +695,7 @@ function triggerPelangganLunas(username) {
   }
 }
 
-var BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-function getBulanNama(idx) { return BULAN[idx]; }
+// (BULAN dan getBulanNama sudah dipindah ke atas script)
 
 // Render tagihan aktif dan riwayat pembayaran untuk user yang login
 async function renderTagihan(user) {
@@ -763,7 +768,7 @@ async function renderTagihan(user) {
     var sisa             = Math.ceil((jatuhTempo - today) / (1000 * 60 * 60 * 24));
 
     var payRes    = await apiGet({ action: 'getPayment', username: user.username, year: by, month: bm });
-    var sudahBayar = payRes.paid;
+    var sudahBayar = payRes.paid == true; // Google Sheets kadang return string "TRUE"
 
     var status    = sudahBayar ? 'lunas' : (today > jatuhTempo ? 'telat' : (sisa <= 3 ? 'jatuh' : 'belum'));
     var statusTxt = 'BELUM DIBAYAR', badgeTxt = 'BULAN INI', btnClass = '', btnTxt = 'Bayar via QRIS';
@@ -812,7 +817,7 @@ async function renderTagihan(user) {
       if (hm < 0) { hm += 12; hy--; }
       var tglBulanIni = new Date(hy, hm, 1);
       if (tglBulanIni < new Date(tglPasangDate.getFullYear(), tglPasangDate.getMonth(), 1)) continue;
-      var dibayar = histMap[hy + '_' + hm] === true;
+      var dibayar = histMap[hy + '_' + hm] == true; // Google Sheets kadang return string "TRUE"
       histData.push({ bulan: getBulanNama(hm) + ' ' + hy, status: dibayar ? 'lunas' : 'telat', nominal: nominal });
     }
 
@@ -895,7 +900,7 @@ async function loadAntrianList() {
 
     var html = '';
     pending.forEach(function(p) {
-      var nominal = 'Rp ' + Number(p.amount).toLocaleString('id-ID');
+      var nominal = 'Rp ' + (Number(p.amount) || 0).toLocaleString('id-ID');
       var waktu   = p.created_at ? String(p.created_at).substring(11,16) : '--:--';
       // FIX BUG #4: Kutip string di onclick menggunakan escape karakter yang benar
       html +=
@@ -1105,7 +1110,7 @@ async function loadAdminPayList() {
     for (var i = 0; i < layananList.length; i++) {
       var l      = layananList[i];
       var payRes = await apiGet({ action: 'getPayment', username: l.username, year: year, month: month });
-      var sudah  = payRes.paid;
+      var sudah  = payRes.paid == true; // Google Sheets kadang return string "TRUE"
       var nominal = l.paket === '100rb' ? 'Rp100.000' : 'Rp50.000';
 
       html += '<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #dde8f5">' +
