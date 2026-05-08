@@ -47,7 +47,7 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 .pfc{color:var(--g);font-weight:900;font-size:15px}
 .pi{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--bd)}
 .pi:last-child{border:none;padding-bottom:0}
-.pico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+.pico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
 .pico.q{background:linear-gradient(135deg,#e63946,#c1121f)}
 .pico.d{background:linear-gradient(135deg,#118ab2,var(--c1))}
 .pnm{font-weight:700;font-size:13px}
@@ -67,6 +67,102 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 .mc{margin-top:12px;background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;border:none;border-radius:10px;padding:10px 28px;font-size:13px;font-weight:800;cursor:pointer;width:100%}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+/* ===== JADWAL SHOLAT ===== */
+.sholat-hero{
+  margin:0 14px 12px;
+  background:linear-gradient(135deg,#1b4332,#2d6a4f);
+  border-radius:16px;
+  padding:16px;
+  color:#fff;
+}
+.sholat-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+.sholat-title{
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:.1em;
+  color:rgba(255,255,255,.7);
+  text-transform:uppercase;
+}
+.sholat-date{
+  font-size:11px;
+  color:rgba(255,255,255,.5);
+  margin-top:2px;
+}
+.sholat-city{
+  font-size:10px;
+  background:rgba(255,255,255,.12);
+  border-radius:20px;
+  padding:3px 10px;
+  color:rgba(255,255,255,.8);
+}
+.sholat-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.sholat-item{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:10px;
+  padding:9px 11px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  transition:background .2s;
+}
+.sholat-item.active{
+  background:rgba(6,214,160,.2);
+  border-color:rgba(6,214,160,.5);
+}
+.sholat-icon{
+  font-size:18px;
+  flex-shrink:0;
+}
+.sholat-name{
+  font-size:11px;
+  color:rgba(255,255,255,.55);
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+.sholat-time{
+  font-size:15px;
+  font-weight:800;
+  color:#fff;
+  line-height:1.1;
+}
+.sholat-item.active .sholat-time{
+  color:#06d6a0;
+}
+.sholat-next-banner{
+  margin-top:10px;
+  background:rgba(255,255,255,.07);
+  border-radius:10px;
+  padding:8px 12px;
+  font-size:12px;
+  color:rgba(255,255,255,.6);
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.sholat-next-banner b{color:#06d6a0}
+.sholat-loading{
+  text-align:center;
+  padding:20px 0;
+  color:rgba(255,255,255,.5);
+  font-size:13px;
+}
+.sholat-err{
+  text-align:center;
+  padding:16px 0;
+  color:#f4978e;
+  font-size:12px;
+}
 </style>
 </head>
 <body>
@@ -95,6 +191,21 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
   <div class="ib"><div class="il">Signal</div><div class="iv" id="sg">--</div></div>
   <div class="ib"><div class="il">Jitter</div><div class="iv" id="jt">-- ms</div></div>
   <div class="ib"><div class="il">IP</div><div class="iv" id="ip" style="font-size:10px">...</div></div>
+</div>
+
+<!-- ===== JADWAL SHOLAT ===== -->
+<div class="sh"><h2>Jadwal Sholat</h2><div class="sl"></div></div>
+<div class="sholat-hero">
+  <div class="sholat-header">
+    <div>
+      <div class="sholat-title">🕌 Waktu Sholat Hari Ini</div>
+      <div class="sholat-date" id="sholat-date">Memuat tanggal...</div>
+    </div>
+    <div class="sholat-city" id="sholat-city">Kab. Cianjur</div>
+  </div>
+  <div id="sholat-content">
+    <div class="sholat-loading">⏳ Memuat jadwal sholat...</div>
+  </div>
 </div>
 
 <div class="sh"><h2>Layanan</h2><div class="sl"></div></div>
@@ -174,6 +285,7 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 </div>
 
 <script>
+/* ===== PING / NETWORK ===== */
 var N=20,IV=2000,hi=[],mn=9999,mx=0,tot=0,cnt=0,lp=null;
 var pn=document.getElementById('pn'),pst=document.getElementById('pst'),pmn=document.getElementById('pmn'),pmx=document.getElementById('pmx'),pav=document.getElementById('pav'),jt=document.getElementById('jt'),sg=document.getElementById('sg'),ip=document.getElementById('ip'),ch=document.getElementById('ch');
 for(var i=0;i<N;i++){var b=document.createElement('div');b.className='cb';ch.appendChild(b);}
@@ -198,6 +310,169 @@ function up(){
 }
 setInterval(up,IV);up();
 function openQR(){document.getElementById('qmod').classList.add('open');}
+
+/* ===== JADWAL SHOLAT ===== */
+(function(){
+  var PRAYER_API = 'http://loscos4w40ko04sss0cg0wo4.70.153.72.107.sslip.io/prayer?latitude=-6.820838888888891&longitude=107.139322222222';
+
+  var PRAYERS = [
+    { key:'imsak',   label:'Imsak',   icon:'🌙' },
+    { key:'subuh',   label:'Subuh',   icon:'🌄' },
+    { key:'dhuha',   label:'Dhuha',   icon:'🌅' },
+    { key:'dzuhur',  label:'Dzuhur',  icon:'☀️'  },
+    { key:'ashar',   label:'Ashar',   icon:'🌤️' },
+    { key:'maghrib', label:'Maghrib', icon:'🌇' },
+    { key:'isya',    label:'Isya',    icon:'🌙' }
+  ];
+
+  /* Nama hari & bulan Indonesia */
+  var DAYS   = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  var MONTHS = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+
+  function formatDate(d){
+    return DAYS[d.getDay()+', ']+d.getDate()+' '+MONTHS[d.getMonth()]+' '+d.getFullYear();
+  }
+  function formatDateFull(d){
+    return DAYS[d.getDay()]+', '+d.getDate()+' '+MONTHS[d.getMonth()]+' '+d.getFullYear();
+  }
+
+  /* Cari waktu sholat berikutnya */
+  function getNextPrayer(time, nowMin){
+    var order = ['imsak','subuh','dhuha','dzuhur','ashar','maghrib','isya'];
+    for(var i=0;i<order.length;i++){
+      var t = time[order[i]];
+      if(!t) continue;
+      var parts = t.split(':');
+      var pMin = parseInt(parts[0])*60 + parseInt(parts[1]);
+      if(pMin > nowMin) return {key:order[i], label:order[i].charAt(0).toUpperCase()+order[i].slice(1), time:t, minLeft: pMin-nowMin};
+    }
+    return null; // sudah lewat Isya
+  }
+
+  /* Cari waktu sholat yang sedang aktif (terdekat sebelum sekarang) */
+  function getActivePrayer(time, nowMin){
+    var order = ['imsak','subuh','dhuha','dzuhur','ashar','maghrib','isya'];
+    var active = null;
+    for(var i=0;i<order.length;i++){
+      var t = time[order[i]];
+      if(!t) continue;
+      var parts = t.split(':');
+      var pMin = parseInt(parts[0])*60 + parseInt(parts[1]);
+      if(pMin <= nowMin) active = order[i];
+    }
+    return active;
+  }
+
+  function renderPrayers(time, cityName){
+    var now     = new Date();
+    var nowMin  = now.getHours()*60 + now.getMinutes();
+    var active  = getActivePrayer(time, nowMin);
+    var next    = getNextPrayer(time, nowMin);
+
+    /* Update tanggal */
+    document.getElementById('sholat-date').textContent = formatDateFull(now);
+    if(cityName) document.getElementById('sholat-city').textContent = cityName;
+
+    /* Render grid */
+    var html = '<div class="sholat-grid">';
+    PRAYERS.forEach(function(p){
+      var val = time[p.key] || '--:--';
+      var isActive = (p.key === active);
+      html += '<div class="sholat-item'+(isActive?' active':'')+'">'+
+                '<div class="sholat-icon">'+p.icon+'</div>'+
+                '<div>'+
+                  '<div class="sholat-name">'+p.label+'</div>'+
+                  '<div class="sholat-time">'+val+'</div>'+
+                '</div>'+
+              '</div>';
+    });
+    html += '</div>';
+
+    /* Banner waktu berikutnya */
+    if(next){
+      var h = Math.floor(next.minLeft/60);
+      var m = next.minLeft % 60;
+      var countdown = h>0 ? h+'j '+m+'m lagi' : m+' menit lagi';
+      html += '<div class="sholat-next-banner">'+
+                '⏰ Waktu <b>'+next.label+'</b> pukul <b>'+next.time+'</b> — '+countdown+
+              '</div>';
+    } else {
+      html += '<div class="sholat-next-banner">🌙 Semua waktu sholat hari ini telah berlalu</div>';
+    }
+
+    document.getElementById('sholat-content').innerHTML = html;
+  }
+
+  function loadPrayerSchedule(){
+    var now   = new Date();
+    var y     = now.getFullYear();
+    var mo    = now.getMonth()+1;
+    var day   = now.getDate();
+    var todayStr = y+'-'+mo+'-'+day; // format sama seperti API: "2026-5-9"
+
+    fetch(PRAYER_API)
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        /* data bisa berupa objek kota dengan .prayers[], atau langsung array */
+        var prayers = data.prayers || data;
+        var cityName = (data.name) ? data.name : null;
+
+        /* Cari data hari ini */
+        var todayData = null;
+        if(Array.isArray(prayers)){
+          for(var i=0;i<prayers.length;i++){
+            if(prayers[i].date === todayStr){
+              todayData = prayers[i];
+              break;
+            }
+          }
+        } else if(prayers && prayers.time){
+          /* API langsung kembalikan satu hari */
+          todayData = prayers;
+        }
+
+        if(todayData && todayData.time){
+          renderPrayers(todayData.time, cityName);
+        } else {
+          /* Fallback: tampilkan hari terdekat yang tersedia */
+          if(Array.isArray(prayers) && prayers.length > 0){
+            /* Urutkan berdasarkan tanggal */
+            prayers.sort(function(a,b){
+              return new Date(a.date) - new Date(b.date);
+            });
+            /* Ambil yang tanggalnya >= hari ini */
+            var closest = prayers[prayers.length-1];
+            for(var j=0;j<prayers.length;j++){
+              if(new Date(prayers[j].date) >= now){
+                closest = prayers[j];
+                break;
+              }
+            }
+            renderPrayers(closest.time, cityName);
+            document.getElementById('sholat-date').textContent += ' (data terdekat)';
+          } else {
+            document.getElementById('sholat-content').innerHTML =
+              '<div class="sholat-err">⚠️ Data hari ini tidak tersedia</div>';
+          }
+        }
+      })
+      .catch(function(err){
+        console.error('Jadwal sholat error:', err);
+        document.getElementById('sholat-content').innerHTML =
+          '<div class="sholat-err">⚠️ Gagal memuat jadwal sholat.<br>Periksa koneksi internet.</div>';
+      });
+  }
+
+  /* Load saat halaman siap */
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', loadPrayerSchedule);
+  } else {
+    loadPrayerSchedule();
+  }
+
+  /* Refresh setiap 1 menit agar countdown & status aktif selalu update */
+  setInterval(loadPrayerSchedule, 60000);
+})();
 </script>
 </body>
 </html>
