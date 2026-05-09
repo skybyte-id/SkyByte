@@ -210,7 +210,7 @@ function up(){
   var conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
   if(conn){sg.textContent=conn.type==='wifi'?'WIFI':(conn.effectiveType||'--').toUpperCase();}
   var s=performance.now(),img=new Image();
-  img.src='img.src='https://github.githubassets.com/favicons/favicon.png?t='+s;
+  img.src='https://github.githubassets.com/favicons/favicon.png?t='+s;
   img.onload=img.onerror=function(){
     var m=Math.round(performance.now()-s);if(m<2)return;
     if(cnt===0)mn=m;else if(m<mn)mn=m;
