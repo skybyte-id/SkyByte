@@ -47,7 +47,7 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 .pfc{color:var(--g);font-weight:900;font-size:15px}
 .pi{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--bd)}
 .pi:last-child{border:none;padding-bottom:0}
-.pico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+.pico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
 .pico.q{background:linear-gradient(135deg,#e63946,#c1121f)}
 .pico.d{background:linear-gradient(135deg,#118ab2,var(--c1))}
 .pnm{font-weight:700;font-size:13px}
@@ -67,102 +67,25 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 .mc{margin-top:12px;background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;border:none;border-radius:10px;padding:10px 28px;font-size:13px;font-weight:800;cursor:pointer;width:100%}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-
-/* ===== JADWAL SHOLAT ===== */
-.sholat-hero{
-  margin:0 14px 12px;
-  background:linear-gradient(135deg,#1b4332,#2d6a4f);
-  border-radius:16px;
-  padding:16px;
-  color:#fff;
-}
-.sholat-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:12px;
-}
-.sholat-title{
-  font-size:13px;
-  font-weight:800;
-  letter-spacing:.1em;
-  color:rgba(255,255,255,.7);
-  text-transform:uppercase;
-}
-.sholat-date{
-  font-size:11px;
-  color:rgba(255,255,255,.5);
-  margin-top:2px;
-}
-.sholat-city{
-  font-size:10px;
-  background:rgba(255,255,255,.12);
-  border-radius:20px;
-  padding:3px 10px;
-  color:rgba(255,255,255,.8);
-}
-.sholat-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-}
-.sholat-item{
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:10px;
-  padding:9px 11px;
-  display:flex;
-  align-items:center;
-  gap:9px;
-  transition:background .2s;
-}
-.sholat-item.active{
-  background:rgba(6,214,160,.2);
-  border-color:rgba(6,214,160,.5);
-}
-.sholat-icon{
-  font-size:18px;
-  flex-shrink:0;
-}
-.sholat-name{
-  font-size:11px;
-  color:rgba(255,255,255,.55);
-  text-transform:uppercase;
-  letter-spacing:.05em;
-}
-.sholat-time{
-  font-size:15px;
-  font-weight:800;
-  color:#fff;
-  line-height:1.1;
-}
-.sholat-item.active .sholat-time{
-  color:#06d6a0;
-}
-.sholat-next-banner{
-  margin-top:10px;
-  background:rgba(255,255,255,.07);
-  border-radius:10px;
-  padding:8px 12px;
-  font-size:12px;
-  color:rgba(255,255,255,.6);
-  display:flex;
-  align-items:center;
-  gap:6px;
-}
-.sholat-next-banner b{color:#06d6a0}
-.sholat-loading{
-  text-align:center;
-  padding:20px 0;
-  color:rgba(255,255,255,.5);
-  font-size:13px;
-}
-.sholat-err{
-  text-align:center;
-  padding:16px 0;
-  color:#f4978e;
-  font-size:12px;
-}
+.sholat-card{margin:0 14px 12px;background:linear-gradient(135deg,#023e8a,#0077b6);border-radius:16px;padding:16px;border:1px solid rgba(0,180,216,.2);box-shadow:0 4px 18px rgba(0,100,200,.18)}
+.sholat-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sholat-title{font-size:13px;font-weight:800;color:#fff;letter-spacing:.08em}
+.sholat-loc{font-size:10px;color:rgba(255,255,255,.6);margin-top:2px}
+.sholat-date{font-size:10px;color:rgba(255,255,255,.5);text-align:right}
+.sholat-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px}
+.sholat-item{background:rgba(255,255,255,.1);border-radius:10px;padding:8px 6px;text-align:center;border:1px solid rgba(255,255,255,.08)}
+.sholat-item.next{background:rgba(6,214,160,.2);border-color:rgba(6,214,160,.5)}
+.sholat-name{font-size:9px;color:rgba(255,255,255,.6);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}
+.sholat-time{font-size:14px;font-weight:800;color:#fff}
+.sholat-item.next .sholat-name{color:#06d6a0}
+.sholat-item.next .sholat-time{color:#06d6a0}
+.sholat-extra{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:7px}
+.sholat-extra-item{background:rgba(255,255,255,.07);border-radius:8px;padding:6px;text-align:center}
+.sholat-extra-name{font-size:9px;color:rgba(255,255,255,.45);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px}
+.sholat-extra-time{font-size:11px;font-weight:800;color:rgba(255,255,255,.7)}
+.sholat-loading{text-align:center;padding:18px;color:rgba(255,255,255,.5);font-size:12px}
+.spin{width:24px;height:24px;border:3px solid rgba(255,255,255,.2);border-top-color:#06d6a0;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 8px}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -191,21 +114,6 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
   <div class="ib"><div class="il">Signal</div><div class="iv" id="sg">--</div></div>
   <div class="ib"><div class="il">Jitter</div><div class="iv" id="jt">-- ms</div></div>
   <div class="ib"><div class="il">IP</div><div class="iv" id="ip" style="font-size:10px">...</div></div>
-</div>
-
-<!-- ===== JADWAL SHOLAT ===== -->
-<div class="sh"><h2>Jadwal Sholat</h2><div class="sl"></div></div>
-<div class="sholat-hero">
-  <div class="sholat-header">
-    <div>
-      <div class="sholat-title">🕌 Waktu Sholat Hari Ini</div>
-      <div class="sholat-date" id="sholat-date">Memuat tanggal...</div>
-    </div>
-    <div class="sholat-city" id="sholat-city">Kab. Cianjur</div>
-  </div>
-  <div id="sholat-content">
-    <div class="sholat-loading">⏳ Memuat jadwal sholat...</div>
-  </div>
 </div>
 
 <div class="sh"><h2>Layanan</h2><div class="sl"></div></div>
@@ -268,6 +176,14 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
   <div class="ar">></div>
 </a>
 
+<div class="sh"><h2>Jadwal Sholat</h2><div class="sl"></div></div>
+<div class="sholat-card" id="sholatCard">
+  <div class="sholat-loading">
+    <div class="spin"></div>
+    Memuat jadwal sholat...
+  </div>
+</div>
+
 <a class="fab" href="https://wa.me/6282295750165">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.591-.54-1.228-1.574-.4-2.402.828-.828 1.262-.584 2.039-1.271.777-.687 1.292-1.779 1.449-2.909.157-1.13-.289-2.259-.652-3.229-.363-.97-1.023-1.902-1.975-2.237-.952-.335-1.942.087-2.624.94-.682.854-.878 1.897-.925 2.94-.047 1.043.031 2.104.423 3.089m5.522 10.267c-1.052.935-2.705 1.657-4.476 1.657-1.771 0-3.424-.722-4.476-1.657m4.476-1.657c2.261 0 4.095-1.834 4.095-4.095s-1.834-4.095-4.095-4.095-4.095 1.834-4.095 4.095 1.834 4.095 4.095 4.095" fill="white"/></svg>
   Chat CS
@@ -285,7 +201,6 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 </div>
 
 <script>
-/* ===== PING / NETWORK ===== */
 var N=20,IV=2000,hi=[],mn=9999,mx=0,tot=0,cnt=0,lp=null;
 var pn=document.getElementById('pn'),pst=document.getElementById('pst'),pmn=document.getElementById('pmn'),pmx=document.getElementById('pmx'),pav=document.getElementById('pav'),jt=document.getElementById('jt'),sg=document.getElementById('sg'),ip=document.getElementById('ip'),ch=document.getElementById('ch');
 for(var i=0;i<N;i++){var b=document.createElement('div');b.className='cb';ch.appendChild(b);}
@@ -311,172 +226,52 @@ function up(){
 setInterval(up,IV);up();
 function openQR(){document.getElementById('qmod').classList.add('open');}
 
-/* ===== JADWAL SHOLAT ===== */
-(function(){
+// ============================================================
+//  JADWAL SHOLAT — API MyQuran
+// ============================================================
+(async function loadSholat() {
+  var card = document.getElementById('sholatCard');
+  try {
+    var res = await fetch('https://api.myquran.com/v3/sholat/jadwal/006f52e9102a8d3be2fe5614f42ba989/today');
+    var json = await res.json();
+    if (!json.status) throw new Error('API error');
+    var data = json.data;
+    var dateKey = Object.keys(data.jadwal)[0];
+    var j = data.jadwal[dateKey];
 
-  /* 
-   * DATA JADWAL SHOLAT EMBED LANGSUNG (Kab. Cianjur, Jawa Barat)
-   * Sumber: API http://loscos4w40ko04sss0cg0wo4.70.153.72.107.sslip.io
-   * Data di-embed karena API pakai HTTP sedangkan site ini HTTPS
-   * (browser blokir Mixed Content: HTTP request dari halaman HTTPS)
-   * Update data ini setiap bulan dari API.
-   */
-  var EMBEDDED_DATA = {
-    name: 'Kab. Cianjur',
-    prayers: [
-      {date:'2026-5-1',  time:{imsak:'04:25',subuh:'04:35',terbit:'05:49',dhuha:'06:17',dzuhur:'11:51',ashar:'15:12',maghrib:'17:48',isya:'18:58'}},
-      {date:'2026-5-2',  time:{imsak:'04:25',subuh:'04:35',terbit:'05:49',dhuha:'06:17',dzuhur:'11:51',ashar:'15:12',maghrib:'17:48',isya:'18:58'}},
-      {date:'2026-5-3',  time:{imsak:'04:25',subuh:'04:35',terbit:'05:49',dhuha:'06:17',dzuhur:'11:51',ashar:'15:12',maghrib:'17:47',isya:'18:58'}},
-      {date:'2026-5-4',  time:{imsak:'04:25',subuh:'04:35',terbit:'05:49',dhuha:'06:17',dzuhur:'11:51',ashar:'15:12',maghrib:'17:47',isya:'18:58'}},
-      {date:'2026-5-5',  time:{imsak:'04:25',subuh:'04:35',terbit:'05:49',dhuha:'06:18',dzuhur:'11:51',ashar:'15:12',maghrib:'17:47',isya:'18:58'}},
-      {date:'2026-5-6',  time:{imsak:'04:25',subuh:'04:35',terbit:'05:49',dhuha:'06:18',dzuhur:'11:51',ashar:'15:12',maghrib:'17:47',isya:'18:58'}},
-      {date:'2026-5-7',  time:{imsak:'04:25',subuh:'04:35',terbit:'05:50',dhuha:'06:18',dzuhur:'11:50',ashar:'15:12',maghrib:'17:46',isya:'18:58'}},
-      {date:'2026-5-8',  time:{imsak:'04:25',subuh:'04:35',terbit:'05:50',dhuha:'06:18',dzuhur:'11:50',ashar:'15:12',maghrib:'17:46',isya:'18:58'}},
-      {date:'2026-5-9',  time:{imsak:'04:25',subuh:'04:35',terbit:'05:50',dhuha:'06:18',dzuhur:'11:50',ashar:'15:12',maghrib:'17:46',isya:'18:57'}},
-      {date:'2026-5-10', time:{imsak:'04:25',subuh:'04:35',terbit:'05:50',dhuha:'06:18',dzuhur:'11:50',ashar:'15:12',maghrib:'17:46',isya:'18:57'}},
-      {date:'2026-5-11', time:{imsak:'04:25',subuh:'04:35',terbit:'05:50',dhuha:'06:18',dzuhur:'11:50',ashar:'15:12',maghrib:'17:46',isya:'18:57'}},
-      {date:'2026-5-12', time:{imsak:'04:25',subuh:'04:35',terbit:'05:50',dhuha:'06:18',dzuhur:'11:50',ashar:'15:12',maghrib:'17:46',isya:'18:57'}},
-      {date:'2026-5-13', time:{imsak:'04:25',subuh:'04:35',terbit:'05:50',dhuha:'06:19',dzuhur:'11:50',ashar:'15:12',maghrib:'17:45',isya:'18:57'}},
-      {date:'2026-5-14', time:{imsak:'04:25',subuh:'04:35',terbit:'05:50',dhuha:'06:19',dzuhur:'11:50',ashar:'15:12',maghrib:'17:45',isya:'18:57'}},
-      {date:'2026-5-15', time:{imsak:'04:25',subuh:'04:35',terbit:'05:50',dhuha:'06:19',dzuhur:'11:50',ashar:'15:12',maghrib:'17:45',isya:'18:57'}},
-      {date:'2026-5-16', time:{imsak:'04:25',subuh:'04:35',terbit:'05:50',dhuha:'06:19',dzuhur:'11:50',ashar:'15:12',maghrib:'17:45',isya:'18:57'}},
-      {date:'2026-5-17', time:{imsak:'04:25',subuh:'04:35',terbit:'05:51',dhuha:'06:19',dzuhur:'11:50',ashar:'15:12',maghrib:'17:45',isya:'18:57'}},
-      {date:'2026-5-18', time:{imsak:'04:25',subuh:'04:35',terbit:'05:51',dhuha:'06:19',dzuhur:'11:50',ashar:'15:12',maghrib:'17:45',isya:'18:57'}},
-      {date:'2026-5-19', time:{imsak:'04:25',subuh:'04:35',terbit:'05:51',dhuha:'06:20',dzuhur:'11:50',ashar:'15:12',maghrib:'17:45',isya:'18:57'}},
-      {date:'2026-5-20', time:{imsak:'04:25',subuh:'04:35',terbit:'05:51',dhuha:'06:20',dzuhur:'11:50',ashar:'15:12',maghrib:'17:45',isya:'18:57'}},
-      {date:'2026-5-21', time:{imsak:'04:25',subuh:'04:35',terbit:'05:51',dhuha:'06:20',dzuhur:'11:51',ashar:'15:12',maghrib:'17:45',isya:'18:57'}},
-      {date:'2026-5-22', time:{imsak:'04:25',subuh:'04:35',terbit:'05:51',dhuha:'06:20',dzuhur:'11:51',ashar:'15:12',maghrib:'17:45',isya:'18:57'}},
-      {date:'2026-5-23', time:{imsak:'04:25',subuh:'04:35',terbit:'05:52',dhuha:'06:20',dzuhur:'11:51',ashar:'15:12',maghrib:'17:45',isya:'18:58'}},
-      {date:'2026-5-24', time:{imsak:'04:25',subuh:'04:35',terbit:'05:52',dhuha:'06:21',dzuhur:'11:51',ashar:'15:12',maghrib:'17:45',isya:'18:58'}},
-      {date:'2026-5-25', time:{imsak:'04:25',subuh:'04:35',terbit:'05:52',dhuha:'06:21',dzuhur:'11:51',ashar:'15:13',maghrib:'17:45',isya:'18:58'}},
-      {date:'2026-5-26', time:{imsak:'04:26',subuh:'04:36',terbit:'05:52',dhuha:'06:21',dzuhur:'11:51',ashar:'15:13',maghrib:'17:45',isya:'18:58'}},
-      {date:'2026-5-27', time:{imsak:'04:26',subuh:'04:36',terbit:'05:52',dhuha:'06:21',dzuhur:'11:51',ashar:'15:13',maghrib:'17:45',isya:'18:58'}},
-      {date:'2026-5-28', time:{imsak:'04:26',subuh:'04:36',terbit:'05:53',dhuha:'06:21',dzuhur:'11:51',ashar:'15:13',maghrib:'17:45',isya:'18:58'}},
-      {date:'2026-5-29', time:{imsak:'04:26',subuh:'04:36',terbit:'05:53',dhuha:'06:22',dzuhur:'11:51',ashar:'15:13',maghrib:'17:45',isya:'18:58'}},
-      {date:'2026-5-30', time:{imsak:'04:26',subuh:'04:36',terbit:'05:53',dhuha:'06:22',dzuhur:'11:51',ashar:'15:13',maghrib:'17:45',isya:'18:58'}},
-      {date:'2026-5-31', time:{imsak:'04:26',subuh:'04:36',terbit:'05:53',dhuha:'06:22',dzuhur:'11:52',ashar:'15:13',maghrib:'17:45',isya:'18:58'}}
-    ]
-  };
-
-  var PRAYERS = [
-    { key:'imsak',   label:'Imsak',   icon:'🌙' },
-    { key:'subuh',   label:'Subuh',   icon:'🌄' },
-    { key:'dhuha',   label:'Dhuha',   icon:'🌅' },
-    { key:'dzuhur',  label:'Dzuhur',  icon:'☀️'  },
-    { key:'ashar',   label:'Ashar',   icon:'🌤️' },
-    { key:'maghrib', label:'Maghrib', icon:'🌇' },
-    { key:'isya',    label:'Isya',    icon:'🌙' }
-  ];
-
-  var DAYS   = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-  var MONTHS = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-
-  function formatDateFull(d){
-    return DAYS[d.getDay()]+', '+d.getDate()+' '+MONTHS[d.getMonth()]+' '+d.getFullYear();
-  }
-
-  function toMin(timeStr){
-    var p = timeStr.split(':');
-    return parseInt(p[0])*60 + parseInt(p[1]);
-  }
-
-  function getActivePrayer(time, nowMin){
-    var order = ['imsak','subuh','dhuha','dzuhur','ashar','maghrib','isya'];
-    var active = null;
-    for(var i=0;i<order.length;i++){
-      if(time[order[i]] && toMin(time[order[i]]) <= nowMin) active = order[i];
+    var nowMin = new Date().getHours() * 60 + new Date().getMinutes();
+    function toMin(t) { var p = t.split(':'); return parseInt(p[0]) * 60 + parseInt(p[1]); }
+    var waktuUtama = ['subuh','dzuhur','ashar','maghrib','isya'];
+    var nextKey = null;
+    for (var i = 0; i < waktuUtama.length; i++) {
+      if (toMin(j[waktuUtama[i]]) > nowMin) { nextKey = waktuUtama[i]; break; }
     }
-    return active;
-  }
+    var label = {subuh:'Subuh',dzuhur:'Dzuhur',ashar:'Ashar',maghrib:'Maghrib',isya:'Isya'};
 
-  function getNextPrayer(time, nowMin){
-    var order = ['imsak','subuh','dhuha','dzuhur','ashar','maghrib','isya'];
-    for(var i=0;i<order.length;i++){
-      var key = order[i];
-      if(!time[key]) continue;
-      var pMin = toMin(time[key]);
-      if(pMin > nowMin){
-        var label = key.charAt(0).toUpperCase()+key.slice(1);
-        return {label:label, time:time[key], minLeft: pMin-nowMin};
-      }
+    function itemHtml(key) {
+      var isNext = key === nextKey;
+      return '<div class="sholat-item'+(isNext?' next':'')+'">' +
+        '<div class="sholat-name">'+label[key]+(isNext?' ⬅':' ')+'</div>' +
+        '<div class="sholat-time">'+j[key]+'</div></div>';
     }
-    return null;
-  }
-
-  function renderPrayers(time, cityName){
-    var now    = new Date();
-    var nowMin = now.getHours()*60 + now.getMinutes();
-    var active = getActivePrayer(time, nowMin);
-    var next   = getNextPrayer(time, nowMin);
-
-    document.getElementById('sholat-date').textContent = formatDateFull(now);
-    if(cityName) document.getElementById('sholat-city').textContent = cityName;
-
-    var html = '<div class="sholat-grid">';
-    PRAYERS.forEach(function(p){
-      var val = time[p.key] || '--:--';
-      var isAct = (p.key === active);
-      html += '<div class="sholat-item'+(isAct?' active':'')+'">'+
-                '<div class="sholat-icon">'+p.icon+'</div>'+
-                '<div>'+
-                  '<div class="sholat-name">'+p.label+'</div>'+
-                  '<div class="sholat-time">'+val+'</div>'+
-                '</div>'+
-              '</div>';
-    });
-    html += '</div>';
-
-    if(next){
-      var h = Math.floor(next.minLeft/60), m = next.minLeft%60;
-      var cd = h>0 ? h+'j '+m+'m lagi' : m+' menit lagi';
-      html += '<div class="sholat-next-banner">⏰ Waktu <b>'+next.label+'</b> pukul <b>'+next.time+'</b> — '+cd+'</div>';
-    } else {
-      html += '<div class="sholat-next-banner">🌙 Semua waktu sholat hari ini telah berlalu</div>';
+    function extraHtml(name, key) {
+      return '<div class="sholat-extra-item">' +
+        '<div class="sholat-extra-name">'+name+'</div>' +
+        '<div class="sholat-extra-time">'+j[key]+'</div></div>';
     }
 
-    document.getElementById('sholat-content').innerHTML = html;
+    card.innerHTML =
+      '<div class="sholat-header">' +
+        '<div><div class="sholat-title">🕌 Jadwal Sholat</div>' +
+        '<div class="sholat-loc">📍 '+data.kabko+', '+data.prov+'</div></div>' +
+        '<div class="sholat-date">'+j.tanggal+'</div>' +
+      '</div>' +
+      '<div class="sholat-grid">'+itemHtml('subuh')+itemHtml('dzuhur')+itemHtml('ashar')+itemHtml('maghrib')+'</div>' +
+      '<div class="sholat-grid" style="grid-template-columns:1fr;margin-top:7px">'+itemHtml('isya')+'</div>' +
+      '<div class="sholat-extra">'+extraHtml('Imsak','imsak')+extraHtml('Terbit','terbit')+extraHtml('Dhuha','dhuha')+'</div>';
+  } catch(e) {
+    card.innerHTML = '<div class="sholat-loading" style="color:#e63946">⚠️ Gagal memuat jadwal sholat</div>';
   }
-
-  function findToday(prayers){
-    var now = new Date();
-    var todayStr = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate();
-    for(var i=0;i<prayers.length;i++){
-      if(prayers[i].date === todayStr) return prayers[i];
-    }
-    return null;
-  }
-
-  function loadFromEmbedded(){
-    var today = findToday(EMBEDDED_DATA.prayers);
-    if(today){
-      renderPrayers(today.time, EMBEDDED_DATA.name);
-    } else {
-      /* Bulan berbeda — coba ambil data terdekat */
-      var sorted = EMBEDDED_DATA.prayers.slice().sort(function(a,b){
-        return new Date(a.date)-new Date(b.date);
-      });
-      var closest = sorted[sorted.length-1];
-      var now = new Date();
-      for(var i=0;i<sorted.length;i++){
-        if(new Date(sorted[i].date) >= now){ closest = sorted[i]; break; }
-      }
-      renderPrayers(closest.time, EMBEDDED_DATA.name);
-      document.getElementById('sholat-date').textContent += ' *';
-    }
-  }
-
-  function init(){
-    loadFromEmbedded();
-  }
-
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-
-  /* Refresh setiap 1 menit agar highlight & countdown selalu update */
-  setInterval(loadFromEmbedded, 60000);
 })();
 </script>
 </body>
