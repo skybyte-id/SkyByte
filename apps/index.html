@@ -142,6 +142,23 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 .no-tagihan svg{width:48px;height:48px;fill:var(--bd);margin-bottom:10px;display:block;margin-left:auto;margin-right:auto}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.sholat-card{margin:0 14px 12px;background:linear-gradient(135deg,#023e8a,#0077b6);border-radius:16px;padding:16px;border:1px solid rgba(0,180,216,.2);box-shadow:0 4px 18px rgba(0,100,200,.18)}
+.sholat-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sholat-title{font-size:13px;font-weight:800;color:#fff;letter-spacing:.08em}
+.sholat-loc{font-size:10px;color:rgba(255,255,255,.6);margin-top:2px}
+.sholat-date{font-size:10px;color:rgba(255,255,255,.5);text-align:right}
+.sholat-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px}
+.sholat-item{background:rgba(255,255,255,.1);border-radius:10px;padding:8px 6px;text-align:center;border:1px solid rgba(255,255,255,.08)}
+.sholat-item.next{background:rgba(6,214,160,.2);border-color:rgba(6,214,160,.5)}
+.sholat-name{font-size:9px;color:rgba(255,255,255,.6);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}
+.sholat-time{font-size:14px;font-weight:800;color:#fff}
+.sholat-item.next .sholat-name{color:#06d6a0}
+.sholat-item.next .sholat-time{color:#06d6a0}
+.sholat-extra{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:7px}
+.sholat-extra-item{background:rgba(255,255,255,.07);border-radius:8px;padding:6px;text-align:center}
+.sholat-extra-name{font-size:9px;color:rgba(255,255,255,.45);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px}
+.sholat-extra-time{font-size:11px;font-weight:800;color:rgba(255,255,255,.7)}
+.sholat-loading{text-align:center;padding:18px;color:rgba(255,255,255,.5);font-size:12px}
 </style>
 </head>
 <body>
@@ -308,6 +325,14 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
   <div><div class="tt">SPEEDTEST BY OOKLA</div><div class="ts">Uji kecepatan internet sekarang</div></div>
   <div class="ar">&gt;</div>
 </a>
+
+<div class="sh"><h2>Jadwal Sholat</h2><div class="sl"></div></div>
+<div class="sholat-card" id="sholatCard">
+  <div class="sholat-loading">
+    <div class="spin" style="margin:0 auto 8px;width:24px;height:24px;border-width:3px;border-top-color:#06d6a0"></div>
+    Memuat jadwal sholat...
+  </div>
+</div>
 
 <a class="fab" href="https://wa.me/6282295750165">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.549 4.105 1.51 5.83L0 24l6.335-1.652A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 01-5.304-1.548l-.38-.225-3.922 1.023 1.043-3.81-.248-.392A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
@@ -1268,6 +1293,75 @@ function up() {
   };
 }
 setInterval(up,IV);up();
+
+// ============================================================
+//  JADWAL SHOLAT — API MyQuran
+// ============================================================
+(async function loadSholat() {
+  var card = document.getElementById('sholatCard');
+  try {
+    var res = await fetch('https://api.myquran.com/v3/sholat/jadwal/006f52e9102a8d3be2fe5614f42ba989/today');
+    var json = await res.json();
+    if (!json.status) throw new Error('API error');
+
+    var data = json.data;
+    var dateKey = Object.keys(data.jadwal)[0];
+    var j = data.jadwal[dateKey];
+
+    // Tentukan waktu sholat berikutnya
+    var now = new Date();
+    var nowMin = now.getHours() * 60 + now.getMinutes();
+    function toMin(t) { var p = t.split(':'); return parseInt(p[0]) * 60 + parseInt(p[1]); }
+    var waktuUtama = [
+      { name: 'Subuh', key: 'subuh' },
+      { name: 'Dzuhur', key: 'dzuhur' },
+      { name: 'Ashar', key: 'ashar' },
+      { name: 'Maghrib', key: 'maghrib' },
+      { name: 'Isya', key: 'isya' }
+    ];
+    var nextKey = null;
+    for (var i = 0; i < waktuUtama.length; i++) {
+      if (toMin(j[waktuUtama[i].key]) > nowMin) { nextKey = waktuUtama[i].key; break; }
+    }
+
+    function itemHtml(name, key) {
+      var isNext = key === nextKey;
+      return '<div class="sholat-item' + (isNext ? ' next' : '') + '">' +
+        '<div class="sholat-name">' + name + (isNext ? ' ⬅' : '') + '</div>' +
+        '<div class="sholat-time">' + j[key] + '</div>' +
+        '</div>';
+    }
+    function extraHtml(name, key) {
+      return '<div class="sholat-extra-item">' +
+        '<div class="sholat-extra-name">' + name + '</div>' +
+        '<div class="sholat-extra-time">' + j[key] + '</div>' +
+        '</div>';
+    }
+
+    card.innerHTML =
+      '<div class="sholat-header">' +
+        '<div><div class="sholat-title">🕌 Jadwal Sholat</div><div class="sholat-loc">📍 ' + data.kabko + ', ' + data.prov + '</div></div>' +
+        '<div class="sholat-date">' + j.tanggal + '</div>' +
+      '</div>' +
+      '<div class="sholat-grid">' +
+        itemHtml('Subuh', 'subuh') +
+        itemHtml('Dzuhur', 'dzuhur') +
+        itemHtml('Ashar', 'ashar') +
+        itemHtml('Maghrib', 'maghrib') +
+      '</div>' +
+      '<div class="sholat-grid" style="grid-template-columns:1fr;margin-top:7px">' +
+        itemHtml('Isya', 'isya') +
+      '</div>' +
+      '<div class="sholat-extra">' +
+        extraHtml('Imsak', 'imsak') +
+        extraHtml('Terbit', 'terbit') +
+        extraHtml('Dhuha', 'dhuha') +
+      '</div>';
+  } catch(e) {
+    card.innerHTML = '<div class="sholat-loading" style="color:#e63946">⚠️ Gagal memuat jadwal sholat</div>';
+  }
+})();
+
 </script>
 </body>
 </html>
