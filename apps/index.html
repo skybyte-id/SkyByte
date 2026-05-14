@@ -497,9 +497,9 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 
 <!--
   ╔══════════════════════════════════════════════════════════════╗
-  ║  SUPABASE — Buat tabel pending_payments dengan SQL ini:     ║
+  ║  SUPABASE — Buat tabel pending_payment dengan SQL ini:     ║
   ║                                                              ║
-  ║  CREATE TABLE pending_payments (                             ║
+  ║  CREATE TABLE pending_payment (                             ║
   ║    id          bigserial PRIMARY KEY,                        ║
   ║    username    text NOT NULL,                                ║
   ║    year        integer NOT NULL,                             ║
@@ -510,8 +510,8 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
   ║  );                                                          ║
   ║                                                              ║
   ║  Lalu aktifkan RLS dan tambahkan policy:                     ║
-  ║  ALTER TABLE pending_payments ENABLE ROW LEVEL SECURITY;     ║
-  ║  CREATE POLICY "allow_all" ON pending_payments               ║
+  ║  ALTER TABLE pending_payment ENABLE ROW LEVEL SECURITY;     ║
+  ║  CREATE POLICY "allow_all" ON pending_payment               ║
   ║    FOR ALL USING (true) WITH CHECK (true);                   ║
   ║                                                              ║
   ║  Lakukan hal yang sama untuk semua tabel lain jika           ║
@@ -526,7 +526,7 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 // ============================================================
 //  KONFIGURASI SUPABASE
 // ============================================================
-var SB_URL  = 'https://hwdzqnmikxplzbyhczlw.supabase.co';
+var SB_URL  = 'https://hwzdqnmikplzbyhczlw.supabase.co';
 var SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3ZHpxbm1pa3hwbHpieWhjemx3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3MDMyNTcsImV4cCI6MjA5NDI3OTI1N30.wIsAO-3bUHgTJmuDH30dOaO-1L1KJSkhLUVQzDkE4Cs';
 var _sb     = supabase.createClient(SB_URL, SB_KEY);
 
@@ -546,7 +546,7 @@ function getBulanNama(idx) { return BULAN[idx]; }
 
 // Cari user berdasarkan phone + username (untuk login)
 async function sbGetUser(phone, username) {
-  var res = await _sb.from('users').select('*')
+  var res = await _sb.from('user').select('*')
     .eq('phone', phone).eq('username', username).maybeSingle();
   if (res.error) throw res.error;
   return res.data ? { found: true, user: res.data } : { found: false };
@@ -554,17 +554,17 @@ async function sbGetUser(phone, username) {
 
 // Cek apakah username sudah ada
 async function sbCheckUsername(username) {
-  var res = await _sb.from('users').select('username')
+  var res = await _sb.from('user').select('username')
     .eq('username', username).maybeSingle();
   if (res.error) throw res.error;
   return { found: !!res.data };
 }
 
-// Daftarkan pelanggan baru ke tabel users
+// Daftarkan pelanggan baru ke tabel user
 async function sbRegister(name, phone, username) {
   var check = await sbCheckUsername(username);
   if (check.found) return { success: false, error: 'Username sudah digunakan. Coba yang lain.' };
-  var res = await _sb.from('users')
+  var res = await _sb.from('user')
     .insert({ name: name, phone: phone, username: username, registeredAt: new Date().toISOString() })
     .select().single();
   if (res.error) throw res.error;
@@ -591,7 +591,7 @@ async function sbSaveLayanan(username, status, paket, tglPasang) {
 
 // Ambil status pembayaran bulan tertentu
 async function sbGetPayment(username, year, month) {
-  var res = await _sb.from('payments').select('paid')
+  var res = await _sb.from('payment').select('paid')
     .eq('username', username).eq('year', year).eq('month', month).maybeSingle();
   if (res.error) throw res.error;
   return { paid: res.data ? res.data.paid === true : false };
@@ -599,7 +599,7 @@ async function sbGetPayment(username, year, month) {
 
 // Ambil riwayat semua pembayaran user
 async function sbGetPaymentHistory(username) {
-  var res = await _sb.from('payments').select('year, month, paid, paidAt')
+  var res = await _sb.from('payment').select('year, month, paid, paidAt')
     .eq('username', username)
     .order('year', { ascending: false })
     .order('month', { ascending: false });
@@ -609,7 +609,7 @@ async function sbGetPaymentHistory(username) {
 
 // Simpan konfirmasi pembayaran (upsert berdasarkan username+year+month)
 async function sbSavePayment(username, year, month) {
-  var res = await _sb.from('payments').upsert(
+  var res = await _sb.from('payment').upsert(
     { username: username, year: year, month: month, paid: true, paidAt: new Date().toISOString() },
     { onConflict: 'username,year,month' }
   );
@@ -617,14 +617,14 @@ async function sbSavePayment(username, year, month) {
   return { success: true };
 }
 
-// Ambil semua antrian pembayaran + join nama dari tabel users
-async function sbGetPendingPayments() {
-  var res = await _sb.from('pending_payments')
-    .select('*, users(name)')
+// Ambil semua antrian pembayaran + join nama dari tabel user
+async function sbGetPendingpayment() {
+  var res = await _sb.from('pending')
+    .select('*, user(name)')
     .order('created_at', { ascending: true });
   if (res.error) throw res.error;
   var pending = (res.data || []).map(function(p) {
-    return Object.assign({}, p, { name: (p.users && p.users.name) ? p.users.name : p.username });
+    return Object.assign({}, p, { name: (p.user && p.user.name) ? p.user.name : p.username });
   });
   return { pending: pending };
 }
@@ -633,7 +633,7 @@ async function sbGetPendingPayments() {
 async function sbCreatePendingPayment(username, year, month) {
   var layananRes = await sbGetLayanan(username);
   var amount = (layananRes.layanan && layananRes.layanan.paket === '100rb') ? 100000 : 50000;
-  var res = await _sb.from('pending_payments').upsert(
+  var res = await _sb.from('pending_payment').upsert(
     { username: username, year: year, month: month, amount: amount, created_at: new Date().toISOString() },
     { onConflict: 'username,year,month' }
   );
@@ -643,7 +643,7 @@ async function sbCreatePendingPayment(username, year, month) {
 
 // Hapus dari antrian (setelah dikonfirmasi atau ditolak)
 async function sbDeletePendingPayment(username, year, month) {
-  var res = await _sb.from('pending_payments').delete()
+  var res = await _sb.from('pending_payment').delete()
     .eq('username', username).eq('year', year).eq('month', month);
   if (res.error) throw res.error;
   return { success: true };
@@ -1029,7 +1029,7 @@ async function loadAntrianList() {
   listEl.innerHTML = '<div style="text-align:center;padding:14px;color:#7a95b0;font-size:12px"><div class="spin" style="margin:0 auto 8px;width:22px;height:22px;border-width:3px"></div>Memuat antrian...</div>';
 
   try {
-    var res     = await sbGetPendingPayments();
+    var res     = await sbGetPendingpayment();
     var pending = res.pending || [];
 
     var badge = document.getElementById('antrianBadge');
@@ -1111,9 +1111,9 @@ async function doAntrianKonfirmasi(username, year, month) {
 
   showLoading('Mengkonfirmasi pembayaran...');
   try {
-    // Simpan pembayaran ke tabel payments
+    // Simpan pembayaran ke tabel payment
     await sbSavePayment(username, year, month);
-    // Hapus dari antrian pending_payments
+    // Hapus dari antrian pending_payment
     await sbDeletePendingPayment(username, year, month);
 
     var el = document.getElementById('antrianItem_' + username);
@@ -1212,7 +1212,7 @@ async function doKonfirmasiBayar() {
 
   showLoading('Mengkonfirmasi pembayaran...');
   try {
-    // Simpan langsung ke tabel payments di Supabase
+    // Simpan langsung ke tabel payment di Supabase
     await sbSavePayment(uname, year, month);
     // Hapus juga dari antrian jika ada
     await sbDeletePendingPayment(uname, year, month);
@@ -1257,7 +1257,7 @@ async function loadAdminPayList() {
     }
 
     // Ambil semua payment bulan ini sekaligus untuk efisiensi
-    var payRes = await _sb.from('payments').select('username, paid')
+    var payRes = await _sb.from('payment').select('username, paid')
       .eq('year', year).eq('month', month);
     var paidMap = {};
     (payRes.data || []).forEach(function(p) { paidMap[p.username] = p.paid === true; });
@@ -1315,7 +1315,7 @@ async function doAktivasi() {
 
   showLoading('Mengaktifkan layanan...');
   try {
-    // Cek apakah username terdaftar di tabel users
+    // Cek apakah username terdaftar di tabel user
     var check = await sbCheckUsername(uname);
     if (!check.found) {
       err.textContent = 'Username @' + uname + ' belum terdaftar di database.';
