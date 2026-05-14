@@ -587,6 +587,9 @@ function fbFindUser(phone, username) {
         }
       });
       resolve(found);
+    }, function(err) {
+      console.error('fbFindUser error:', err);
+      resolve(null);
     });
   });
 }
@@ -599,50 +602,61 @@ function fbCheckUsername(username) {
         if (child.val().username === username.toLowerCase()) exists = true;
       });
       resolve(exists);
+    }, function(err) {
+      console.error('fbCheckUsername error:', err);
+      resolve(false);
     });
   });
 }
 
 function fbGetLayanan(username) {
   return new Promise(function(resolve) {
-    db.ref('layanan/' + username).once('value', function(snap) {
+    db.ref('subscriptions/' + username).once('value', function(snap) {
+      console.log('fbGetLayanan path:', 'subscriptions/' + username, '| exists:', snap.exists(), '| val:', snap.val());
       resolve(snap.exists() ? snap.val() : null);
+    }, function(err) {
+      console.error('fbGetLayanan error:', err.code, err.message);
+      resolve(null);
     });
   });
 }
 
 function fbGetPayment(username, year, month) {
-  var key = year + '_' + month;
+  var key = username + '_' + year + '_' + month;
   return new Promise(function(resolve) {
-    db.ref('payments/' + username + '/' + key).once('value', function(snap) {
+    db.ref('payments/' + key).once('value', function(snap) {
       resolve(snap.exists() ? snap.val() : null);
+    }, function(err) {
+      console.error('fbGetPayment error:', err);
+      resolve(null);
     });
   });
 }
 
 function fbGetPaymentHistory(username) {
   return new Promise(function(resolve) {
-    db.ref('payments/' + username).once('value', function(snap) {
+    db.ref('payments').once('value', function(snap) {
       var history = [];
       snap.forEach(function(child) {
-        var parts = child.key.split('_');
-        history.push({
-          year: parseInt(parts[0]),
-          month: parseInt(parts[1]),
-          paid: child.val().paid === true
-        });
+        var d = child.val();
+        if (d.username === username) {
+          history.push({ year: d.year, month: d.month, paid: d.paid === true });
+        }
       });
       resolve(history);
+    }, function(err) {
+      console.error('fbGetPaymentHistory error:', err);
+      resolve([]);
     });
   });
 }
 
 function fbSavePayment(username, year, month, paid, method) {
-  var key = year + '_' + month;
-  return db.ref('payments/' + username + '/' + key).set({
-    paid: paid,
-    method: method || 'QRIS',
-    updated_at: new Date().toISOString()
+  var key = username + '_' + year + '_' + month;
+  return db.ref('payments/' + key).set({
+    username: username, year: year, month: month,
+    paid: paid, method: method || 'QRIS',
+    paidAt: paid ? new Date().toISOString() : null
   });
 }
 
@@ -654,35 +668,47 @@ function fbGetPendingPayments() {
         list.push(Object.assign({}, child.val(), { _key: child.key }));
       });
       resolve(list);
+    }, function(err) {
+      console.error('fbGetPendingPayments error:', err);
+      resolve([]);
     });
   });
 }
 
 function fbCreatePendingPayment(username, year, month, userData) {
-  return db.ref('pending_payments/' + username).set({
-    username: username,
-    name: userData.name,
-    phone: userData.phone,
-    year: year,
-    month: month,
-    amount: (month === 'belum' ? 50000 : 50000),
-    status: 'pending',
-    created_at: new Date().toISOString()
+  return db.ref('pending_payments').push({
+    username: username, name: userData.name, phone: userData.phone,
+    year: year, month: month, amount: 50000,
+    status: 'pending', created_at: new Date().toISOString()
   });
 }
 
 function fbRemovePendingPayment(username) {
-  return db.ref('pending_payments/' + username).remove();
+  return new Promise(function(resolve) {
+    db.ref('pending_payments').once('value', function(snap) {
+      var removes = [];
+      snap.forEach(function(child) {
+        if (child.val().username === username) removes.push(child.ref.remove());
+      });
+      Promise.all(removes).then(resolve).catch(resolve);
+    }, function(err) {
+      console.error('fbRemovePendingPayment error:', err);
+      resolve();
+    });
+  });
 }
 
 function fbGetAllLayanan() {
   return new Promise(function(resolve) {
-    db.ref('layanan').once('value', function(snap) {
+    db.ref('subscriptions').once('value', function(snap) {
       var list = [];
       snap.forEach(function(child) {
         list.push(Object.assign({ username: child.key }, child.val()));
       });
       resolve(list);
+    }, function(err) {
+      console.error('fbGetAllLayanan error:', err);
+      resolve([]);
     });
   });
 }
@@ -878,6 +904,7 @@ async function renderTagihan(user) {
 
   try {
     var layanan = await fbGetLayanan(user.username);
+    console.log('📋 Layanan untuk', user.username, ':', layanan);
 
     if (!layanan || layanan.status !== 'aktif') {
       document.getElementById('tagihanAktif').innerHTML =
@@ -914,13 +941,21 @@ async function renderTagihan(user) {
     var tglPasangDate;
     var rawTgl = String(layanan.tglPasang || '').replace(/^'/, '').trim();
     if (rawTgl.match(/^\d{4}-\d{2}-\d{2}/)) {
+      // Format ISO YYYY-MM-DD
       tglPasangDate = new Date(rawTgl + 'T00:00:00');
-    } else if (rawTgl.match(/^\d+\s+\S+\s+\d{4}$/)) {
+    } else if (rawTgl.length > 0) {
+      // Format "d Bulan YYYY" atau "dd Bulan YYYY"
       var parts    = rawTgl.split(/\s+/);
-      var bulanIdx = BULAN.indexOf(parts[1]);
-      tglPasangDate = bulanIdx >= 0
-        ? new Date(parseInt(parts[2]), bulanIdx, parseInt(parts[0]))
-        : new Date();
+      if (parts.length === 3) {
+        var bulanIdx = BULAN.indexOf(parts[1]);
+        if (bulanIdx >= 0) {
+          tglPasangDate = new Date(parseInt(parts[2]), bulanIdx, parseInt(parts[0]));
+        } else {
+          tglPasangDate = new Date();
+        }
+      } else {
+        tglPasangDate = new Date();
+      }
     } else {
       tglPasangDate = new Date();
     }
@@ -1054,9 +1089,9 @@ async function doAktivasi() {
     var today    = new Date();
     var tglPasang = today.getDate() + ' ' + getBulanNama(today.getMonth()) + ' ' + today.getFullYear();
 
-    await db.ref('layanan/' + uname).set({
+    await db.ref('subscriptions/' + uname).set({
       username: uname, status: 'aktif', paket: paket,
-      tglPasang: tglPasang, updated_at: new Date().toISOString()
+      tglPasang: tglPasang, updatedAt: new Date().toISOString()
     });
 
     ok.textContent   = '✓ Berhasil! @' + uname + ' diaktifkan paket ' + paket + ' per ' + tglPasang;
