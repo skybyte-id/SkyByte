@@ -526,7 +526,7 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 // ============================================================
 //  KONFIGURASI SUPABASE
 // ============================================================
-var SB_URL  = 'https://hwzdqnmikplzbyhczlw.supabase.co';
+var SB_URL  = 'https://hwdzqnmikxplzbyhczlw.supabase.co'';
 var SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3ZHpxbm1pa3hwbHpieWhjemx3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3MDMyNTcsImV4cCI6MjA5NDI3OTI1N30.wIsAO-3bUHgTJmuDH30dOaO-1L1KJSkhLUVQzDkE4Cs';
 var _sb     = supabase.createClient(SB_URL, SB_KEY);
 
@@ -633,7 +633,7 @@ async function sbGetPendingpayment() {
 async function sbCreatePendingPayment(username, year, month) {
   var layananRes = await sbGetLayanan(username);
   var amount = (layananRes.layanan && layananRes.layanan.paket === '100rb') ? 100000 : 50000;
-  var res = await _sb.from('pending_payment').upsert(
+  var res = await _sb.from('pending').upsert(
     { username: username, year: year, month: month, amount: amount, created_at: new Date().toISOString() },
     { onConflict: 'username,year,month' }
   );
@@ -643,7 +643,7 @@ async function sbCreatePendingPayment(username, year, month) {
 
 // Hapus dari antrian (setelah dikonfirmasi atau ditolak)
 async function sbDeletePendingPayment(username, year, month) {
-  var res = await _sb.from('pending_payment').delete()
+  var res = await _sb.from('pending').delete()
     .eq('username', username).eq('year', year).eq('month', month);
   if (res.error) throw res.error;
   return { success: true };
