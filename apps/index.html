@@ -160,8 +160,6 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 .sholat-extra-time{font-size:11px;font-weight:800;color:rgba(255,255,255,.7)}
 .sholat-loading{text-align:center;padding:18px;color:rgba(255,255,255,.5);font-size:12px}
 </style>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
 <body>
 
@@ -422,7 +420,6 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 
       <div style="background:#f0f7ff;border-radius:12px;padding:12px;margin-bottom:10px">
         <div style="font-size:11px;font-weight:800;color:#0077b6;letter-spacing:.1em;margin-bottom:8px">KONFIRMASI MANUAL</div>
-        <!-- FIX BUG #1: style="padding-left:14px" overrides flex; dibuat terpisah -->
         <div class="inp-wrap" style="margin-bottom:8px">
           <input type="password" id="konfKode" placeholder="Kode admin" style="flex:1;border:none;background:transparent;padding:12px;font-size:14px;font-family:Nunito,sans-serif;font-weight:700;color:#1a2a3a;outline:none">
         </div>
@@ -498,41 +495,169 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
   </div>
 </div>
 
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  SUPABASE — Buat tabel pending_payments dengan SQL ini:     ║
+  ║                                                              ║
+  ║  CREATE TABLE pending_payments (                             ║
+  ║    id          bigserial PRIMARY KEY,                        ║
+  ║    username    text NOT NULL,                                ║
+  ║    year        integer NOT NULL,                             ║
+  ║    month       integer NOT NULL,                             ║
+  ║    amount      integer DEFAULT 0,                            ║
+  ║    created_at  timestamptz DEFAULT now(),                    ║
+  ║    UNIQUE(username, year, month)                             ║
+  ║  );                                                          ║
+  ║                                                              ║
+  ║  Lalu aktifkan RLS dan tambahkan policy:                     ║
+  ║  ALTER TABLE pending_payments ENABLE ROW LEVEL SECURITY;     ║
+  ║  CREATE POLICY "allow_all" ON pending_payments               ║
+  ║    FOR ALL USING (true) WITH CHECK (true);                   ║
+  ║                                                              ║
+  ║  Lakukan hal yang sama untuk semua tabel lain jika           ║
+  ║  belum ada policy untuk anon role.                           ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+
+<!-- Supabase JS SDK v2 -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 // ============================================================
-//  KONFIGURASI
+//  KONFIGURASI SUPABASE
 // ============================================================
-var API_URL = 'https://script.google.com/macros/s/AKfycbzBWOxDWFBByW8TlkCuQsW0XjSsDtEmkAx-OtdAPLZW6vcGFFAfaX68knc0CBIvjbNW3Q/exec';
+var SB_URL  = 'https://hwzdqnmikplzbyhczlw.supabase.co';
+var SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3ZHpxbm1pa3hwbHpieWhjemx3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3MDMyNTcsImV4cCI6MjA5NDI3OTI1N30.wIsAO-3bUHgTJmuDH30dOaO-1L1KJSkhLUVQzDkE4Cs';
+var _sb     = supabase.createClient(SB_URL, SB_KEY);
+
+// Kode admin — dicek secara lokal (tidak dikirim ke server)
+var ADMIN_CODE = 'inikatasandi';
 
 // ============================================================
-//  NAMA BULAN (dideklarasikan di atas agar tersedia global)
+//  NAMA BULAN
 // ============================================================
 var BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 function getBulanNama(idx) { return BULAN[idx]; }
 
 // ============================================================
-//  API HELPERS
+//  SUPABASE HELPERS
+//  Semua fungsi di bawah menggantikan apiGet / apiPost lama.
 // ============================================================
-async function apiGet(params) {
-  var url = new URL(API_URL);
-  Object.keys(params).forEach(function(k){ url.searchParams.set(k, params[k]); });
-  var res = await fetch(url.toString());
-  if (!res.ok) throw new Error('HTTP ' + res.status);
-  return res.json();
+
+// Cari user berdasarkan phone + username (untuk login)
+async function sbGetUser(phone, username) {
+  var res = await _sb.from('users').select('*')
+    .eq('phone', phone).eq('username', username).maybeSingle();
+  if (res.error) throw res.error;
+  return res.data ? { found: true, user: res.data } : { found: false };
 }
 
-async function apiPost(data) {
-  var res = await fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify(data)
+// Cek apakah username sudah ada
+async function sbCheckUsername(username) {
+  var res = await _sb.from('users').select('username')
+    .eq('username', username).maybeSingle();
+  if (res.error) throw res.error;
+  return { found: !!res.data };
+}
+
+// Daftarkan pelanggan baru ke tabel users
+async function sbRegister(name, phone, username) {
+  var check = await sbCheckUsername(username);
+  if (check.found) return { success: false, error: 'Username sudah digunakan. Coba yang lain.' };
+  var res = await _sb.from('users')
+    .insert({ name: name, phone: phone, username: username, registeredAt: new Date().toISOString() })
+    .select().single();
+  if (res.error) throw res.error;
+  return { success: true, user: res.data };
+}
+
+// Ambil data layanan milik username
+async function sbGetLayanan(username) {
+  var res = await _sb.from('layanan').select('*')
+    .eq('username', username).maybeSingle();
+  if (res.error) throw res.error;
+  return res.data ? { found: true, layanan: res.data } : { found: false };
+}
+
+// Simpan / update data layanan (upsert berdasarkan username)
+async function sbSaveLayanan(username, status, paket, tglPasang) {
+  var res = await _sb.from('layanan').upsert(
+    { username: username, status: status, paket: paket, tglPasang: tglPasang, updatedAt: new Date().toISOString() },
+    { onConflict: 'username' }
+  );
+  if (res.error) throw res.error;
+  return { success: true };
+}
+
+// Ambil status pembayaran bulan tertentu
+async function sbGetPayment(username, year, month) {
+  var res = await _sb.from('payments').select('paid')
+    .eq('username', username).eq('year', year).eq('month', month).maybeSingle();
+  if (res.error) throw res.error;
+  return { paid: res.data ? res.data.paid === true : false };
+}
+
+// Ambil riwayat semua pembayaran user
+async function sbGetPaymentHistory(username) {
+  var res = await _sb.from('payments').select('year, month, paid, paidAt')
+    .eq('username', username)
+    .order('year', { ascending: false })
+    .order('month', { ascending: false });
+  if (res.error) throw res.error;
+  return { history: res.data || [] };
+}
+
+// Simpan konfirmasi pembayaran (upsert berdasarkan username+year+month)
+async function sbSavePayment(username, year, month) {
+  var res = await _sb.from('payments').upsert(
+    { username: username, year: year, month: month, paid: true, paidAt: new Date().toISOString() },
+    { onConflict: 'username,year,month' }
+  );
+  if (res.error) throw res.error;
+  return { success: true };
+}
+
+// Ambil semua antrian pembayaran + join nama dari tabel users
+async function sbGetPendingPayments() {
+  var res = await _sb.from('pending_payments')
+    .select('*, users(name)')
+    .order('created_at', { ascending: true });
+  if (res.error) throw res.error;
+  var pending = (res.data || []).map(function(p) {
+    return Object.assign({}, p, { name: (p.users && p.users.name) ? p.users.name : p.username });
   });
-  if (!res.ok) throw new Error('HTTP ' + res.status);
-  return res.json();
+  return { pending: pending };
+}
+
+// Pelanggan klik "Sudah Bayar" — masukkan ke antrian
+async function sbCreatePendingPayment(username, year, month) {
+  var layananRes = await sbGetLayanan(username);
+  var amount = (layananRes.layanan && layananRes.layanan.paket === '100rb') ? 100000 : 50000;
+  var res = await _sb.from('pending_payments').upsert(
+    { username: username, year: year, month: month, amount: amount, created_at: new Date().toISOString() },
+    { onConflict: 'username,year,month' }
+  );
+  if (res.error) throw res.error;
+  return { success: true };
+}
+
+// Hapus dari antrian (setelah dikonfirmasi atau ditolak)
+async function sbDeletePendingPayment(username, year, month) {
+  var res = await _sb.from('pending_payments').delete()
+    .eq('username', username).eq('year', year).eq('month', month);
+  if (res.error) throw res.error;
+  return { success: true };
+}
+
+// Ambil semua layanan aktif (untuk panel admin)
+async function sbGetAllLayanan() {
+  var res = await _sb.from('layanan').select('*').eq('status', 'aktif');
+  if (res.error) throw res.error;
+  return { layanan: res.data || [] };
 }
 
 // ============================================================
-//  SESSION
+//  SESSION (localStorage — tidak berubah)
 // ============================================================
 function getCurrentUser() {
   try { return JSON.parse(localStorage.getItem('sb_current') || 'null'); } catch(e) { return null; }
@@ -571,7 +696,7 @@ async function doLogin() {
   btn.disabled = true;
   showLoading('Memverifikasi akun...');
   try {
-    var res = await apiGet({ action: 'getUser', phone: phone, username: uname });
+    var res = await sbGetUser(phone, uname);
     if (res.found) {
       saveCurrentUser(res.user);
       document.getElementById('loginOv').classList.remove('open');
@@ -591,7 +716,7 @@ async function doLogin() {
 }
 
 // ============================================================
-//  REGISTER
+//  REGISTER — tulis data baru ke Supabase
 // ============================================================
 async function doRegister() {
   var name  = document.getElementById('regName').value.trim();
@@ -610,7 +735,7 @@ async function doRegister() {
   btn.disabled = true;
   showLoading('Mendaftarkan akun...');
   try {
-    var res = await apiPost({ action: 'register', name: name, phone: phone, username: uname });
+    var res = await sbRegister(name, phone, uname);
     if (res.success) {
       saveCurrentUser(res.user);
       err.style.display = 'none';
@@ -692,7 +817,7 @@ async function pelangganSudahBayar() {
   var p = _pendingPayment;
   showLoading('Mengirim notifikasi ke admin...');
   try {
-    await apiPost({ action: 'createPendingPayment', username: p.username, year: p.year, month: p.month });
+    await sbCreatePendingPayment(p.username, p.year, p.month);
     setQRState('pending');
   } catch(e) {
     alert('Gagal terhubung. Coba lagi atau hubungi CS.');
@@ -702,8 +827,7 @@ async function pelangganSudahBayar() {
 }
 
 function setQRState(state) {
-  var states = ['waiting','pending','success'];
-  states.forEach(function(s) {
+  ['waiting','pending','success'].forEach(function(s) {
     var el = document.getElementById('qr-state-' + s);
     if (el) el.style.display = (s === state ? 'block' : 'none');
   });
@@ -722,9 +846,9 @@ function triggerPelangganLunas(username) {
   }
 }
 
-// (BULAN dan getBulanNama sudah dipindah ke atas script)
-
-// Render tagihan aktif dan riwayat pembayaran untuk user yang login
+// ============================================================
+//  RENDER TAGIHAN — baca data dari Supabase
+// ============================================================
 async function renderTagihan(user) {
   var sec = document.getElementById('tagihanSection');
   if (!user) { sec.style.display = 'none'; return; }
@@ -736,7 +860,7 @@ async function renderTagihan(user) {
     '<div class="no-tagihan">Memuat riwayat...</div>';
 
   try {
-    var layananRes = await apiGet({ action: 'getLayanan', username: user.username });
+    var layananRes = await sbGetLayanan(user.username);
     var layanan    = layananRes.found ? layananRes.layanan : null;
 
     if (!layanan || layanan.status !== 'aktif') {
@@ -771,31 +895,29 @@ async function renderTagihan(user) {
     var nominal = paket === '100rb' ? 100000 : 50000;
 
     // Parse tglPasang: support format "d Bulan YYYY" atau ISO YYYY-MM-DD
-    // Strip apostrof leading jika ada (dari GAS yang menyimpan "'5 Mei 2026")
     var tglPasangDate;
     var rawTglPasang = String(layanan.tglPasang || '').replace(/^'/, '').trim();
     if (rawTglPasang && rawTglPasang.match(/^\d{4}-\d{2}-\d{2}/)) {
-      // Format ISO YYYY-MM-DD
       tglPasangDate = new Date(rawTglPasang + 'T00:00:00');
     } else if (rawTglPasang && rawTglPasang.match(/^\d+\s+\S+\s+\d{4}$/)) {
-      // Format "d Bulan YYYY" → parse manual agar tidak NaN di Safari
       var parts    = rawTglPasang.split(/\s+/);
       var bulanIdx = BULAN.indexOf(parts[1]);
       if (bulanIdx >= 0) {
         tglPasangDate = new Date(parseInt(parts[2]), bulanIdx, parseInt(parts[0]));
       } else {
-        tglPasangDate = new Date(); // fallback hari ini
+        tglPasangDate = new Date();
       }
     } else {
-      tglPasangDate = new Date(); // fallback hari ini
+      tglPasangDate = new Date();
     }
 
     var jatuhTempo       = new Date(tglPasangDate.getFullYear(), tglPasangDate.getMonth() + 1, tglPasangDate.getDate());
     var tglJatuhTempoNum = jatuhTempo.getDate();
     var sisa             = Math.ceil((jatuhTempo - today) / (1000 * 60 * 60 * 24));
 
-    var payRes    = await apiGet({ action: 'getPayment', username: user.username, year: by, month: bm });
-    var sudahBayar = payRes.paid == true; // Google Sheets kadang return string "TRUE"
+    // Baca status pembayaran bulan ini dari Supabase
+    var payRes    = await sbGetPayment(user.username, by, bm);
+    var sudahBayar = payRes.paid === true;
 
     var status    = sudahBayar ? 'lunas' : (today > jatuhTempo ? 'telat' : (sisa <= 3 ? 'jatuh' : 'belum'));
     var statusTxt = 'BELUM DIBAYAR', badgeTxt = 'BULAN INI', btnClass = '', btnTxt = 'Bayar via QRIS';
@@ -832,7 +954,8 @@ async function renderTagihan(user) {
         '</div>' +
       '</div>';
 
-    var histRes = await apiGet({ action: 'getPaymentHistory', username: user.username });
+    // Riwayat pembayaran dari Supabase
+    var histRes = await sbGetPaymentHistory(user.username);
     var histMap = {};
     (histRes.history || []).forEach(function(h) {
       histMap[h.year + '_' + h.month] = h.paid;
@@ -844,7 +967,7 @@ async function renderTagihan(user) {
       if (hm < 0) { hm += 12; hy--; }
       var tglBulanIni = new Date(hy, hm, 1);
       if (tglBulanIni < new Date(tglPasangDate.getFullYear(), tglPasangDate.getMonth(), 1)) continue;
-      var dibayar = histMap[hy + '_' + hm] == true; // Google Sheets kadang return string "TRUE"
+      var dibayar = histMap[hy + '_' + hm] === true;
       histData.push({ bulan: getBulanNama(hm) + ' ' + hy, status: dibayar ? 'lunas' : 'telat', nominal: nominal });
     }
 
@@ -870,7 +993,7 @@ async function renderTagihan(user) {
 //  ADMIN PANEL — TAB SWITCHER
 // ============================================================
 function switchAdminTab(tab) {
-  var tabs = ['aktif', 'antrian', 'bayar'];
+  var tabs   = ['aktif', 'antrian', 'bayar'];
   var btnMap = { aktif: 'tabBtnAktif', antrian: 'tabBtnAntrian', bayar: 'tabBtnBayar' };
   var colorMap = {
     aktif   : 'linear-gradient(135deg,#0077b6,#00b4d8)',
@@ -896,7 +1019,7 @@ function switchAdminTab(tab) {
 }
 
 // ============================================================
-//  ADMIN — Load Antrian
+//  ADMIN — Load Antrian dari Supabase
 // ============================================================
 async function loadAntrianList() {
   var listEl = document.getElementById('antrianList');
@@ -906,7 +1029,7 @@ async function loadAntrianList() {
   listEl.innerHTML = '<div style="text-align:center;padding:14px;color:#7a95b0;font-size:12px"><div class="spin" style="margin:0 auto 8px;width:22px;height:22px;border-width:3px"></div>Memuat antrian...</div>';
 
   try {
-    var res     = await apiGet({ action: 'getPendingPayments' });
+    var res     = await sbGetPendingPayments();
     var pending = res.pending || [];
 
     var badge = document.getElementById('antrianBadge');
@@ -922,14 +1045,13 @@ async function loadAntrianList() {
       return;
     }
 
-    var today    = new Date();
+    var today     = new Date();
     var bulanNama = getBulanNama(today.getMonth()) + ' ' + today.getFullYear();
 
     var html = '';
     pending.forEach(function(p) {
       var nominal = 'Rp ' + (Number(p.amount) || 0).toLocaleString('id-ID');
       var waktu   = p.created_at ? String(p.created_at).substring(11,16) : '--:--';
-      // FIX BUG #4: Kutip string di onclick menggunakan escape karakter yang benar
       html +=
         '<div id="antrianItem_' + p.username + '" style="background:#fff;border:1px solid #dde8f5;border-radius:12px;padding:12px;margin-bottom:8px">' +
           '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
@@ -966,7 +1088,7 @@ async function loadAntrianList() {
 }
 
 // ============================================================
-//  ANTRIAN — Konfirmasi
+//  ANTRIAN — Konfirmasi: simpan payment + hapus dari antrian
 // ============================================================
 async function doAntrianKonfirmasi(username, year, month) {
   var kode  = document.getElementById('antrianKode').value.trim();
@@ -980,22 +1102,25 @@ async function doAntrianKonfirmasi(username, year, month) {
     return;
   }
 
+  // Verifikasi kode admin secara lokal
+  if (kode !== ADMIN_CODE) {
+    msgEl.textContent = '❌ Kode admin salah!';
+    msgEl.style.cssText = 'display:block;background:#fff5f5;border:1px solid #e63946;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#e63946;font-weight:800;margin-top:8px';
+    return;
+  }
+
   showLoading('Mengkonfirmasi pembayaran...');
   try {
-    var res = await apiPost({ action: 'adminConfirmPayment', adminCode: kode, username: username, year: year, month: month });
-    if (!res.success) {
-      hideLoading();
-      msgEl.textContent = '❌ ' + (res.error || 'Gagal — cek kode admin');
-      msgEl.style.cssText = 'display:block;background:#fff5f5;border:1px solid #e63946;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#e63946;font-weight:800;margin-top:8px';
-      return;
-    }
-    await apiPost({ action: 'savePayment', username: username, year: year, month: month, paid: true, method: 'QRIS-Manual-Admin' });
+    // Simpan pembayaran ke tabel payments
+    await sbSavePayment(username, year, month);
+    // Hapus dari antrian pending_payments
+    await sbDeletePendingPayment(username, year, month);
 
     var el = document.getElementById('antrianItem_' + username);
     if (el) {
       el.style.background = '#f0fff8';
       el.style.border = '1px solid #06d6a0';
-      el.innerHTML = '<div style="text-align:center;padding:8px;font-size:13px;font-weight:800;color:#0a9e72">✅ @' + username + ' — LUNAS! Data tersimpan ke Spreadsheet.</div>';
+      el.innerHTML = '<div style="text-align:center;padding:8px;font-size:13px;font-weight:800;color:#0a9e72">✅ @' + username + ' — LUNAS! Data tersimpan ke Supabase.</div>';
     }
 
     var badge   = document.getElementById('antrianBadge');
@@ -1008,7 +1133,7 @@ async function doAntrianKonfirmasi(username, year, month) {
     if (cur && cur.username === username) await renderTagihan(cur);
 
   } catch(e) {
-    msgEl.textContent = '⚠️ Gagal terhubung ke server.';
+    msgEl.textContent = '⚠️ Gagal terhubung ke server: ' + (e.message || '');
     msgEl.style.cssText = 'display:block;background:#fff5f5;border:1px solid #e63946;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#e63946;font-weight:800;margin-top:8px';
   } finally {
     hideLoading();
@@ -1016,7 +1141,7 @@ async function doAntrianKonfirmasi(username, year, month) {
 }
 
 // ============================================================
-//  ANTRIAN — Gagal
+//  ANTRIAN — Gagal: hapus dari antrian tanpa simpan payment
 // ============================================================
 async function doAntrianGagal(username, year, month) {
   var kode  = document.getElementById('antrianKode').value.trim();
@@ -1030,9 +1155,16 @@ async function doAntrianGagal(username, year, month) {
     return;
   }
 
+  if (kode !== ADMIN_CODE) {
+    msgEl.textContent = '❌ Kode admin salah!';
+    msgEl.style.cssText = 'display:block;background:#fff5f5;border:1px solid #e63946;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#e63946;font-weight:800;margin-top:8px';
+    return;
+  }
+
   showLoading('Menandai gagal...');
   try {
-    await apiPost({ action: 'rejectPayment', adminCode: kode, username: username, year: year, month: month });
+    // Hanya hapus dari antrian, tidak menyimpan pembayaran
+    await sbDeletePendingPayment(username, year, month);
 
     var el = document.getElementById('antrianItem_' + username);
     if (el) {
@@ -1054,7 +1186,7 @@ async function doAntrianGagal(username, year, month) {
 }
 
 // ============================================================
-//  ADMIN — Konfirmasi Pembayaran Manual
+//  ADMIN — Konfirmasi Pembayaran Manual (tulis ke Supabase)
 // ============================================================
 async function doKonfirmasiBayar() {
   var kode  = document.getElementById('konfKode').value.trim();
@@ -1069,33 +1201,21 @@ async function doKonfirmasiBayar() {
     err.style.display = 'block'; return;
   }
 
+  if (kode !== ADMIN_CODE) {
+    err.textContent = 'Kode admin salah!';
+    err.style.display = 'block'; return;
+  }
+
   var today = new Date();
   var year  = today.getFullYear();
   var month = today.getMonth();
 
   showLoading('Mengkonfirmasi pembayaran...');
   try {
-    var res = await apiPost({
-      action   : 'adminConfirmPayment',
-      adminCode: kode,
-      username : uname,
-      year     : year,
-      month    : month
-    });
-
-    if (!res.success) {
-      err.textContent = res.error || 'Gagal konfirmasi.';
-      err.style.display = 'block'; return;
-    }
-
-    await apiPost({
-      action  : 'savePayment',
-      username: uname,
-      year    : year,
-      month   : month,
-      paid    : true,
-      method  : 'QRIS-Manual'
-    });
+    // Simpan langsung ke tabel payments di Supabase
+    await sbSavePayment(uname, year, month);
+    // Hapus juga dari antrian jika ada
+    await sbDeletePendingPayment(uname, year, month);
 
     ok.textContent   = '✅ Pembayaran @' + uname + ' bulan ' + getBulanNama(month) + ' ' + year + ' berhasil dikonfirmasi!';
     ok.style.display = 'block';
@@ -1108,13 +1228,16 @@ async function doKonfirmasiBayar() {
     if (cur && cur.username === uname) await renderTagihan(cur);
 
   } catch(e) {
-    err.textContent = 'Gagal terhubung ke server.';
+    err.textContent = 'Gagal terhubung ke server: ' + (e.message || '');
     err.style.display = 'block';
   } finally {
     hideLoading();
   }
 }
 
+// ============================================================
+//  ADMIN — Daftar semua pelanggan + status bayar bulan ini
+// ============================================================
 async function loadAdminPayList() {
   var listEl = document.getElementById('adminPayList');
   if (!listEl) return;
@@ -1125,7 +1248,7 @@ async function loadAdminPayList() {
     var year  = today.getFullYear();
     var month = today.getMonth();
 
-    var res = await apiGet({ action: 'getAllLayanan' });
+    var res = await sbGetAllLayanan();
     var layananList = res.layanan || [];
 
     if (!layananList.length) {
@@ -1133,11 +1256,15 @@ async function loadAdminPayList() {
       return;
     }
 
+    // Ambil semua payment bulan ini sekaligus untuk efisiensi
+    var payRes = await _sb.from('payments').select('username, paid')
+      .eq('year', year).eq('month', month);
+    var paidMap = {};
+    (payRes.data || []).forEach(function(p) { paidMap[p.username] = p.paid === true; });
+
     var html = '';
-    for (var i = 0; i < layananList.length; i++) {
-      var l      = layananList[i];
-      var payRes = await apiGet({ action: 'getPayment', username: l.username, year: year, month: month });
-      var sudah  = payRes.paid == true; // Google Sheets kadang return string "TRUE"
+    layananList.forEach(function(l) {
+      var sudah   = paidMap[l.username] === true;
       var nominal = l.paket === '100rb' ? 'Rp100.000' : 'Rp50.000';
 
       html += '<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #dde8f5">' +
@@ -1151,7 +1278,7 @@ async function loadAdminPayList() {
           : '<button onclick="quickKonfirmasi(\'' + l.username + '\')" style="background:linear-gradient(135deg,#06d6a0,#0a9e72);color:#fff;border:none;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">Konfirmasi</button>'
         ) +
       '</div>';
-    }
+    });
     listEl.innerHTML = html || '<div style="text-align:center;padding:12px;color:#7a95b0;font-size:12px">Tidak ada data.</div>';
 
   } catch(e) {
@@ -1169,7 +1296,7 @@ function quickKonfirmasi(username) {
 }
 
 // ============================================================
-//  ADMIN PANEL — aktivasi layanan
+//  ADMIN — Aktivasi layanan baru (tulis ke Supabase)
 // ============================================================
 async function doAktivasi() {
   var kode  = document.getElementById('adminKode').value.trim();
@@ -1179,7 +1306,7 @@ async function doAktivasi() {
   var ok    = document.getElementById('adminOk');
   err.style.display = 'none'; ok.style.display = 'none';
 
-  if (kode !== 'inikatasandi') {
+  if (kode !== ADMIN_CODE) {
     err.textContent = 'Kode admin salah!'; err.style.display = 'block'; return;
   }
   if (!uname) {
@@ -1188,15 +1315,18 @@ async function doAktivasi() {
 
   showLoading('Mengaktifkan layanan...');
   try {
-    var check = await apiGet({ action: 'checkUsername', username: uname });
+    // Cek apakah username terdaftar di tabel users
+    var check = await sbCheckUsername(uname);
     if (!check.found) {
       err.textContent = 'Username @' + uname + ' belum terdaftar di database.';
       err.style.display = 'block'; hideLoading(); return;
     }
 
-    var today    = new Date();
+    var today     = new Date();
     var tglPasang = today.getDate() + ' ' + getBulanNama(today.getMonth()) + ' ' + today.getFullYear();
-    var res = await apiPost({ action: 'saveLayanan', username: uname, status: 'aktif', paket: paket, tglPasang: tglPasang });
+
+    // Tulis layanan baru ke Supabase (upsert jika sudah ada)
+    var res = await sbSaveLayanan(uname, 'aktif', paket, tglPasang);
 
     if (res.success) {
       ok.textContent   = '✓ Berhasil! @' + uname + ' diaktifkan paket ' + paket + ' per ' + tglPasang;
@@ -1205,17 +1335,18 @@ async function doAktivasi() {
       var cur = getCurrentUser();
       if (cur && cur.username === uname) await renderTagihan(cur);
     } else {
-      err.textContent = res.error || 'Gagal mengaktifkan.'; err.style.display = 'block';
+      err.textContent = 'Gagal mengaktifkan.'; err.style.display = 'block';
     }
   } catch(e) {
-    err.textContent = 'Gagal terhubung ke server.'; err.style.display = 'block';
+    err.textContent = 'Gagal terhubung ke server: ' + (e.message || '');
+    err.style.display = 'block';
   } finally {
     hideLoading();
   }
 }
 
 // ============================================================
-//  AUTO-LOGIN
+//  AUTO-LOGIN (baca session dari localStorage, verifikasi ke Supabase)
 // ============================================================
 (async function() {
   var cur = getCurrentUser();
@@ -1224,7 +1355,7 @@ async function doAktivasi() {
     showUserBar(cur);
     showLoading('Memuat data akun...');
     try {
-      var res = await apiGet({ action: 'getUser', phone: cur.phone, username: cur.username });
+      var res = await sbGetUser(cur.phone, cur.username);
       if (res.found) {
         saveCurrentUser(res.user);
         await renderTagihan(res.user);
@@ -1232,6 +1363,7 @@ async function doAktivasi() {
         doLogout();
       }
     } catch(e) {
+      // Jika offline, tetap tampilkan data cache
       await renderTagihan(cur);
     } finally {
       hideLoading();
@@ -1274,14 +1406,8 @@ function up() {
     var type = conn.type === 'wifi' ? 'WIFI' : (conn.effectiveType || '--').toUpperCase();
     sg.textContent = type;
   }
-  
-  var targets = [
-    'https://connectivitycheck.gstatic.com/generate_204'
-  ];
-  var target = targets[0];
-  
   var s = performance.now(), img = new Image();
-  img.src = target + '?t=' + s;
+  img.src = 'https://connectivitycheck.gstatic.com/generate_204?t=' + s;
   img.onload = img.onerror = function(){
     var m = Math.round(performance.now()-s); if(m<2)return;
     if(cnt===0)mn=m;else if(m<mn)mn=m;
@@ -1310,7 +1436,6 @@ setInterval(up,IV);up();
     var dateKey = Object.keys(data.jadwal)[0];
     var j = data.jadwal[dateKey];
 
-    // Tentukan waktu sholat berikutnya
     var now = new Date();
     var nowMin = now.getHours() * 60 + now.getMinutes();
     function toMin(t) { var p = t.split(':'); return parseInt(p[0]) * 60 + parseInt(p[1]); }
