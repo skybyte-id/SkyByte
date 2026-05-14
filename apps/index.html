@@ -5,10 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>MySkyByte</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
-<!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--c1:#0077b6;--c2:#00b4d8;--g:#06d6a0;--mu:#7a95b0;--bd:#dde8f5;--bg:#f0f7ff;--wh:#fff}
@@ -60,6 +56,8 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 .stbtn .ar{margin-left:auto;font-size:24px;color:rgba(255,255,255,.5);font-weight:700}
 .fab{position:fixed;bottom:20px;right:16px;z-index:99;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border-radius:28px;padding:12px 18px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px;text-decoration:none;box-shadow:0 6px 20px rgba(37,211,102,.4);animation:fl 3s ease-in-out infinite}
 .fab svg{width:20px;height:20px;fill:#fff}
+.app-icon{width:50px;height:50px;border-radius:12px;background:linear-gradient(135deg,var(--c1),var(--c2));display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.app-icon svg{width:28px;height:28px;fill:#fff}
 .loading-ov{display:none;position:fixed;inset:0;background:rgba(0,10,30,.82);z-index:999;align-items:center;justify-content:center;flex-direction:column;backdrop-filter:blur(3px)}
 .loading-ov.open{display:flex}
 .spin{width:48px;height:48px;border:5px solid rgba(255,255,255,.2);border-top-color:#00b4d8;border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:14px}
@@ -161,16 +159,9 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 .sholat-extra-name{font-size:9px;color:rgba(255,255,255,.45);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px}
 .sholat-extra-time{font-size:11px;font-weight:800;color:rgba(255,255,255,.7)}
 .sholat-loading{text-align:center;padding:18px;color:rgba(255,255,255,.5);font-size:12px}
-/* ADMIN PANEL */
-.cust-list{margin-top:15px;border-top:1px solid var(--bd);padding-top:15px}
-.cust-item{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#f9fbff;border:1px solid var(--bd);border-radius:10px;margin-bottom:8px;font-size:12px}
-.cust-info{flex:1}
-.cust-name{font-weight:800;color:var(--c1)}
-.cust-phone{color:var(--mu)}
-.cust-actions{display:flex;gap:5px}
-.btn-sm{padding:4px 8px;border-radius:5px;border:none;color:#fff;font-size:10px;font-weight:800;cursor:pointer}
-.btn-del{background:#e63946}
 </style>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
 <body>
 
@@ -268,7 +259,6 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
   <div class="tagihan-hist" id="tagihanHist"></div>
 </div>
 
-<!-- PING MONITOR -->
 <div class="hero">
   <div class="plb">PING REALTIME</div>
   <div style="display:flex;align-items:flex-end;gap:5px">
@@ -290,7 +280,6 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
   <div class="ib"><div class="il">IP</div><div class="iv" id="ip" style="font-size:10px">...</div></div>
 </div>
 
-<!-- LAYANAN -->
 <div class="sh"><h2>Layanan</h2><div class="sl"></div></div>
 <div class="card">
   <div class="stag">INTERNETAN PUAS, DOMPET GA LEPAS!</div>
@@ -301,7 +290,6 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
   <div class="fi"><div class="fi-d">-</div><div><b>Tanpa Batasan Perangkat</b> - HP, Laptop, TV, Smart Home. UNLIMITED!</div></div>
 </div>
 
-<!-- PILIHAN PAKET -->
 <div class="sh"><h2>Pilihan Paket</h2><div class="sl"></div></div>
 <div class="card">
   <div class="pcard">
@@ -325,7 +313,6 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
   </div>
 </div>
 
-<!-- PEMBAYARAN -->
 <div class="sh"><h2>Pembayaran</h2><div class="sl"></div></div>
 <div class="card">
   <div class="pi">
@@ -335,14 +322,12 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
   </div>
 </div>
 
-<!-- SPEED TEST -->
 <div class="sh"><h2>Speed Test</h2><div class="sl"></div></div>
 <a class="stbtn" href="https://c.speedtest.net/speedtest-custom.php">
   <div><div class="tt">SPEEDTEST BY OOKLA</div><div class="ts">Uji kecepatan internet sekarang</div></div>
   <div class="ar">&gt;</div>
 </a>
 
-<!-- JADWAL SHOLAT -->
 <div class="sh"><h2>Jadwal Sholat</h2><div class="sl"></div></div>
 <div class="sholat-card" id="sholatCard">
   <div class="sholat-loading">
@@ -351,15 +336,12 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
   </div>
 </div>
 
-<!-- WHATSAPP FAB -->
 <a class="fab" href="https://wa.me/6282295750165">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.549 4.105 1.51 5.83L0 24l6.335-1.652A11.954 11.954 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 01-5.304-1.548l-.38-.225-3.922 1.023 1.043-3.81-.248-.392A9.817 9.817 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
   Chat CS
 </a>
 
-<!-- =============================================== -->
-<!-- ADMIN PANEL (tap top bar 5x untuk buka) -->
-<!-- =============================================== -->
+<!-- ADMIN PANEL (tap logo bar 5x untuk buka) -->
 <div class="ov" id="adminOv" style="z-index:500;overflow-y:auto;align-items:flex-start;padding:20px 0">
   <div class="mb" style="text-align:left;max-height:90vh;overflow-y:auto">
     <div class="mt" style="text-align:center">🔧 Panel Admin SkyByte</div>
@@ -377,10 +359,6 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
       <button id="tabBtnBayar" onclick="switchAdminTab('bayar')"
         style="flex:1;border:none;border-radius:7px;padding:7px 4px;font-size:11px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;background:transparent;color:#7a95b0">
         💰 Semua
-      </button>
-      <button id="tabBtnPelanggan" onclick="switchAdminTab('pelanggan')"
-        style="flex:1;border:none;border-radius:7px;padding:7px 4px;font-size:11px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;background:transparent;color:#7a95b0">
-        👥 Akun
       </button>
     </div>
 
@@ -418,6 +396,7 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
         </div>
         <div style="font-size:10px;color:#7a95b0;margin-top:5px">Isi sekali, lalu konfirmasi/tolak dari daftar di bawah</div>
       </div>
+
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div style="font-size:11px;font-weight:800;color:#e63946;letter-spacing:.1em">📲 BARU KLIK BAYAR</div>
         <button onclick="loadAntrianList()" style="background:#f0f7ff;border:1px solid #dde8f5;border-radius:6px;padding:4px 10px;font-size:10px;font-weight:800;color:#0077b6;cursor:pointer;font-family:Nunito,sans-serif">🔄 Refresh</button>
@@ -437,9 +416,13 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 
     <!-- TAB 3: SEMUA PELANGGAN + KONFIRMASI MANUAL -->
     <div id="tabBayar" style="display:none">
-      <div class="ms" style="text-align:center;margin-bottom:10px">Konfirmasi manual untuk pelanggan yang belum bayar</div>
+      <div class="ms" style="text-align:center;margin-bottom:10px">
+        Konfirmasi manual untuk pelanggan yang belum bayar
+      </div>
+
       <div style="background:#f0f7ff;border-radius:12px;padding:12px;margin-bottom:10px">
         <div style="font-size:11px;font-weight:800;color:#0077b6;letter-spacing:.1em;margin-bottom:8px">KONFIRMASI MANUAL</div>
+        <!-- FIX BUG #1: style="padding-left:14px" overrides flex; dibuat terpisah -->
         <div class="inp-wrap" style="margin-bottom:8px">
           <input type="password" id="konfKode" placeholder="Kode admin" style="flex:1;border:none;background:transparent;padding:12px;font-size:14px;font-family:Nunito,sans-serif;font-weight:700;color:#1a2a3a;outline:none">
         </div>
@@ -449,53 +432,38 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
         <div style="font-size:11px;color:#7a95b0;margin-bottom:6px">Periode: <b id="konfPeriode" style="color:#1a2a3a">Bulan ini</b></div>
         <div class="login-err" id="konfErr" style="display:none;margin-bottom:6px"></div>
         <div id="konfOk" style="display:none;background:#f0fff8;border:1px solid #06d6a0;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#0a9e72;font-weight:800;margin-bottom:8px"></div>
-        <button class="mc" style="background:linear-gradient(135deg,#06d6a0,#0a9e72)" onclick="doKonfirmasiBayar()">✅ KONFIRMASI SUDAH BAYAR</button>
+        <button class="mc" style="background:linear-gradient(135deg,#06d6a0,#0a9e72)" onclick="doKonfirmasiBayar()">
+          ✅ KONFIRMASI SUDAH BAYAR
+        </button>
       </div>
-      <div style="font-size:11px;font-weight:800;color:#0077b6;letter-spacing:.1em;margin-bottom:8px">STATUS PELANGGAN BULAN INI</div>
+
+      <div style="font-size:11px;font-weight:800;color:#0077b6;letter-spacing:.1em;margin-bottom:8px">
+        STATUS PELANGGAN BULAN INI
+      </div>
       <div id="adminPayList">
         <div style="text-align:center;padding:16px;color:#7a95b0;font-size:13px">
           <div class="spin" style="margin:0 auto 8px;width:24px;height:24px;border-width:3px"></div>
           Memuat data...
         </div>
       </div>
-      <button onclick="loadAdminPayList()" style="width:100%;background:#f0f7ff;border:1px solid #dde8f5;border-radius:8px;padding:8px;font-size:12px;font-weight:800;color:#0077b6;cursor:pointer;font-family:Nunito,sans-serif;margin-top:6px">🔄 Refresh Daftar</button>
-    </div>
-
-    <!-- TAB 4: KELOLA AKUN PELANGGAN -->
-    <div id="tabPelanggan" style="display:none">
-      <div class="ms" style="text-align:center;margin-bottom:10px">Tambah atau hapus akun pelanggan</div>
-      <div style="background:#f0f7ff;border-radius:12px;padding:12px;margin-bottom:10px">
-        <div style="font-size:11px;font-weight:800;color:#0077b6;letter-spacing:.1em;margin-bottom:8px">TAMBAH PELANGGAN</div>
-        <div class="inp-group" style="margin-bottom:8px">
-          <input type="text" id="admName" placeholder="Nama Pelanggan" class="inp-wrap" style="width:100%;padding:10px;border:2px solid var(--bd);border-radius:10px;font-size:13px;font-family:Nunito,sans-serif;font-weight:700;color:#1a2a3a;background:#f8fbff;outline:none">
-        </div>
-        <div class="inp-group" style="margin-bottom:8px">
-          <input type="tel" id="admPhone" placeholder="Nomor HP (8xxx)" class="inp-wrap" style="width:100%;padding:10px;border:2px solid var(--bd);border-radius:10px;font-size:13px;font-family:Nunito,sans-serif;font-weight:700;color:#1a2a3a;background:#f8fbff;outline:none">
-        </div>
-        <div class="inp-group" style="margin-bottom:8px">
-          <input type="text" id="admUser" placeholder="Username" class="inp-wrap" style="width:100%;padding:10px;border:2px solid var(--bd);border-radius:10px;font-size:13px;font-family:Nunito,sans-serif;font-weight:700;color:#1a2a3a;background:#f8fbff;outline:none">
-        </div>
-        <button class="login-btn" style="margin-top:4px" onclick="tambahPelanggan()">SIMPAN DATA</button>
-      </div>
-      <div style="font-size:11px;font-weight:800;color:#0077b6;letter-spacing:.1em;margin-bottom:8px">DAFTAR AKUN</div>
-      <div id="customerList" class="cust-list">
-        <div style="text-align:center;color:var(--mu);font-size:12px">Memuat data...</div>
-      </div>
+      <button onclick="loadAdminPayList()" style="width:100%;background:#f0f7ff;border:1px solid #dde8f5;border-radius:8px;padding:8px;font-size:12px;font-weight:800;color:#0077b6;cursor:pointer;font-family:Nunito,sans-serif;margin-top:6px">
+        🔄 Refresh Daftar
+      </button>
     </div>
 
     <button class="mc" style="background:#7a95b0;margin-top:10px" onclick="document.getElementById('adminOv').classList.remove('open')">Tutup</button>
   </div>
 </div>
 
-<!-- QR MODAL -->
 <div class="ov" id="qmod">
   <div class="mb">
     <div class="mt">Pembayaran QRIS</div>
     <div class="ms">Scan QR di bawah, lalu klik tombol setelah bayar</div>
-    <img src="https://drive.google.com/thumbnail?id=1ahx0Ee-OXrALBUXX6tXpSBFwsm7yf_-X&sz=w400"
+    <img src="https://drive.google.com/thumbnail?id=1ahx0Ee-OXrALBUXX6tXpSBFwsm7yf_-X&amp;sz=w400"
          style="width:100%;border-radius:12px;border:2px solid #dde8f5" alt="QRIS SkyByte">
 
     <div id="qr-verify-box" style="display:none;margin-top:12px;border-radius:12px;overflow:hidden;border:2px solid #dde8f5">
+
       <div id="qr-state-waiting" style="background:#fffbf0;padding:14px;text-align:center">
         <div style="font-size:26px;margin-bottom:6px">📱</div>
         <div style="font-size:13px;font-weight:800;color:#e07b00">Sudah scan &amp; transfer?</div>
@@ -506,6 +474,7 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
           ✅ Saya Sudah Bayar
         </button>
       </div>
+
       <div id="qr-state-pending" style="display:none;background:#f0f7ff;padding:14px;text-align:center">
         <div style="font-size:26px;margin-bottom:6px">⏳</div>
         <div style="font-size:13px;font-weight:800;color:#0077b6">Menunggu Konfirmasi Admin</div>
@@ -516,11 +485,13 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
           Biasanya dikonfirmasi dalam beberapa menit 🕐
         </div>
       </div>
+
       <div id="qr-state-success" style="display:none;background:#f0fff8;padding:14px;text-align:center">
         <div style="font-size:32px;margin-bottom:4px">✅</div>
         <div style="font-size:14px;font-weight:800;color:#0a9e72">Pembayaran Dikonfirmasi!</div>
         <div style="font-size:11px;color:#0a9e72;margin-top:3px">Status tagihan kamu sudah diperbarui ✓</div>
       </div>
+
     </div>
 
     <button class="mc" id="qr-tutup-btn" onclick="tutupQRModal()">Tutup</button>
@@ -529,37 +500,35 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
 
 <script>
 // ============================================================
-//  FIREBASE CONFIGURATION
+//  KONFIGURASI
 // ============================================================
-const firebaseConfig = {
-  apiKey: "AIzaSyDFmapkhajW090gppxZC0Vh6kw9QTvtwm8",
-  authDomain: "skybyte-fb033.firebaseapp.com",
-  databaseURL: "https://skybyte-fb033-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "skybyte-fb033",
-  storageBucket: "skybyte-fb033.firebasestorage.app",
-  messagingSenderId: "854572535365",
-  appId: "1:854572535365:web:0b0d1bece19369ff09dd2c",
-  measurementId: "G-0BZKG6D81B"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+var API_URL = 'https://script.google.com/macros/s/AKfycbzBWOxDWFBByW8TlkCuQsW0XjSsDtEmkAx-OtdAPLZW6vcGFFAfaX68knc0CBIvjbNW3Q/exec';
 
 // ============================================================
-//  KONSTANTA
+//  NAMA BULAN (dideklarasikan di atas agar tersedia global)
 // ============================================================
 var BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-var ADMIN_CODE = 'inikatasandi';
 function getBulanNama(idx) { return BULAN[idx]; }
 
 // ============================================================
-//  UTILS
+//  API HELPERS
 // ============================================================
-function showLoading(t) {
-  document.getElementById('loadingTxt').textContent = t || 'Memuat...';
-  document.getElementById('loadingOv').classList.add('open');
+async function apiGet(params) {
+  var url = new URL(API_URL);
+  Object.keys(params).forEach(function(k){ url.searchParams.set(k, params[k]); });
+  var res = await fetch(url.toString());
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
 }
-function hideLoading() {
-  document.getElementById('loadingOv').classList.remove('open');
+
+async function apiPost(data) {
+  var res = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(data)
+  });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
 }
 
 // ============================================================
@@ -574,117 +543,14 @@ function saveCurrentUser(u) {
 }
 
 // ============================================================
-//  FIREBASE HELPERS — mencari user berdasarkan username+phone
+//  LOADING STATE
 // ============================================================
-function fbFindUser(phone, username) {
-  return new Promise(function(resolve) {
-    db.ref('customer/customers').once('value', function(snap) {
-      var found = null;
-      snap.forEach(function(child) {
-        var d = child.val();
-        if (d.phone === phone && d.username === username.toLowerCase()) {
-          found = Object.assign({}, d, { _key: child.key });
-        }
-      });
-      resolve(found);
-    });
-  });
+function showLoading(txt) {
+  document.getElementById('loadingTxt').textContent = txt || 'Memuat data...';
+  document.getElementById('loadingOv').classList.add('open');
 }
-
-function fbCheckUsername(username) {
-  return new Promise(function(resolve) {
-    db.ref('customer/customers').once('value', function(snap) {
-      var exists = false;
-      snap.forEach(function(child) {
-        if (child.val().username === username.toLowerCase()) exists = true;
-      });
-      resolve(exists);
-    });
-  });
-}
-
-function fbGetLayanan(username) {
-  return new Promise(function(resolve) {
-    db.ref('layanan/' + username).once('value', function(snap) {
-      resolve(snap.exists() ? snap.val() : null);
-    });
-  });
-}
-
-function fbGetPayment(username, year, month) {
-  var key = year + '_' + month;
-  return new Promise(function(resolve) {
-    db.ref('payments/' + username + '/' + key).once('value', function(snap) {
-      resolve(snap.exists() ? snap.val() : null);
-    });
-  });
-}
-
-function fbGetPaymentHistory(username) {
-  return new Promise(function(resolve) {
-    db.ref('payments/' + username).once('value', function(snap) {
-      var history = [];
-      snap.forEach(function(child) {
-        var parts = child.key.split('_');
-        history.push({
-          year: parseInt(parts[0]),
-          month: parseInt(parts[1]),
-          paid: child.val().paid === true
-        });
-      });
-      resolve(history);
-    });
-  });
-}
-
-function fbSavePayment(username, year, month, paid, method) {
-  var key = year + '_' + month;
-  return db.ref('payments/' + username + '/' + key).set({
-    paid: paid,
-    method: method || 'QRIS',
-    updated_at: new Date().toISOString()
-  });
-}
-
-function fbGetPendingPayments() {
-  return new Promise(function(resolve) {
-    db.ref('pending_payments').once('value', function(snap) {
-      var list = [];
-      snap.forEach(function(child) {
-        list.push(Object.assign({}, child.val(), { _key: child.key }));
-      });
-      resolve(list);
-    });
-  });
-}
-
-function fbCreatePendingPayment(username, year, month, userData) {
-  return db.ref('pending_payments/' + username).set({
-    username: username,
-    name: userData.name,
-    phone: userData.phone,
-    year: year,
-    month: month,
-    amount: (month === 'belum' ? 50000 : 50000),
-    status: 'pending',
-    created_at: new Date().toISOString()
-  });
-}
-
-function fbRemovePendingPayment(username) {
-  return db.ref('pending_payments/' + username).remove();
-}
-
-function fbGetAllLayanan() {
-  return new Promise(function(resolve) {
-    db.ref('layanan').once('value', function(snap) {
-      var list = [];
-      snap.forEach(function(child) {
-        list.push(Object.assign({ username: child.key }, child.val()));
-      });
-      resolve(list);
-    });
-  });
+function hideLoading() {
+  document.getElementById('loadingOv').classList.remove('open');
 }
 
 // ============================================================
@@ -696,28 +562,28 @@ async function doLogin() {
   var err   = document.getElementById('loginErr');
   var btn   = document.getElementById('loginBtn');
 
-  err.style.display = 'none';
   if (!phone || !uname) {
-    err.textContent = 'Isi nomor HP dan username.';
-    err.style.display = 'block'; return;
+    err.style.display = 'block';
+    err.textContent   = 'Isi nomor HP dan username.';
+    return;
   }
 
   btn.disabled = true;
   showLoading('Memverifikasi akun...');
   try {
-    var user = await fbFindUser(phone, uname);
-    if (user) {
-      saveCurrentUser(user);
+    var res = await apiGet({ action: 'getUser', phone: phone, username: uname });
+    if (res.found) {
+      saveCurrentUser(res.user);
       document.getElementById('loginOv').classList.remove('open');
-      showUserBar(user);
-      await renderTagihan(user);
+      showUserBar(res.user);
+      await renderTagihan(res.user);
     } else {
-      err.textContent = 'Nomor HP atau username tidak ditemukan.';
       err.style.display = 'block';
+      err.textContent   = 'Nomor HP atau username tidak ditemukan.';
     }
   } catch(e) {
-    err.textContent = 'Gagal terhubung ke server. Periksa koneksi.';
     err.style.display = 'block';
+    err.textContent   = 'Gagal terhubung ke server. Periksa koneksi.';
   } finally {
     btn.disabled = false;
     hideLoading();
@@ -730,40 +596,34 @@ async function doLogin() {
 async function doRegister() {
   var name  = document.getElementById('regName').value.trim();
   var phone = document.getElementById('regPhone').value.trim();
-  var uname = document.getElementById('regUser').value.trim().toLowerCase().replace(/\s+/g,'');
+  var uname = document.getElementById('regUser').value.trim().toLowerCase().replace(/\s+/g, '');
   var err   = document.getElementById('regErr');
   var btn   = document.getElementById('regBtn');
 
-  err.style.display = 'none';
   if (!name || !phone || !uname) {
-    err.textContent = 'Semua kolom wajib diisi.'; err.style.display = 'block'; return;
+    err.style.display = 'block'; err.textContent = 'Semua kolom wajib diisi.'; return;
   }
   if (uname.length < 3) {
-    err.textContent = 'Username minimal 3 karakter.'; err.style.display = 'block'; return;
+    err.style.display = 'block'; err.textContent = 'Username minimal 3 karakter.'; return;
   }
 
   btn.disabled = true;
   showLoading('Mendaftarkan akun...');
   try {
-    var exists = await fbCheckUsername(uname);
-    if (exists) {
-      err.textContent = 'Username sudah digunakan. Coba yang lain.';
+    var res = await apiPost({ action: 'register', name: name, phone: phone, username: uname });
+    if (res.success) {
+      saveCurrentUser(res.user);
+      err.style.display = 'none';
+      document.getElementById('regOv').classList.remove('open');
+      showUserBar(res.user);
+      await renderTagihan(res.user);
+    } else {
       err.style.display = 'block';
-      btn.disabled = false; hideLoading(); return;
+      err.textContent   = res.error || 'Registrasi gagal. Coba lagi.';
     }
-
-    var newUser = { name: name, phone: phone, username: uname, role: 'user', created_at: new Date().toISOString() };
-    var ref = await db.ref('customer/customers').push(newUser);
-    newUser._key = ref.key;
-
-    saveCurrentUser(newUser);
-    err.style.display = 'none';
-    document.getElementById('regOv').classList.remove('open');
-    showUserBar(newUser);
-    await renderTagihan(newUser);
   } catch(e) {
-    err.textContent = 'Gagal terhubung ke server. Periksa koneksi.';
     err.style.display = 'block';
+    err.textContent   = 'Gagal terhubung ke server. Periksa koneksi.';
   } finally {
     btn.disabled = false;
     hideLoading();
@@ -776,9 +636,9 @@ async function doRegister() {
 function showUserBar(user) {
   document.getElementById('userBar').classList.add('show');
   document.getElementById('cloudBadge').style.display = 'flex';
-  document.getElementById('userName').textContent  = user.name + ' (@' + user.username + ')';
-  document.getElementById('userPhone').textContent = '+62' + user.phone;
-  document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
+  document.getElementById('userName').textContent    = user.name + ' (@' + user.username + ')';
+  document.getElementById('userPhone').textContent   = '+62' + user.phone;
+  document.getElementById('userAvatar').textContent  = user.name.charAt(0).toUpperCase();
   var greet = document.getElementById('barGreet');
   greet.childNodes[0].textContent = 'HALO, ' + user.name.split(' ')[0].toUpperCase() + '!';
 }
@@ -816,7 +676,7 @@ function openQR() {
 }
 
 // ============================================================
-//  QR MODAL HELPERS
+//  TAGIHAN / BILLING
 // ============================================================
 var _pendingPayment = null;
 
@@ -829,22 +689,11 @@ function bayarTagihan(username, year, month) {
 
 async function pelangganSudahBayar() {
   if (!_pendingPayment) return;
-  var p   = _pendingPayment;
-  var cur = getCurrentUser();
+  var p = _pendingPayment;
   showLoading('Mengirim notifikasi ke admin...');
   try {
-    await fbCreatePendingPayment(p.username, p.year, p.month, cur || { name: p.username, phone: '' });
+    await apiPost({ action: 'createPendingPayment', username: p.username, year: p.year, month: p.month });
     setQRState('pending');
-    // Pantau Firebase sampai admin konfirmasi
-    db.ref('payments/' + p.username + '/' + p.year + '_' + p.month).on('value', function(snap) {
-      if (snap.exists() && snap.val().paid === true) {
-        setQRState('success');
-        _pendingPayment = null;
-        db.ref('payments/' + p.username + '/' + p.year + '_' + p.month).off();
-        var c = getCurrentUser();
-        if (c) renderTagihan(c);
-      }
-    });
   } catch(e) {
     alert('Gagal terhubung. Coba lagi atau hubungi CS.');
   } finally {
@@ -853,7 +702,8 @@ async function pelangganSudahBayar() {
 }
 
 function setQRState(state) {
-  ['waiting','pending','success'].forEach(function(s) {
+  var states = ['waiting','pending','success'];
+  states.forEach(function(s) {
     var el = document.getElementById('qr-state-' + s);
     if (el) el.style.display = (s === state ? 'block' : 'none');
   });
@@ -863,9 +713,18 @@ function tutupQRModal() {
   document.getElementById('qmod').classList.remove('open');
 }
 
-// ============================================================
-//  RENDER TAGIHAN — Firebase version
-// ============================================================
+function triggerPelangganLunas(username) {
+  if (_pendingPayment && _pendingPayment.username === username) {
+    setQRState('success');
+    _pendingPayment = null;
+    var cur = getCurrentUser();
+    if (cur) renderTagihan(cur);
+  }
+}
+
+// (BULAN dan getBulanNama sudah dipindah ke atas script)
+
+// Render tagihan aktif dan riwayat pembayaran untuk user yang login
 async function renderTagihan(user) {
   var sec = document.getElementById('tagihanSection');
   if (!user) { sec.style.display = 'none'; return; }
@@ -877,7 +736,8 @@ async function renderTagihan(user) {
     '<div class="no-tagihan">Memuat riwayat...</div>';
 
   try {
-    var layanan = await fbGetLayanan(user.username);
+    var layananRes = await apiGet({ action: 'getLayanan', username: user.username });
+    var layanan    = layananRes.found ? layananRes.layanan : null;
 
     if (!layanan || layanan.status !== 'aktif') {
       document.getElementById('tagihanAktif').innerHTML =
@@ -910,39 +770,44 @@ async function renderTagihan(user) {
     var paket   = layanan.paket || '50rb';
     var nominal = paket === '100rb' ? 100000 : 50000;
 
-    // Parse tglPasang: support "d Bulan YYYY" atau ISO YYYY-MM-DD
+    // Parse tglPasang: support format "d Bulan YYYY" atau ISO YYYY-MM-DD
+    // Strip apostrof leading jika ada (dari GAS yang menyimpan "'5 Mei 2026")
     var tglPasangDate;
-    var rawTgl = String(layanan.tglPasang || '').replace(/^'/, '').trim();
-    if (rawTgl.match(/^\d{4}-\d{2}-\d{2}/)) {
-      tglPasangDate = new Date(rawTgl + 'T00:00:00');
-    } else if (rawTgl.match(/^\d+\s+\S+\s+\d{4}$/)) {
-      var parts    = rawTgl.split(/\s+/);
+    var rawTglPasang = String(layanan.tglPasang || '').replace(/^'/, '').trim();
+    if (rawTglPasang && rawTglPasang.match(/^\d{4}-\d{2}-\d{2}/)) {
+      // Format ISO YYYY-MM-DD
+      tglPasangDate = new Date(rawTglPasang + 'T00:00:00');
+    } else if (rawTglPasang && rawTglPasang.match(/^\d+\s+\S+\s+\d{4}$/)) {
+      // Format "d Bulan YYYY" → parse manual agar tidak NaN di Safari
+      var parts    = rawTglPasang.split(/\s+/);
       var bulanIdx = BULAN.indexOf(parts[1]);
-      tglPasangDate = bulanIdx >= 0
-        ? new Date(parseInt(parts[2]), bulanIdx, parseInt(parts[0]))
-        : new Date();
+      if (bulanIdx >= 0) {
+        tglPasangDate = new Date(parseInt(parts[2]), bulanIdx, parseInt(parts[0]));
+      } else {
+        tglPasangDate = new Date(); // fallback hari ini
+      }
     } else {
-      tglPasangDate = new Date();
+      tglPasangDate = new Date(); // fallback hari ini
     }
 
     var jatuhTempo       = new Date(tglPasangDate.getFullYear(), tglPasangDate.getMonth() + 1, tglPasangDate.getDate());
     var tglJatuhTempoNum = jatuhTempo.getDate();
     var sisa             = Math.ceil((jatuhTempo - today) / (1000 * 60 * 60 * 24));
 
-    var payData   = await fbGetPayment(user.username, by, bm);
-    var sudahBayar = payData && payData.paid === true;
+    var payRes    = await apiGet({ action: 'getPayment', username: user.username, year: by, month: bm });
+    var sudahBayar = payRes.paid == true; // Google Sheets kadang return string "TRUE"
 
     var status    = sudahBayar ? 'lunas' : (today > jatuhTempo ? 'telat' : (sisa <= 3 ? 'jatuh' : 'belum'));
     var statusTxt = 'BELUM DIBAYAR', badgeTxt = 'BULAN INI', btnClass = '', btnTxt = 'Bayar via QRIS';
-    if (status === 'lunas')  { statusTxt = 'SUDAH LUNAS';              badgeTxt = 'TERIMA KASIH ✓'; }
-    else if (status === 'telat') { statusTxt = 'JATUH TEMPO TERLEWAT'; badgeTxt = 'SEGERA BAYAR!'; btnClass = 'red';    btnTxt = 'Bayar Sekarang!'; }
+    if (status === 'lunas') { statusTxt = 'SUDAH LUNAS'; badgeTxt = 'TERIMA KASIH ✓'; }
+    else if (status === 'telat') { statusTxt = 'JATUH TEMPO TERLEWAT'; badgeTxt = 'SEGERA BAYAR!'; btnClass = 'red'; btnTxt = 'Bayar Sekarang!'; }
     else if (status === 'jatuh') { statusTxt = 'MENDEKATI JATUH TEMPO'; badgeTxt = sisa + ' HARI LAGI'; btnClass = 'orange'; btnTxt = 'Segera Bayar'; }
 
     var sisaTxt = status === 'lunas'
       ? '<span class="val green">Lunas ✓</span>'
       : status === 'telat'
         ? '<span class="val red">Sudah terlewat!</span>'
-        : '<span class="val ' + (status === 'jatuh' ? 'orange' : '') + '">' + Math.max(sisa,0) + ' hari lagi (tgl ' + tglJatuhTempoNum + ')</span>';
+        : '<span class="val ' + (status === 'jatuh' ? 'orange' : '') + '">' + Math.max(sisa, 0) + ' hari lagi (tgl ' + tglJatuhTempoNum + ')</span>';
 
     document.getElementById('tagihanAktif').innerHTML =
       '<div class="tagihan-card">' +
@@ -957,7 +822,7 @@ async function renderTagihan(user) {
           '<div class="tagihan-row"><span class="lbl">Paket</span><span class="val">' + paket.toUpperCase() + '/Bulan — Rp ' + nominal.toLocaleString('id-ID') + '</span></div>' +
           '<div class="tagihan-row"><span class="lbl">Tgl Pasang</span><span class="val green">' + tglPasangDate.getDate() + ' ' + getBulanNama(tglPasangDate.getMonth()) + ' ' + tglPasangDate.getFullYear() + ' ✓</span></div>' +
           '<div class="tagihan-row"><span class="lbl">Periode</span><span class="val">' + getBulanNama(bm) + ' ' + by + '</span></div>' +
-          '<div class="tagihan-row"><span class="lbl">Jatuh Tempo</span><span class="val ' + (status==='telat'?'red':status==='jatuh'?'orange':'') + '">' + tglJatuhTempoNum + ' ' + getBulanNama(jatuhTempo.getMonth()) + ' ' + jatuhTempo.getFullYear() + '</span></div>' +
+          '<div class="tagihan-row"><span class="lbl">Jatuh Tempo</span><span class="val ' + (status === 'telat' ? 'red' : status === 'jatuh' ? 'orange' : '') + '">' + tglJatuhTempoNum + ' ' + getBulanNama(jatuhTempo.getMonth()) + ' ' + jatuhTempo.getFullYear() + '</span></div>' +
           '<div class="tagihan-row"><span class="lbl">Sisa Waktu</span>' + sisaTxt + '</div>' +
           '<div class="tagihan-row"><span class="lbl">Total Tagihan</span><span class="val" style="font-size:17px;color:var(--c1)">Rp ' + nominal.toLocaleString('id-ID') + '</span></div>' +
           (status !== 'lunas'
@@ -967,10 +832,11 @@ async function renderTagihan(user) {
         '</div>' +
       '</div>';
 
-    // Riwayat pembayaran
-    var histAll = await fbGetPaymentHistory(user.username);
+    var histRes = await apiGet({ action: 'getPaymentHistory', username: user.username });
     var histMap = {};
-    histAll.forEach(function(h) { histMap[h.year + '_' + h.month] = h.paid; });
+    (histRes.history || []).forEach(function(h) {
+      histMap[h.year + '_' + h.month] = h.paid;
+    });
 
     var histData = [];
     for (var i = 1; i <= 5; i++) {
@@ -978,7 +844,7 @@ async function renderTagihan(user) {
       if (hm < 0) { hm += 12; hy--; }
       var tglBulanIni = new Date(hy, hm, 1);
       if (tglBulanIni < new Date(tglPasangDate.getFullYear(), tglPasangDate.getMonth(), 1)) continue;
-      var dibayar = histMap[hy + '_' + hm] === true;
+      var dibayar = histMap[hy + '_' + hm] == true; // Google Sheets kadang return string "TRUE"
       histData.push({ bulan: getBulanNama(hm) + ' ' + hy, status: dibayar ? 'lunas' : 'telat', nominal: nominal });
     }
 
@@ -986,93 +852,51 @@ async function renderTagihan(user) {
       ? histData.map(function(h) {
           return '<div class="hist-item">' +
             '<div class="hist-dot ' + h.status + '"></div>' +
-            '<div class="hist-info"><div class="hist-bln">' + h.bulan + '</div><div class="hist-tgl">' + (h.status==='lunas'?'Sudah dibayar ✓':'Belum dibayar') + '</div></div>' +
-            '<div class="hist-nominal" style="color:' + (h.status==='lunas'?'var(--g)':'#e63946') + '">Rp ' + h.nominal.toLocaleString('id-ID') + '</div>' +
+            '<div class="hist-info"><div class="hist-bln">' + h.bulan + '</div><div class="hist-tgl">' + (h.status === 'lunas' ? 'Sudah dibayar ✓' : 'Belum dibayar') + '</div></div>' +
+            '<div class="hist-nominal" style="color:' + (h.status === 'lunas' ? 'var(--g)' : '#e63946') + '">Rp ' + h.nominal.toLocaleString('id-ID') + '</div>' +
           '</div>';
         }).join('')
       : '<div class="no-tagihan">Belum ada riwayat — baru terpasang bulan ini</div>';
 
   } catch(e) {
     document.getElementById('tagihanAktif').innerHTML =
-      '<div class="tagihan-card"><div class="tagihan-body"><div class="no-tagihan">⚠️ Gagal memuat data. Periksa koneksi.</div></div></div>';
+      '<div class="tagihan-card"><div class="tagihan-body"><div class="no-tagihan">⚠️ Gagal memuat data. Periksa koneksi internet.</div></div></div>';
     document.getElementById('tagihanHist').innerHTML =
       '<div class="no-tagihan">Gagal memuat riwayat.</div>';
   }
 }
 
 // ============================================================
-//  ADMIN — TAB SWITCHER
+//  ADMIN PANEL — TAB SWITCHER
 // ============================================================
 function switchAdminTab(tab) {
-  var tabs = ['aktif','antrian','bayar','pelanggan'];
-  var btnMap = { aktif:'tabBtnAktif', antrian:'tabBtnAntrian', bayar:'tabBtnBayar', pelanggan:'tabBtnPelanggan' };
+  var tabs = ['aktif', 'antrian', 'bayar'];
+  var btnMap = { aktif: 'tabBtnAktif', antrian: 'tabBtnAntrian', bayar: 'tabBtnBayar' };
   var colorMap = {
-    aktif    : 'linear-gradient(135deg,#0077b6,#00b4d8)',
-    antrian  : 'linear-gradient(135deg,#e63946,#c1121f)',
-    bayar    : 'linear-gradient(135deg,#06d6a0,#0a9e72)',
-    pelanggan: 'linear-gradient(135deg,#7b2ff7,#a855f7)'
+    aktif   : 'linear-gradient(135deg,#0077b6,#00b4d8)',
+    antrian : 'linear-gradient(135deg,#e63946,#c1121f)',
+    bayar   : 'linear-gradient(135deg,#06d6a0,#0a9e72)'
   };
   tabs.forEach(function(t) {
-    var key  = t.charAt(0).toUpperCase() + t.slice(1);
-    var el   = document.getElementById('tab' + key);
-    var btn  = document.getElementById(btnMap[t]);
+    var el  = document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1));
+    var btn = document.getElementById(btnMap[t]);
     var active = (t === tab);
     if (el)  el.style.display  = active ? 'block' : 'none';
-    if (btn) { btn.style.background = active ? colorMap[t] : 'transparent'; btn.style.color = active ? '#fff' : '#7a95b0'; }
-  });
-  if (tab === 'antrian')   loadAntrianList();
-  if (tab === 'bayar')     { var t = new Date(); document.getElementById('konfPeriode').textContent = getBulanNama(t.getMonth()) + ' ' + t.getFullYear(); loadAdminPayList(); }
-  if (tab === 'pelanggan') loadCustomerList();
-}
-
-// ============================================================
-//  ADMIN — AKTIVASI LAYANAN (Firebase)
-// ============================================================
-async function doAktivasi() {
-  var kode  = document.getElementById('adminKode').value.trim();
-  var uname = document.getElementById('adminUser').value.trim().toLowerCase();
-  var paket = document.getElementById('adminPaket').value;
-  var err   = document.getElementById('adminErr');
-  var ok    = document.getElementById('adminOk');
-  err.style.display = 'none'; ok.style.display = 'none';
-
-  if (kode !== ADMIN_CODE) {
-    err.textContent = 'Kode admin salah!'; err.style.display = 'block'; return;
-  }
-  if (!uname) {
-    err.textContent = 'Isi username pelanggan.'; err.style.display = 'block'; return;
-  }
-
-  showLoading('Mengaktifkan layanan...');
-  try {
-    var exists = await fbCheckUsername(uname);
-    if (!exists) {
-      err.textContent = 'Username @' + uname + ' belum terdaftar di database.';
-      err.style.display = 'block'; hideLoading(); return;
+    if (btn) {
+      btn.style.background = active ? colorMap[t] : 'transparent';
+      btn.style.color      = active ? '#fff' : '#7a95b0';
     }
-
-    var today    = new Date();
-    var tglPasang = today.getDate() + ' ' + getBulanNama(today.getMonth()) + ' ' + today.getFullYear();
-
-    await db.ref('layanan/' + uname).set({
-      username: uname, status: 'aktif', paket: paket,
-      tglPasang: tglPasang, updated_at: new Date().toISOString()
-    });
-
-    ok.textContent   = '✓ Berhasil! @' + uname + ' diaktifkan paket ' + paket + ' per ' + tglPasang;
-    ok.style.display = 'block';
-    document.getElementById('adminUser').value = '';
-    var cur = getCurrentUser();
-    if (cur && cur.username === uname) await renderTagihan(cur);
-  } catch(e) {
-    err.textContent = 'Gagal menyimpan data.'; err.style.display = 'block';
-  } finally {
-    hideLoading();
+  });
+  if (tab === 'antrian') loadAntrianList();
+  if (tab === 'bayar') {
+    var t = new Date();
+    document.getElementById('konfPeriode').textContent = getBulanNama(t.getMonth()) + ' ' + t.getFullYear();
+    loadAdminPayList();
   }
 }
 
 // ============================================================
-//  ADMIN — LOAD ANTRIAN (Firebase)
+//  ADMIN — Load Antrian
 // ============================================================
 async function loadAntrianList() {
   var listEl = document.getElementById('antrianList');
@@ -1082,45 +906,67 @@ async function loadAntrianList() {
   listEl.innerHTML = '<div style="text-align:center;padding:14px;color:#7a95b0;font-size:12px"><div class="spin" style="margin:0 auto 8px;width:22px;height:22px;border-width:3px"></div>Memuat antrian...</div>';
 
   try {
-    var pending = await fbGetPendingPayments();
-    var badge   = document.getElementById('antrianBadge');
+    var res     = await apiGet({ action: 'getPendingPayments' });
+    var pending = res.pending || [];
 
+    var badge = document.getElementById('antrianBadge');
     if (pending.length > 0) {
       badge.textContent = pending.length;
       badge.style.display = 'inline-block';
     } else {
       badge.style.display = 'none';
+    }
+
+    if (!pending.length) {
       listEl.innerHTML = '<div style="text-align:center;padding:18px;color:#7a95b0;font-size:13px">🎉 Tidak ada antrian saat ini.<br><span style="font-size:11px">Akan muncul saat pelanggan klik tombol bayar.</span></div>';
       return;
     }
 
-    var bulanNama = getBulanNama(new Date().getMonth()) + ' ' + new Date().getFullYear();
+    var today    = new Date();
+    var bulanNama = getBulanNama(today.getMonth()) + ' ' + today.getFullYear();
+
     var html = '';
     pending.forEach(function(p) {
       var nominal = 'Rp ' + (Number(p.amount) || 0).toLocaleString('id-ID');
       var waktu   = p.created_at ? String(p.created_at).substring(11,16) : '--:--';
+      // FIX BUG #4: Kutip string di onclick menggunakan escape karakter yang benar
       html +=
         '<div id="antrianItem_' + p.username + '" style="background:#fff;border:1px solid #dde8f5;border-radius:12px;padding:12px;margin-bottom:8px">' +
           '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
             '<div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#0077b6,#00b4d8);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0">' + p.name.charAt(0).toUpperCase() + '</div>' +
-            '<div style="flex:1"><div style="font-size:13px;font-weight:800;color:#1a2a3a">' + p.name + '</div><div style="font-size:11px;color:#7a95b0">@' + p.username + ' · ' + nominal + '</div></div>' +
-            '<div style="text-align:right"><div style="font-size:10px;color:#e63946;font-weight:800;background:#fff5f5;border-radius:6px;padding:2px 7px">BARU BAYAR</div><div style="font-size:10px;color:#7a95b0;margin-top:2px">' + waktu + ' WIB</div></div>' +
+            '<div style="flex:1">' +
+              '<div style="font-size:13px;font-weight:800;color:#1a2a3a">' + p.name + '</div>' +
+              '<div style="font-size:11px;color:#7a95b0">@' + p.username + ' · ' + nominal + '</div>' +
+            '</div>' +
+            '<div style="text-align:right">' +
+              '<div style="font-size:10px;color:#e63946;font-weight:800;background:#fff5f5;border-radius:6px;padding:2px 7px">BARU BAYAR</div>' +
+              '<div style="font-size:10px;color:#7a95b0;margin-top:2px">' + waktu + ' WIB</div>' +
+            '</div>' +
           '</div>' +
-          '<div style="font-size:11px;color:#7a95b0;margin-bottom:8px;background:#f0f7ff;border-radius:7px;padding:5px 9px">📅 Periode: ' + bulanNama + ' · 💰 ' + nominal + '</div>' +
+          '<div style="font-size:11px;color:#7a95b0;margin-bottom:8px;background:#f0f7ff;border-radius:7px;padding:5px 9px">' +
+            '📅 Periode: ' + bulanNama + ' · 💰 ' + nominal +
+          '</div>' +
           '<div style="display:flex;gap:7px">' +
-            '<button onclick="doAntrianKonfirmasi(\'' + p.username + '\',' + p.year + ',' + p.month + ')" style="flex:1;background:linear-gradient(135deg,#06d6a0,#0a9e72);color:#fff;border:none;border-radius:8px;padding:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">✅ Konfirmasi</button>' +
-            '<button onclick="doAntrianGagal(\'' + p.username + '\',' + p.year + ',' + p.month + ')" style="flex:1;background:linear-gradient(135deg,#e63946,#c1121f);color:#fff;border:none;border-radius:8px;padding:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">❌ Gagal</button>' +
+            '<button onclick="doAntrianKonfirmasi(\'' + p.username + '\',' + p.year + ',' + p.month + ')" ' +
+              'style="flex:1;background:linear-gradient(135deg,#06d6a0,#0a9e72);color:#fff;border:none;border-radius:8px;padding:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">' +
+              '✅ Konfirmasi' +
+            '</button>' +
+            '<button onclick="doAntrianGagal(\'' + p.username + '\',' + p.year + ',' + p.month + ')" ' +
+              'style="flex:1;background:linear-gradient(135deg,#e63946,#c1121f);color:#fff;border:none;border-radius:8px;padding:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">' +
+              '❌ Gagal' +
+            '</button>' +
           '</div>' +
         '</div>';
     });
     listEl.innerHTML = html;
+
   } catch(e) {
     listEl.innerHTML = '<div style="text-align:center;padding:12px;color:#e63946;font-size:12px">⚠️ Gagal memuat. Periksa koneksi.</div>';
   }
 }
 
 // ============================================================
-//  ADMIN — KONFIRMASI ANTRIAN
+//  ANTRIAN — Konfirmasi
 // ============================================================
 async function doAntrianKonfirmasi(username, year, month) {
   var kode  = document.getElementById('antrianKode').value.trim();
@@ -1130,38 +976,47 @@ async function doAntrianKonfirmasi(username, year, month) {
   if (!kode) {
     msgEl.textContent = '⚠️ Isi kode admin dulu di atas!';
     msgEl.style.cssText = 'display:block;background:#fff8e1;border:1px solid #f5a623;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#e07b00;font-weight:800;margin-top:8px';
-    msgEl.scrollIntoView({ behavior:'smooth' }); return;
-  }
-  if (kode !== ADMIN_CODE) {
-    msgEl.textContent = '❌ Kode admin salah!';
-    msgEl.style.cssText = 'display:block;background:#fff5f5;border:1px solid #e63946;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#e63946;font-weight:800;margin-top:8px';
+    msgEl.scrollIntoView({ behavior: 'smooth' });
     return;
   }
 
   showLoading('Mengkonfirmasi pembayaran...');
   try {
-    await fbSavePayment(username, year, month, true, 'QRIS-Konfirmasi-Admin');
-    await fbRemovePendingPayment(username);
+    var res = await apiPost({ action: 'adminConfirmPayment', adminCode: kode, username: username, year: year, month: month });
+    if (!res.success) {
+      hideLoading();
+      msgEl.textContent = '❌ ' + (res.error || 'Gagal — cek kode admin');
+      msgEl.style.cssText = 'display:block;background:#fff5f5;border:1px solid #e63946;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#e63946;font-weight:800;margin-top:8px';
+      return;
+    }
+    await apiPost({ action: 'savePayment', username: username, year: year, month: month, paid: true, method: 'QRIS-Manual-Admin' });
 
     var el = document.getElementById('antrianItem_' + username);
     if (el) {
-      el.style.background = '#f0fff8'; el.style.border = '1px solid #06d6a0';
-      el.innerHTML = '<div style="text-align:center;padding:8px;font-size:13px;font-weight:800;color:#0a9e72">✅ @' + username + ' — LUNAS! Data tersimpan di Firebase.</div>';
+      el.style.background = '#f0fff8';
+      el.style.border = '1px solid #06d6a0';
+      el.innerHTML = '<div style="text-align:center;padding:8px;font-size:13px;font-weight:800;color:#0a9e72">✅ @' + username + ' — LUNAS! Data tersimpan ke Spreadsheet.</div>';
     }
+
     var badge   = document.getElementById('antrianBadge');
     var current = parseInt(badge.textContent || '0') - 1;
-    if (current <= 0) badge.style.display = 'none'; else badge.textContent = current;
+    if (current <= 0) { badge.style.display = 'none'; }
+    else { badge.textContent = current; }
 
+    triggerPelangganLunas(username);
     var cur = getCurrentUser();
     if (cur && cur.username === username) await renderTagihan(cur);
+
   } catch(e) {
     msgEl.textContent = '⚠️ Gagal terhubung ke server.';
     msgEl.style.cssText = 'display:block;background:#fff5f5;border:1px solid #e63946;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#e63946;font-weight:800;margin-top:8px';
-  } finally { hideLoading(); }
+  } finally {
+    hideLoading();
+  }
 }
 
 // ============================================================
-//  ADMIN — TOLAK ANTRIAN
+//  ANTRIAN — Gagal
 // ============================================================
 async function doAntrianGagal(username, year, month) {
   var kode  = document.getElementById('antrianKode').value.trim();
@@ -1171,159 +1026,191 @@ async function doAntrianGagal(username, year, month) {
   if (!kode) {
     msgEl.textContent = '⚠️ Isi kode admin dulu di atas!';
     msgEl.style.cssText = 'display:block;background:#fff8e1;border:1px solid #f5a623;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#e07b00;font-weight:800;margin-top:8px';
-    msgEl.scrollIntoView({ behavior:'smooth' }); return;
-  }
-  if (kode !== ADMIN_CODE) {
-    msgEl.textContent = '❌ Kode admin salah!';
-    msgEl.style.cssText = 'display:block;background:#fff5f5;border:1px solid #e63946;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#e63946;font-weight:800;margin-top:8px';
+    msgEl.scrollIntoView({ behavior: 'smooth' });
     return;
   }
 
   showLoading('Menandai gagal...');
   try {
-    await fbRemovePendingPayment(username);
+    await apiPost({ action: 'rejectPayment', adminCode: kode, username: username, year: year, month: month });
+
     var el = document.getElementById('antrianItem_' + username);
     if (el) {
-      el.style.background = '#fff5f5'; el.style.border = '1px solid #e63946';
+      el.style.background = '#fff5f5';
+      el.style.border = '1px solid #e63946';
       el.innerHTML = '<div style="text-align:center;padding:8px;font-size:13px;font-weight:800;color:#e63946">❌ @' + username + ' — Ditandai GAGAL. Pelanggan perlu bayar ulang.</div>';
     }
     var badge   = document.getElementById('antrianBadge');
     var current = parseInt(badge.textContent || '0') - 1;
-    if (current <= 0) badge.style.display = 'none'; else badge.textContent = current;
+    if (current <= 0) { badge.style.display = 'none'; }
+    else { badge.textContent = current; }
+
   } catch(e) {
     msgEl.textContent = '⚠️ Gagal terhubung ke server.';
     msgEl.style.cssText = 'display:block;background:#fff5f5;border:1px solid #e63946;border-radius:10px;padding:10px;text-align:center;font-size:13px;color:#e63946;font-weight:800;margin-top:8px';
-  } finally { hideLoading(); }
+  } finally {
+    hideLoading();
+  }
 }
 
 // ============================================================
-//  ADMIN — KONFIRMASI MANUAL
+//  ADMIN — Konfirmasi Pembayaran Manual
 // ============================================================
 async function doKonfirmasiBayar() {
   var kode  = document.getElementById('konfKode').value.trim();
   var uname = document.getElementById('konfUser').value.trim().toLowerCase();
   var err   = document.getElementById('konfErr');
   var ok    = document.getElementById('konfOk');
-  err.style.display = 'none'; ok.style.display = 'none';
+  err.style.display = 'none';
+  ok.style.display  = 'none';
 
   if (!kode || !uname) {
     err.textContent = 'Isi kode admin dan username pelanggan.';
     err.style.display = 'block'; return;
   }
-  if (kode !== ADMIN_CODE) {
-    err.textContent = 'Kode admin salah!'; err.style.display = 'block'; return;
-  }
 
-  var today = new Date(), year = today.getFullYear(), month = today.getMonth();
+  var today = new Date();
+  var year  = today.getFullYear();
+  var month = today.getMonth();
 
   showLoading('Mengkonfirmasi pembayaran...');
   try {
-    await fbSavePayment(uname, year, month, true, 'QRIS-Manual');
-    await fbRemovePendingPayment(uname);
+    var res = await apiPost({
+      action   : 'adminConfirmPayment',
+      adminCode: kode,
+      username : uname,
+      year     : year,
+      month    : month
+    });
+
+    if (!res.success) {
+      err.textContent = res.error || 'Gagal konfirmasi.';
+      err.style.display = 'block'; return;
+    }
+
+    await apiPost({
+      action  : 'savePayment',
+      username: uname,
+      year    : year,
+      month   : month,
+      paid    : true,
+      method  : 'QRIS-Manual'
+    });
 
     ok.textContent   = '✅ Pembayaran @' + uname + ' bulan ' + getBulanNama(month) + ' ' + year + ' berhasil dikonfirmasi!';
     ok.style.display = 'block';
     document.getElementById('konfUser').value = '';
 
     loadAdminPayList();
+    triggerPelangganLunas(uname);
+
     var cur = getCurrentUser();
     if (cur && cur.username === uname) await renderTagihan(cur);
+
   } catch(e) {
-    err.textContent = 'Gagal terhubung ke server.'; err.style.display = 'block';
-  } finally { hideLoading(); }
-}
-
-// ============================================================
-//  ADMIN — LOAD SEMUA PELANGGAN AKTIF
-// ============================================================
-async function loadAdminPayList() {
-  var listEl = document.getElementById('adminPayList');
-  if (!listEl) return;
-  listEl.innerHTML = '<div style="text-align:center;padding:12px;color:#7a95b0;font-size:12px">⏳ Memuat...</div>';
-  try {
-    var today  = new Date(), year = today.getFullYear(), month = today.getMonth();
-    var semua  = await fbGetAllLayanan();
-
-    if (!semua.length) {
-      listEl.innerHTML = '<div style="text-align:center;padding:12px;color:#7a95b0;font-size:12px">Belum ada pelanggan aktif.</div>';
-      return;
-    }
-
-    var html = '';
-    for (var i = 0; i < semua.length; i++) {
-      var l      = semua[i];
-      var payData = await fbGetPayment(l.username, year, month);
-      var sudah  = payData && payData.paid === true;
-      var nominal = l.paket === '100rb' ? 'Rp100.000' : 'Rp50.000';
-      html +=
-        '<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #dde8f5">' +
-          '<div style="width:8px;height:8px;border-radius:50%;background:' + (sudah?'#06d6a0':'#e63946') + ';flex-shrink:0"></div>' +
-          '<div style="flex:1"><div style="font-size:13px;font-weight:800;color:#1a2a3a">@' + l.username + '</div><div style="font-size:11px;color:#7a95b0">' + nominal + ' · Paket ' + (l.paket||'50rb').toUpperCase() + '</div></div>' +
-          (sudah
-            ? '<div style="font-size:11px;font-weight:800;color:#06d6a0;background:#f0fff8;padding:3px 8px;border-radius:6px">LUNAS ✓</div>'
-            : '<button onclick="quickKonfirmasi(\'' + l.username + '\')" style="background:linear-gradient(135deg,#06d6a0,#0a9e72);color:#fff;border:none;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">Konfirmasi</button>'
-          ) +
-        '</div>';
-    }
-    listEl.innerHTML = html || '<div style="text-align:center;padding:12px;color:#7a95b0;font-size:12px">Tidak ada data.</div>';
-  } catch(e) {
-    listEl.innerHTML = '<div style="text-align:center;padding:12px;color:#e63946;font-size:12px">⚠️ Gagal memuat. Periksa koneksi.</div>';
-  }
-}
-
-function quickKonfirmasi(username) {
-  document.getElementById('konfUser').value = username;
-  document.getElementById('konfKode').focus();
-  document.getElementById('konfKode').scrollIntoView({ behavior:'smooth' });
-}
-
-// ============================================================
-//  ADMIN — KELOLA AKUN PELANGGAN (Firebase realtime)
-// ============================================================
-function loadCustomerList() {
-  var list = document.getElementById('customerList');
-  db.ref('customer/customers').once('value', function(snap) {
-    list.innerHTML = '';
-    if (!snap.exists()) {
-      list.innerHTML = '<div style="text-align:center;color:var(--mu);font-size:12px;padding:12px">Belum ada akun terdaftar.</div>';
-      return;
-    }
-    snap.forEach(function(child) {
-      var d = child.val(), key = child.key;
-      list.innerHTML +=
-        '<div class="cust-item">' +
-          '<div class="cust-info"><div class="cust-name">' + d.name + '</div><div class="cust-phone">@' + d.username + ' | ' + d.phone + '</div></div>' +
-          '<div class="cust-actions"><button class="btn-sm btn-del" onclick="hapusCust(\'' + key + '\')">Hapus</button></div>' +
-        '</div>';
-    });
-  });
-}
-
-async function tambahPelanggan() {
-  var n = document.getElementById('admName').value.trim();
-  var p = document.getElementById('admPhone').value.trim();
-  var u = document.getElementById('admUser').value.trim().toLowerCase();
-  if (!n || !p || !u) return alert('Lengkapi data!');
-
-  showLoading('Menyimpan...');
-  try {
-    var exists = await fbCheckUsername(u);
-    if (exists) { hideLoading(); alert('Username @' + u + ' sudah digunakan!'); return; }
-
-    await db.ref('customer/customers').push({ name:n, phone:p, username:u, role:'user', created_at: new Date().toISOString() });
-    document.getElementById('admName').value = '';
-    document.getElementById('admPhone').value = '';
-    document.getElementById('admUser').value = '';
-    alert('Berhasil ditambah!');
-    loadCustomerList();
+    err.textContent = 'Gagal terhubung ke server.';
+    err.style.display = 'block';
   } finally {
     hideLoading();
   }
 }
 
-function hapusCust(key) {
-  if (confirm('Hapus pelanggan ini?')) {
-    db.ref('customer/customers/' + key).remove().then(loadCustomerList);
+async function loadAdminPayList() {
+  var listEl = document.getElementById('adminPayList');
+  if (!listEl) return;
+  listEl.innerHTML = '<div style="text-align:center;padding:12px;color:#7a95b0;font-size:12px">⏳ Memuat...</div>';
+
+  try {
+    var today = new Date();
+    var year  = today.getFullYear();
+    var month = today.getMonth();
+
+    var res = await apiGet({ action: 'getAllLayanan' });
+    var layananList = res.layanan || [];
+
+    if (!layananList.length) {
+      listEl.innerHTML = '<div style="text-align:center;padding:12px;color:#7a95b0;font-size:12px">Belum ada pelanggan aktif.</div>';
+      return;
+    }
+
+    var html = '';
+    for (var i = 0; i < layananList.length; i++) {
+      var l      = layananList[i];
+      var payRes = await apiGet({ action: 'getPayment', username: l.username, year: year, month: month });
+      var sudah  = payRes.paid == true; // Google Sheets kadang return string "TRUE"
+      var nominal = l.paket === '100rb' ? 'Rp100.000' : 'Rp50.000';
+
+      html += '<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #dde8f5">' +
+        '<div style="width:8px;height:8px;border-radius:50%;background:' + (sudah ? '#06d6a0' : '#e63946') + ';flex-shrink:0"></div>' +
+        '<div style="flex:1">' +
+          '<div style="font-size:13px;font-weight:800;color:#1a2a3a">@' + l.username + '</div>' +
+          '<div style="font-size:11px;color:#7a95b0">' + nominal + ' · Paket ' + (l.paket||'50rb').toUpperCase() + '</div>' +
+        '</div>' +
+        (sudah
+          ? '<div style="font-size:11px;font-weight:800;color:#06d6a0;background:#f0fff8;padding:3px 8px;border-radius:6px">LUNAS ✓</div>'
+          : '<button onclick="quickKonfirmasi(\'' + l.username + '\')" style="background:linear-gradient(135deg,#06d6a0,#0a9e72);color:#fff;border:none;border-radius:7px;padding:5px 10px;font-size:11px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif">Konfirmasi</button>'
+        ) +
+      '</div>';
+    }
+    listEl.innerHTML = html || '<div style="text-align:center;padding:12px;color:#7a95b0;font-size:12px">Tidak ada data.</div>';
+
+  } catch(e) {
+    listEl.innerHTML = '<div style="text-align:center;padding:12px;color:#e63946;font-size:12px">⚠️ Gagal memuat. Periksa koneksi.</div>';
+  }
+}
+
+// ============================================================
+//  QUICK KONFIRMASI
+// ============================================================
+function quickKonfirmasi(username) {
+  document.getElementById('konfUser').value = username;
+  document.getElementById('konfKode').focus();
+  document.getElementById('konfKode').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ============================================================
+//  ADMIN PANEL — aktivasi layanan
+// ============================================================
+async function doAktivasi() {
+  var kode  = document.getElementById('adminKode').value.trim();
+  var uname = document.getElementById('adminUser').value.trim().toLowerCase();
+  var paket = document.getElementById('adminPaket').value;
+  var err   = document.getElementById('adminErr');
+  var ok    = document.getElementById('adminOk');
+  err.style.display = 'none'; ok.style.display = 'none';
+
+  if (kode !== 'inikatasandi') {
+    err.textContent = 'Kode admin salah!'; err.style.display = 'block'; return;
+  }
+  if (!uname) {
+    err.textContent = 'Isi username pelanggan.'; err.style.display = 'block'; return;
+  }
+
+  showLoading('Mengaktifkan layanan...');
+  try {
+    var check = await apiGet({ action: 'checkUsername', username: uname });
+    if (!check.found) {
+      err.textContent = 'Username @' + uname + ' belum terdaftar di database.';
+      err.style.display = 'block'; hideLoading(); return;
+    }
+
+    var today    = new Date();
+    var tglPasang = today.getDate() + ' ' + getBulanNama(today.getMonth()) + ' ' + today.getFullYear();
+    var res = await apiPost({ action: 'saveLayanan', username: uname, status: 'aktif', paket: paket, tglPasang: tglPasang });
+
+    if (res.success) {
+      ok.textContent   = '✓ Berhasil! @' + uname + ' diaktifkan paket ' + paket + ' per ' + tglPasang;
+      ok.style.display = 'block';
+      document.getElementById('adminUser').value = '';
+      var cur = getCurrentUser();
+      if (cur && cur.username === uname) await renderTagihan(cur);
+    } else {
+      err.textContent = res.error || 'Gagal mengaktifkan.'; err.style.display = 'block';
+    }
+  } catch(e) {
+    err.textContent = 'Gagal terhubung ke server.'; err.style.display = 'block';
+  } finally {
+    hideLoading();
   }
 }
 
@@ -1337,10 +1224,10 @@ function hapusCust(key) {
     showUserBar(cur);
     showLoading('Memuat data akun...');
     try {
-      var user = await fbFindUser(cur.phone, cur.username);
-      if (user) {
-        saveCurrentUser(user);
-        await renderTagihan(user);
+      var res = await apiGet({ action: 'getUser', phone: cur.phone, username: cur.username });
+      if (res.found) {
+        saveCurrentUser(res.user);
+        await renderTagihan(res.user);
       } else {
         doLogout();
       }
@@ -1353,7 +1240,7 @@ function hapusCust(key) {
 })();
 
 // ============================================================
-//  ADMIN — TAP TOP BAR 5x
+//  ADMIN PANEL — tap bar 5x untuk buka
 // ============================================================
 var adminTapCount = 0, adminTapTimer = null;
 document.getElementById('topBar').addEventListener('click', function() {
@@ -1381,13 +1268,22 @@ function setIP(data){document.getElementById('ip').textContent=data.ip;}
 function getIP(){var s=document.createElement('script');s.src='https://api.ipify.org?format=jsonp&callback=setIP';document.body.appendChild(s);}
 getIP();
 function gs(m){if(m<40)return{t:'KENCENG!',c:'#00b4d8'};if(m<100)return{t:'STABIL',c:'#06d6a0'};if(m<200)return{t:'LAG',c:'#f5a623'};return{t:'LAG PARAH',c:'#e63946'};}
-function up(){
-  var conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
-  if(conn){var type=conn.type==='wifi'?'WIFI':(conn.effectiveType||'--').toUpperCase();sg.textContent=type;}
-  var s=performance.now(),img=new Image();
-  img.src='https://connectivitycheck.gstatic.com/generate_204?t='+s;
-  img.onload=img.onerror=function(){
-    var m=Math.round(performance.now()-s);if(m<2)return;
+function up() {
+  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if(conn) {
+    var type = conn.type === 'wifi' ? 'WIFI' : (conn.effectiveType || '--').toUpperCase();
+    sg.textContent = type;
+  }
+  
+  var targets = [
+    'https://connectivitycheck.gstatic.com/generate_204'
+  ];
+  var target = targets[0];
+  
+  var s = performance.now(), img = new Image();
+  img.src = target + '?t=' + s;
+  img.onload = img.onerror = function(){
+    var m = Math.round(performance.now()-s); if(m<2)return;
     if(cnt===0)mn=m;else if(m<mn)mn=m;
     if(m>mx)mx=m;tot+=m;cnt++;
     if(lp!==null)jt.textContent=Math.abs(m-lp)+' ms';lp=m;
@@ -1406,47 +1302,68 @@ setInterval(up,IV);up();
 (async function loadSholat() {
   var card = document.getElementById('sholatCard');
   try {
-    var res  = await fetch('https://api.myquran.com/v3/sholat/jadwal/006f52e9102a8d3be2fe5614f42ba989/today');
+    var res = await fetch('https://api.myquran.com/v3/sholat/jadwal/006f52e9102a8d3be2fe5614f42ba989/today');
     var json = await res.json();
     if (!json.status) throw new Error('API error');
 
-    var data    = json.data;
+    var data = json.data;
     var dateKey = Object.keys(data.jadwal)[0];
-    var j       = data.jadwal[dateKey];
+    var j = data.jadwal[dateKey];
 
-    var now = new Date(), nowMin = now.getHours() * 60 + now.getMinutes();
-    function toMin(t){var p=t.split(':');return parseInt(p[0])*60+parseInt(p[1]);}
+    // Tentukan waktu sholat berikutnya
+    var now = new Date();
+    var nowMin = now.getHours() * 60 + now.getMinutes();
+    function toMin(t) { var p = t.split(':'); return parseInt(p[0]) * 60 + parseInt(p[1]); }
     var waktuUtama = [
-      {name:'Subuh',key:'subuh'},{name:'Dzuhur',key:'dzuhur'},
-      {name:'Ashar',key:'ashar'},{name:'Maghrib',key:'maghrib'},{name:'Isya',key:'isya'}
+      { name: 'Subuh', key: 'subuh' },
+      { name: 'Dzuhur', key: 'dzuhur' },
+      { name: 'Ashar', key: 'ashar' },
+      { name: 'Maghrib', key: 'maghrib' },
+      { name: 'Isya', key: 'isya' }
     ];
     var nextKey = null;
-    for(var i=0;i<waktuUtama.length;i++){
-      if(toMin(j[waktuUtama[i].key])>nowMin){nextKey=waktuUtama[i].key;break;}
+    for (var i = 0; i < waktuUtama.length; i++) {
+      if (toMin(j[waktuUtama[i].key]) > nowMin) { nextKey = waktuUtama[i].key; break; }
     }
-    function itemHtml(name,key){
-      var isNext=key===nextKey;
-      return '<div class="sholat-item'+(isNext?' next':'')+'">'+
-        '<div class="sholat-name">'+name+(isNext?' ⬅':'')+'</div>'+
-        '<div class="sholat-time">'+j[key]+'</div></div>';
+
+    function itemHtml(name, key) {
+      var isNext = key === nextKey;
+      return '<div class="sholat-item' + (isNext ? ' next' : '') + '">' +
+        '<div class="sholat-name">' + name + (isNext ? ' ⬅' : '') + '</div>' +
+        '<div class="sholat-time">' + j[key] + '</div>' +
+        '</div>';
     }
-    function extraHtml(name,key){
-      return '<div class="sholat-extra-item">'+
-        '<div class="sholat-extra-name">'+name+'</div>'+
-        '<div class="sholat-extra-time">'+j[key]+'</div></div>';
+    function extraHtml(name, key) {
+      return '<div class="sholat-extra-item">' +
+        '<div class="sholat-extra-name">' + name + '</div>' +
+        '<div class="sholat-extra-time">' + j[key] + '</div>' +
+        '</div>';
     }
-    card.innerHTML=
-      '<div class="sholat-header">'+
-        '<div><div class="sholat-title">🕌 Jadwal Sholat</div><div class="sholat-loc">📍 '+data.kabko+', '+data.prov+'</div></div>'+
-        '<div class="sholat-date">'+j.tanggal+'</div>'+
-      '</div>'+
-      '<div class="sholat-grid">'+itemHtml('Subuh','subuh')+itemHtml('Dzuhur','dzuhur')+itemHtml('Ashar','ashar')+itemHtml('Maghrib','maghrib')+'</div>'+
-      '<div class="sholat-grid" style="grid-template-columns:1fr;margin-top:7px">'+itemHtml('Isya','isya')+'</div>'+
-      '<div class="sholat-extra">'+extraHtml('Imsak','imsak')+extraHtml('Terbit','terbit')+extraHtml('Dhuha','dhuha')+'</div>';
+
+    card.innerHTML =
+      '<div class="sholat-header">' +
+        '<div><div class="sholat-title">🕌 Jadwal Sholat</div><div class="sholat-loc">📍 ' + data.kabko + ', ' + data.prov + '</div></div>' +
+        '<div class="sholat-date">' + j.tanggal + '</div>' +
+      '</div>' +
+      '<div class="sholat-grid">' +
+        itemHtml('Subuh', 'subuh') +
+        itemHtml('Dzuhur', 'dzuhur') +
+        itemHtml('Ashar', 'ashar') +
+        itemHtml('Maghrib', 'maghrib') +
+      '</div>' +
+      '<div class="sholat-grid" style="grid-template-columns:1fr;margin-top:7px">' +
+        itemHtml('Isya', 'isya') +
+      '</div>' +
+      '<div class="sholat-extra">' +
+        extraHtml('Imsak', 'imsak') +
+        extraHtml('Terbit', 'terbit') +
+        extraHtml('Dhuha', 'dhuha') +
+      '</div>';
   } catch(e) {
-    card.innerHTML='<div class="sholat-loading" style="color:#e63946">⚠️ Gagal memuat jadwal sholat</div>';
+    card.innerHTML = '<div class="sholat-loading" style="color:#e63946">⚠️ Gagal memuat jadwal sholat</div>';
   }
 })();
+
 </script>
 </body>
 </html>
