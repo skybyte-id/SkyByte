@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selamat Datang Di Halaman Wifi SkyByte</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:       #0a0f1e;
+      --surface:  #111827;
+      --card:     #161f30;
+      --border:   rgba(255,255,255,0.07);
+      --accent:   #00d4aa;
+      --accent2:  #3b82f6;
+      --gold:     #f59e0b;
+      --text:     #e8eaf0;
+      --muted:    #8b95a8;
+      --danger:   #ef4444;
+      --success:  #22c55e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── BACKGROUND ── */
+    .bg-layer {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    }
+    .bg-layer::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,212,170,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(59,130,246,0.10) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 40% at 60% 20%, rgba(245,158,11,0.06) 0%, transparent 50%);
+    }
+    .grid-overlay {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* ── LAYOUT ── */
+    .wrapper {
+      position: relative; z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      padding: 56px 0 40px;
+      animation: fadeUp .7s ease both;
+    }
+    .signal-icon {
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      width: 80px; height: 80px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(0,212,170,0.2), rgba(59,130,246,0.2));
+      border: 1px solid rgba(0,212,170,0.3);
+      font-size: 36px;
+      margin-bottom: 24px;
+      box-shadow: 0 0 40px rgba(0,212,170,0.15);
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+    @keyframes pulse-glow {
+      0%,100% { box-shadow: 0 0 30px rgba(0,212,170,0.15); }
+      50%      { box-shadow: 0 0 60px rgba(0,212,170,0.35); }
+    }
+    header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #fff 0%, var(--accent) 60%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    header p {
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 300;
+      max-width: 440px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── STATUS BAR ── */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 24px auto 0;
+      padding: 10px 20px;
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.25);
+      border-radius: 100px;
+      width: fit-content;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--success);
+      animation: fadeUp .7s .1s ease both;
+    }
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.3; }
+    }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    /* ── PAKET CARDS ── */
+    .section { margin-bottom: 48px; animation: fadeUp .7s ease both; }
+    .section:nth-child(2) { animation-delay: .15s; }
+    .section:nth-child(3) { animation-delay: .25s; }
+    .section:nth-child(4) { animation-delay: .35s; }
+
+    .paket-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .paket-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 24px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+      cursor: default;
+    }
+    .paket-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: 0;
+      transition: opacity .25s;
+    }
+    .paket-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0,212,170,0.3);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .paket-card:hover::before { opacity: 1; }
+
+    .paket-card.featured {
+      border-color: rgba(0,212,170,0.4);
+      background: linear-gradient(135deg, rgba(0,212,170,0.08), rgba(59,130,246,0.06));
+    }
+    .paket-card.featured::before { opacity: 1; }
+
+    .badge {
+      position: absolute; top: 16px; right: 16px;
+      font-family: 'Syne', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #0a0f1e;
+    }
+
+    .paket-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .paket-speed {
+      font-size: 36px;
+      font-weight: 700;
+      font-family: 'Syne', sans-serif;
+      background: linear-gradient(135deg, #fff, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .paket-unit { font-size: 14px; color: var(--muted); margin-bottom: 16px; }
+
+    .paket-harga {
+      font-size: 22px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .paket-harga span { font-size: 13px; font-weight: 400; color: var(--muted); }
+
+    .paket-features { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .paket-features li {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--muted);
+    }
+    .paket-features li::before {
+      content: '✓';
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(0,212,170,0.15);
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── INFO CARDS ── */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+    }
+
+    .info-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      transition: border-color .2s;
+    }
+    .info-card:hover { border-color: rgba(59,130,246,0.3); }
+
+    .info-icon {
+      font-size: 24px;
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.05);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .info-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+    .info-value { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; }
+
+    /* ── ATURAN ── */
+    .aturan-list {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .aturan-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .aturan-item:last-child { border-bottom: none; }
+    .aturan-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(0,212,170,0.1);
+      border: 1px solid rgba(0,212,170,0.2);
+      border-radius: 8px;
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .aturan-item.larangan .aturan-num {
+      color: var(--danger);
+      background: rgba(239,68,68,0.1);
+      border-color: rgba(239,68,68,0.2);
+    }
+
+    /* ── KONTAK ── */
+    .kontak-box {
+      background: linear-gradient(135deg, rgba(0,212,170,0.08) 0%, rgba(59,130,246,0.06) 100%);
+      border: 1px solid rgba(0,212,170,0.2);
+      border-radius: 20px;
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .kontak-box h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .kontak-box p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .kontak-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #0a0f1e;
+      box-shadow: 0 4px 20px rgba(0,212,170,0.3);
+    }
+    .btn-primary:hover { box-shadow: 0 8px 30px rgba(0,212,170,0.45); }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: rgba(255,255,255,0.2); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 32px 0 0;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+      animation: fadeUp .7s .45s ease both;
+    }
+    footer strong { color: var(--accent); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 480px) {
+      .kontak-box { flex-direction: column; }
+      .paket-speed { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-layer">
+  <div class="grid-overlay"></div>
+</div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <div class="signal-icon"><img src="https://drive.google.com/uc?id=11QESPfg7b69qpIsQf_mAI5thoXZ815T0" alt="SkyByte Logo">
+    </div>
+    <h1>Selamat Datang di<br>WiFi SkyByte</h1>
+    <p>Nikmati koneksi internet cepat dan stabil. Anda sudah terhubung dan siap menjelajah.</p>
+    <div class="status-bar">
+      <div class="status-dot"></div>
+      Anda Terhubung ke Jaringan WiFi
+    </div>
+  </header>
+
+  <!-- PAKET LAYANAN -->
+  <div class="section">
+    <div class="section-title">Paket Layanan</div>
+    <div class="paket-grid">
+
+      <div class="paket-card featured">
+        <div class="badge">Termurah</div>
+        <div class="paket-name">Basic</div>
+        <div class="paket-speed">30</div>
+        <div class="paket-unit">Mbps</div>
+        <div class="paket-harga">Rp 50.000 <span>/ bulan</span></div>
+        <ul class="paket-features">
+          <li>Cocok untuk browsing & sosmed</li>
+          <li>Streaming FHD</li>
+          <li>Unlimited Internet</li>
+          <li>Unlimited Perangkat</li>
+          <li>Gratis Biaya Pemasangan</li>
+        </ul>
+      </div>
+
+      <div class="paket-card featured">
+        <div class="badge">Populer</div>
+        <div class="paket-name">Standard</div>
+        <div class="paket-speed">70</div>
+        <div class="paket-unit">Mbps</div>
+        <div class="paket-harga">Rp 100.000 <span>/ bulan</span></div>
+        <ul class="paket-features">
+          <li>Streaming 4K lancar</li>
+          <li>Gaming stabil</li>
+          <li>Unlimited Internet</li>
+          <li>Unlimited Perangkat</li>
+          <li>Gratis Biaya Pemasangan</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- INFO JARINGAN -->
+  <div class="section">
+    <div class="section-title">Informasi Jaringan</div>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-icon">🌐</div>
+        <div>
+          <div class="info-label">SSID</div>
+          <div class="info-value">SkyByte</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">⏰</div>
+        <div>
+          <div class="info-label">Jam Aktif</div>
+          <div class="info-value">24 Jam</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">📍</div>
+        <div>
+          <div class="info-label">Area Layanan</div>
+          <div class="info-value">Kp. Cilaku Babakan</div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">🔒</div>
+        <div>
+          <div class="info-label">Keamanan</div>
+          <div class="info-value">WPA2/WPA3</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATURAN PENGGUNAAN -->
+  <div class="section">
+    <div class="section-title">Aturan Penggunaan</div>
+    <div class="aturan-list">
+      <div class="aturan-item">
+        <div class="aturan-num">01</div>
+        Gunakan koneksi secara bertanggung jawab dan tidak berlebihan
+      </div>
+      <div class="aturan-item">
+        <div class="aturan-num">02</div>
+        Jaga keamanan perangkat Anda dengan tidak mengakses situs mencurigakan
+      </div>
+      <div class="aturan-item larangan">
+        <div class="aturan-num">✕</div>
+        Dilarang mengunduh konten ilegal atau melanggar hak cipta
+      </div>
+      <div class="aturan-item larangan">
+        <div class="aturan-num">✕</div>
+        Dilarang menggunakan untuk aktivitas berbahaya atau penipuan
+      </div>
+      <div class="aturan-item">
+        <div class="aturan-num">03</div>
+        Pengelola berhak membatasi akses jika terjadi penyalahgunaan
+      </div>
+    </div>
+  </div>
+
+  <!-- KONTAK -->
+  <div class="section">
+    <div class="section-title">Butuh Bantuan?</div>
+    <div class="kontak-box">
+      <div>
+        <h3>Hubungi Administrator</h3>
+        <p>Jaringan lambat, tidak bisa konek, atau ingin berlangganan?<br>Tim kami siap membantu Anda.</p>
+      </div>
+      <div class="kontak-actions">
+        <a href="https://wa.me/6282295750165" class="btn btn-primary">💬 WhatsApp</a>
+        <a href="tel:082295750165" class="btn btn-outline">📞 Telepon</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 <strong>SkyByte</strong> · Layanan WiFi Terpercaya</p>
+    <p style="margin-top:6px;">Dengan terhubung, Anda menyetujui syarat & ketentuan penggunaan layanan ini.</p>
+  </footer>
+
+</div>
+</body>
+</html>
