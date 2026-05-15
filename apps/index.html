@@ -617,14 +617,23 @@ async function sbSavePayment(username, year, month) {
   return { success: true };
 }
 
-// Ambil semua antrian pembayaran + join nama dari tabel user
+// Ambil semua antrian pembayaran (tanpa join, pakai 2 query terpisah)
 async function sbGetPendingpayment() {
   var res = await _sb.from('pending')
-    .select('*, user(name)')
+    .select('*')
     .order('created_at', { ascending: true });
   if (res.error) throw res.error;
-  var pending = (res.data || []).map(function(p) {
-    return Object.assign({}, p, { name: (p.user && p.user.name) ? p.user.name : p.username });
+  var pendingList = res.data || [];
+  if (!pendingList.length) return { pending: [] };
+
+  // Ambil nama dari tabel user secara terpisah
+  var usernames = pendingList.map(function(p) { return p.username; });
+  var userRes = await _sb.from('user').select('username, name').in('username', usernames);
+  var nameMap = {};
+  (userRes.data || []).forEach(function(u) { nameMap[u.username] = u.name; });
+
+  var pending = pendingList.map(function(p) {
+    return Object.assign({}, p, { name: nameMap[p.username] || p.username });
   });
   return { pending: pending };
 }
@@ -820,7 +829,7 @@ async function pelangganSudahBayar() {
     await sbCreatePendingPayment(p.username, p.year, p.month);
     setQRState('pending');
   } catch(e) {
-    alert('Gagal terhubung. Coba lagi atau hubungi CS.');
+    alert('Gagal: ' + (e.message || JSON.stringify(e)));
   } finally {
     hideLoading();
   }
