@@ -157,7 +157,7 @@ body{background:var(--bg);font-family:'Nunito',sans-serif;color:#1a2a3a;padding-
       <div style="font-weight:800;color:var(--c1);font-size:15px">My SkyByte APK</div>
       <div style="font-size:11px;color:var(--mu)">Versi Terbaru - Official Mobile App</div>
     </div>
-    <a class="pbtn" href="https://drive.google.com/file/d/1Bc43Z2_VBkgD7t3GmrHEm67D8JkqUksT/view?usp=drivesdk">Download</a>
+    <button class="pbtn" id="dlBtn" onclick="downloadAPK()">Download</button>
   </div>
 </div>
 
@@ -225,6 +225,36 @@ function up(){
 }
 setInterval(up,IV);up();
 function openQR(){document.getElementById('qmod').classList.add('open');}
+
+// ============================================================
+//  DOWNLOAD APK — via ferdev API
+// ============================================================
+async function downloadAPK() {
+  var btn = document.getElementById('dlBtn');
+  btn.textContent = '⏳ Loading...';
+  btn.disabled = true;
+  btn.style.opacity = '0.7';
+  try {
+    var apiUrl = 'https://api.ferdev.my.id/downloader/gdrive?link=' +
+      encodeURIComponent('https://drive.google.com/file/d/1Bc43Z2_VBkgD7t3GmrHEm67D8JkqUksT/view?usp=drivesdk') +
+      '&apikey=fdv_-7rfdQtlvGEHLYt-UaBMGw';
+    var res = await fetch(apiUrl);
+    var json = await res.json();
+    if (!json.success || !json.data || !json.data.download) throw new Error('Link tidak tersedia');
+    var a = document.createElement('a');
+    a.href = json.data.download;
+    a.download = json.data.fileName || 'SkyByte.apk';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    btn.textContent = '✅ Downloaded!';
+    setTimeout(function(){ btn.textContent = 'Download'; btn.disabled = false; btn.style.opacity = '1'; }, 3000);
+  } catch(e) {
+    btn.textContent = '❌ Gagal';
+    btn.style.background = '#e63946';
+    setTimeout(function(){ btn.textContent = 'Download'; btn.disabled = false; btn.style.opacity = '1'; btn.style.background = ''; }, 3000);
+  }
+}
 
 // ============================================================
 //  JADWAL SHOLAT — API MyQuran
